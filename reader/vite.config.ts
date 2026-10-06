@@ -6,7 +6,11 @@ export default defineConfig({
   root: fileURLToPath(new URL('.', import.meta.url)),
   base: './',
   plugins: [react()],
-  server: { host: '127.0.0.1' },
+  server: { host: '127.0.0.1', watch: {
+    // Generated JSON is fetched on demand. Exclude asset trees from HMR to avoid
+    // Windows directory handles blocking a build/sync while dev is running.
+    ignored: [/(?:^|[\\/])public[\\/](?:content|content-staging|dictionary)(?:[\\/]|$)/],
+  } },
   preview: { host: '127.0.0.1' },
   test: {
     environment: 'jsdom',

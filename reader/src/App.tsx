@@ -4,6 +4,7 @@ import { localProgressStore, type ProgressStore } from './lib/progress';
 import type { Manifest, Story, StoryProgress } from './lib/types';
 import { StoryLibrary } from './components/StoryLibrary';
 import { ReaderPage } from './components/ReaderPage';
+import type { DictionaryService } from './lib/dictionaryModel';
 
 type LoadState<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error'; message: string };
 const getStoryId = () => window.location.hash.match(/^#\/story\/([a-z0-9_]+)$/)?.[1] ?? null;
@@ -19,8 +20,8 @@ function LoadMessage({ error, onRetry, onBack }: { error?: string; onRetry?: () 
   </main>;
 }
 
-export default function App({ content = contentService, store = localProgressStore }: {
-  content?: ContentService; store?: ProgressStore;
+export default function App({ content = contentService, store = localProgressStore, dictionary }: {
+  content?: ContentService; store?: ProgressStore; dictionary?: DictionaryService;
 }) {
   const [initial] = useState(() => store.load());
   const [progress, setProgress] = useState(initial.progress);
@@ -85,7 +86,7 @@ export default function App({ content = contentService, store = localProgressSto
       : !storyId ? <StoryLibrary stories={library.data.stories} progress={progress} onOpen={(id) => { window.location.hash = `/story/${id}`; }} />
       : story.status === 'error' ? <LoadMessage error={story.message} onRetry={retryLoad} onBack={goLibrary} />
       : story.status !== 'ready' || story.data.id !== storyId ? <LoadMessage />
-      : <ReaderPage key={story.data.id} story={story.data} progress={progress[storyId]} onBack={goLibrary}
+      : <ReaderPage key={story.data.id} story={story.data} progress={progress[storyId]} onBack={goLibrary} dictionary={dictionary}
           onPosition={(id) => updateProgress(storyId, { last_sentence: id })}
           onComplete={() => updateProgress(storyId, { completed: true, last_sentence: story.data.content.paragraphs.at(-1)!.sentences.at(-1)!.id })} />}
   </div>;

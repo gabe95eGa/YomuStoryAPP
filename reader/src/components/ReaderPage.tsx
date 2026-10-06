@@ -2,10 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 import type { Story, StoryProgress, Token } from '../lib/types';
 import { StorySentence } from './StorySentence';
 import { VocabularySheet } from './VocabularySheet';
+import type { DictionaryService } from '../lib/dictionaryModel';
 
-export function ReaderPage({ story, progress, onBack, onPosition, onComplete }: {
+export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary }: {
   story: Story; progress?: StoryProgress; onBack: () => void;
   onPosition: (id: string) => void; onComplete: () => void;
+  dictionary?: DictionaryService;
 }) {
   const allSentences = story.content.paragraphs.flatMap((paragraph) => paragraph.sentences);
   const [current, setCurrent] = useState(() => progress?.completed ? 0
@@ -72,6 +74,6 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete }: 
         <progress aria-label="Posición en la lectura" max={allSentences.length} value={current + 1} /></div>
       <button type="button" className="icon-button" aria-label="Frase siguiente" disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
     </nav>
-    {selected && <VocabularySheet token={selected} onClose={() => setSelected(null)} />}
+    {selected && <VocabularySheet token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}
   </main>;
 }

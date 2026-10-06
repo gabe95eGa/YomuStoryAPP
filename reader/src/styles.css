@@ -137,8 +137,25 @@ progress::-webkit-progress-value { background: var(--green); }
 .word-facts dt { color: var(--muted); font-size: 10px; margin-bottom: 6px; }
 .word-facts dd { font-size: 19px; margin: 0; }
 .dictionary-note { font-size: 12px; color: var(--muted); line-height: 1.85; margin: 0; }
-.dictionary-entry p { font-size: 15px; line-height: 1.8; }
-.dictionary-entry small { color: var(--muted); }
+.dictionary-entry { margin: 20px 0; }
+.dictionary-entry h3 { font-size: 25px; font-weight: 500; margin: 0 0 4px; }
+.dictionary-entry .dictionary-reading { font-size: 16px; color: var(--muted); margin-bottom: 14px; }
+.dictionary-labels { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+.dictionary-labels span { font-size: 10px; padding: 4px 7px; border-radius: 3px; background: #eff2e9; color: #50634e; }
+.dictionary-sense { padding: 10px 0; }
+.dictionary-gloss { font-size: 19px; line-height: 1.65; margin: 0 0 6px; }
+.dictionary-pos { font-size: 12px; line-height: 1.8; color: var(--muted); margin: 0; }
+.sense-notes { font-size: 11px; line-height: 1.7; color: var(--muted); margin: 8px 0 0; }
+.dictionary-details { font-size: 12px; border-top: 1px solid var(--line); padding: 10px 0; margin-top: 8px; }
+.dictionary-details summary { cursor: pointer; padding: 7px 0; color: var(--green); }
+.dictionary-details .dictionary-sense + .dictionary-sense { border-top: 1px solid var(--line); }
+.other-entries > .dictionary-entry + .dictionary-entry { border-top: 1px solid var(--line); padding-top: 18px; }
+.dictionary-status { margin: 18px 0; font-size: 13px; line-height: 1.7; }
+.dictionary-status progress { display: block; width: 100%; height: 5px; margin-bottom: 9px; accent-color: var(--green); }
+.dictionary-status span { font-size: 11px; color: var(--muted); }
+.dictionary-attribution { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; font-size: 10px; line-height: 1.8; color: var(--muted); }
+.dictionary-attribution p { margin-bottom: 5px; }
+.dictionary-attribution a { display: inline-block; color: var(--green); padding: 6px 0; margin-right: 15px; }
 @media (max-width: 1000px) {
   .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .library-mark { margin-right: 0; width: 140px; height: 140px; }

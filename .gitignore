@@ -8,6 +8,9 @@ dist/
 node_modules/
 reader/public/content/
 reader/public/content-staging/
+reader/public/dictionary/
+reader/public/dictionary-notice.md
+.dictionary/
 *.tsbuildinfo
 playwright-report/
 test-results/

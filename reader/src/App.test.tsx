@@ -65,7 +65,7 @@ describe('reader flows', () => {
     expect(within(dialog).getByText('慣れる')).toBeVisible();
     expect(within(dialog).getByText('ナレ')).toBeVisible();
     expect(within(dialog).getByText('Vocabulario objetivo')).toBeVisible();
-    expect(within(dialog).getByText(/Información de la lectura/)).toBeVisible();
+    expect(await within(dialog).findByText('Diccionario no disponible.')).toBeVisible();
     await user.click(within(dialog).getByRole('button', { name: 'Cerrar vocabulario' }));
     expect(screen.queryByRole('dialog')).toBeNull();
     expect(target).toHaveFocus();

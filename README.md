@@ -1,15 +1,17 @@
-# YomuStoryAPP — content and reader V1
+# YomuStoryAPP — content, reader, and local dictionary V1
 
 A structured Japanese graded-reading content library and local Python tooling.
 Stories target approximately JLPT N4 moving toward N3, with Spanish translations
 and explanations. Content is original fictional demo material. No paid API,
-running LLM, Docker, database, or cloud service is needed to validate or read it.
+running LLM, Docker, database server, or cloud service is needed to validate or read it.
 
 The human-readable source of truth is [YOMUSTORY_SPEC.md](YOMUSTORY_SPEC.md).
 [CODEX_MASTER_PROMPT_YOMUSTORY.md](CODEX_MASTER_PROMPT_YOMUSTORY.md) defines the
 original content-tooling phase. Reader V1 now adds a browser reading application;
 see the [reader section](#reader-v1) below. Its implementation brief is preserved
 in [docs/YOMUSTORY_READER_V1_PROMPT.md](docs/YOMUSTORY_READER_V1_PROMPT.md).
+The dictionary implementation brief is preserved in
+[docs/YOMUSTORY_DICTIONARY_V1_PROMPT.md](docs/YOMUSTORY_DICTIONARY_V1_PROMPT.md).
 
 ## Setup
 
@@ -118,14 +120,14 @@ measure actual familiar-word proportions or update learner state.
 
 - **Story data:** immutable reading assets, paragraphs, sentence translations,
   tokens, learning targets, questions, and generation provenance in JSON.
-- **Dictionary data:** separate local resources, eventually resolving
-  `token.lemma` to JMdict vocabulary, KANJIDIC2 kanji, and JMnedict proper names.
+- **Dictionary data:** separate local JMdict assets and a browser IndexedDB index
+  resolve `token.lemma` to vocabulary definitions. KANJIDIC2 and JMnedict are future providers.
   Optional pitch-accent/frequency datasets also stay separate. Stories contain
   contextual glosses, never full dictionary records or invented dictionary IDs.
 - **User state:** a separate profile now and a separate user database later.
 - **Reader:** consumes `manifest.json` and story JSON. Reader V1 supplies the UI,
-  token annotations, and browser-local reading progress. Full dictionary lookup,
-  audio, persistent offline content caching, and cloud sync remain future work.
+  token annotations, local dictionary lookup, and browser-local reading progress.
+  Audio, persistent offline content caching, and cloud sync remain future work.
 - **Generator:** any LLM, Codex, a human, or a future local Ollama workflow.
   Generated output is parsed and validated before publication. No runtime AI is
   required by a future reader.
@@ -176,8 +178,8 @@ schema version `1.0` and resolves them as follows:
 - §32 mentions reader caching/dictionary lookup, but the master prompt explicitly
   limits this phase to content tooling and defers reader/dictionary implementation.
   That decision describes the original content phase. Reader V1 now implements the
-  reading interface while preserving its data boundary; dictionary integration
-  and persistent content caching remain deferred.
+  reading interface while preserving its data boundary. The later dictionary phase
+  implements local lookup; persistent content caching remains deferred.
 
 ## Local tokenizer and licensing
 
@@ -191,7 +193,8 @@ SudachiPy is Apache-2.0. The [Sudachi dictionary licensing
 notes](https://github.com/WorksApplications/SudachiDict#licenses) identify its
 Apache-2.0 license and included UniDic/NEologd resources. Read upstream licenses
 and notices before redistributing tokenizer dictionary binaries. This repository
-stores generated token annotations, not dictionary binaries or definitions.
+stores generated token annotations in stories; tokenizer binaries and definitions
+are not embedded there.
 
 When Sudachi is unavailable, carefully reviewed generated/manual tokens remain
 supported. No custom morphological analyzer is implemented. Unknown readings
@@ -256,6 +259,9 @@ the reader fetches JSON files. The relative asset base and hash routes also allo
 serving from a static subdirectory without server route rewrites. The dev server
 binds to the local computer by default. To test on an iPad over your own LAN, run
 `pnpm dev --host 0.0.0.0` and use this computer's LAN address and Vite port.
+Full dictionary import requires a secure context for checksum verification:
+use HTTPS for a device accessing a LAN address. Plain HTTP on localhost works
+on the serving computer; plain HTTP over a LAN does not enable this dictionary API.
 
 ### Content flow
 
@@ -267,7 +273,9 @@ second competing content format is created. `pnpm dev` and `pnpm build` run the
 sync automatically; Vite includes the same files under `reader/dist/content/`.
 
 After adding or editing content, run the existing Python validators and rebuild
-the manifest first, then `pnpm sync-content` and reload the browser. The frontend
+the manifest first, stop the dev server, then restart with `pnpm dev`. Generated
+public asset directories are excluded from file watching to avoid Windows locks;
+restart after generating new content or dictionary assets so Vite sees their paths. The frontend
 sync's schema checks complement the Python semantic validator; they do not
 replace it. The original story JSON and schemas are unchanged by reader work.
 
@@ -282,7 +290,8 @@ using Unicode code points, rather than JavaScript UTF-16 indices. Supplied
 `furigana_segments` are honored; otherwise a kanji-containing token receives ruby
 over its entire surface. Pure kana never receives redundant furigana. Readings
 display as supplied (the current tokenizer supplies katakana). The vocabulary
-panel presents token annotations and optional target/type information. Particles,
+panel presents real dictionary definitions, with token annotations and optional
+target/type information retained in a disclosure. Particles,
 auxiliaries, punctuation, and `ignore_lookup` tokens are not lookup controls.
 
 ### Progress and accessibility
@@ -324,15 +333,154 @@ pnpm test
 pnpm build
 ```
 
-Reader V1 does not yet include a full dictionary, SRS, audio, comprehension quiz
+The reader does not yet include SRS, audio, comprehension quiz
 UI, automatic known-word state, profile editing, accounts, or service-worker
 offline caching. Story comprehension data is retained for later use. Mixed
 kanji/kana readings use the simplest available ruby representation; no inferred
 alignment engine is added. Mobile/tablet verification uses representative browser
 viewports; an actual iPad/Safari pass remains useful before tablet distribution.
 
-The next dictionary step is a local JMdict adapter implementing
-`DictionaryService.lookup(lemma)` in `reader/src/lib/dictionary.ts`, with real
-definitions and upstream license notices kept outside the story assets. The V1
-adapter returns `null` honestly, while token annotations remain usable. A future
-cloud progress adapter can replace `ProgressStore` without changing story files.
+The local JMdict adapter is implemented through `DictionaryService` in
+`reader/src/lib/dictionary.ts`. A future cloud progress adapter can replace
+`ProgressStore` without changing story files. The next useful feature is separate
+known/learning vocabulary state with export/import backups, followed by real
+iPad/Safari verification before tablet distribution.
+
+## JMdict dictionary integration V1
+
+### Source, licence, and preparation
+
+The source is the full multilingual JSON from
+[scriptin/jmdict-simplified](https://github.com/scriptin/jmdict-simplified), release
+**3.6.2+20261005200550**, dictionary date **2026-10-05**. The exact archive URL,
+25,102,346-byte size and SHA-256 are pinned in `dictionary/source.lock.json`.
+This is JMdict data, © James William Breen and EDRDG, distributed under
+[CC BY-SA 4.0](https://www.edrdg.org/edrdg/licence.html). Spanish compilers and the
+JSON distribution are acknowledged in [dictionary/NOTICE.md](dictionary/NOTICE.md).
+Retain attribution, source and licence links, describe transformations, and
+distribute adapted dictionary data under the same licence. This concerns the
+dictionary data rather than the application code. Every vocabulary sheet displays
+attribution and links; builds include a local copy of the notice even when the
+dictionary is absent. Preserve this in future mobile Sources/About screens.
+
+Prepare the complete dictionary once, **before starting the dev server**:
+
+```powershell
+.\.venv\Scripts\python.exe tools/build_dictionary.py --download
+pnpm dev
+```
+
+The builder uses Python's standard library, verifies the pinned archive checksum,
+reads the single JSON member without extracting archive paths, transforms it, and
+publishes the manifest after writing all chunks. To rebuild from the cached source
+without Internet access, stop the dev server and run:
+
+```powershell
+.\.venv\Scripts\python.exe tools/build_dictionary.py
+pnpm dev
+```
+
+`pnpm dev`, tests, and production builds never automatically download dictionary
+data. With no prepared assets, the reader shows a dictionary-unavailable message,
+retry button, and the original token information. A production distribution must
+include `reader/dist/dictionary/` and `dictionary-notice.md`, produced by preparing
+the assets before `pnpm build`. Serve `.json.gz.bin` files as ordinary binary files;
+do not add a gzip Content-Encoding header to these already-compressed payloads.
+
+The source archive and generated assets are ignored by Git. Only the source pin,
+builder, notices, and small test extracts are committed, keeping repository growth
+small and a fresh checkout reproducible. The local source JSON expands to about
+249 MiB during preparation; the desktop builder parses it in memory. The browser
+never parses that source file.
+
+Refresh dictionary data regularly before distribution. Stop the server, review a
+new upstream release, update the release/date/URL/size and independently verified
+SHA-256 in `dictionary/source.lock.json`, download/build, then run all checks and
+restart. A changed transformation must also change the builder's transformation
+revision to invalidate the browser index. The current parser supports upstream
+format 3.6.2; review format changes rather than merely changing the lock.
+
+### Storage and lookup
+
+The current complete dictionary has **218,863 entries**, **34,309 with Spanish**.
+English/Spanish definitions, spellings, kana readings, common markers, restrictions,
+expanded grammatical/domain/usage/dialect labels and notes are retained. Blank
+upstream gloss placeholders are omitted. Other languages, cross-references,
+antonyms and etymology are omitted. No definitions are invented or translated.
+
+Preparation creates a versioned manifest plus **219 deterministic gzip JSON
+chunks**, at most 1,000 entries each. These total **11.3 MiB compressed** and
+**120.6 MiB compact expanded JSON**, separate from the JavaScript bundle. IndexedDB
+needs additional space for records and indexes; actual browser usage depends on
+its implementation. Updating temporarily requires space for both versions.
+
+`dictionaryModel.ts` defines application models and matching; `webDictionary.ts`
+implements the web adapter behind `DictionaryService.lookup(query)` and a separate
+storage interface. The first word tap shows preparation progress while chunks are
+fetched from the same local app, checksum-verified, decoded one at a time, and
+stored in IndexedDB (`yomustory.dictionary.v1`). A multi-entry index maps normalized
+spellings/readings to records. Each chunk and resume checkpoint commit atomically.
+Interrupted imports resume; updates retain the installed dictionary until the new
+version's full record count is verified. Failed updates use the prior dictionary.
+
+Subsequent launches check the small local manifest once and reuse the installed
+index. An unreachable manifest also permits using the installed dictionary. Word
+lookups use indexed equality queries, never a full dictionary scan or word-specific
+network request. A bounded 200-query memory cache accelerates repeated taps.
+Closing a sheet cancels its pending result while preparation can continue. A native
+Android/Capacitor implementation can replace the web adapter with SQLite without
+changing reader components; Android packaging is not implemented here.
+
+Lookup tries **lemma, surface, then reading**, normalizing NFKC/full-width forms,
+whitespace, boundary punctuation and katakana/hiragana. Compatible token readings
+rank first, then compatible part of speech, then upstream common markers. Valid
+ambiguous entries remain accessible. Spelling/reading/sense restrictions are
+honored. An inflected token reading need not equal the lemma reading; the stored
+lemma resolves it without a new morphological analyzer.
+
+The sheet shows the tapped surface, dictionary headword/reading, primary meaning,
+readable part of speech and common marker. Spanish is preferred per applicable
+entry; otherwise English is explicitly labelled. Extra senses, English senses,
+other entries and original story annotations are disclosures. Upstream Spanish
+and English sense groups are independently compiled and are not assumed to align.
+Unknown words and unavailable storage have distinct fallback states. JMdict common
+markers are not numeric frequency rankings; JLPT, pitch accent and proper-name
+providers remain separate future features.
+
+### Offline use, verification, and limits
+
+After preparation/import, definitions work without Internet access. An already
+loaded reading session can look up new words with its local server stopped. The
+app shell and stories still require serving/loading: there is no service worker
+or complete offline app installation yet. No Jisho request, scraping, public
+dictionary API, paid service or runtime AI is involved.
+
+Dictionary storage and reading progress remain separate. Both are local to the
+browser/origin; another port/device has separate data. Clearing site data or
+browser eviction removes the dictionary, which can be imported again. Browser
+progress is not backed up by pushing the repository. The web adapter requires
+IndexedDB, native gzip DecompressionStream, and Web Crypto in a secure context.
+Blocked storage or insufficient quota leaves token information usable.
+
+Tests use 12 real entries extracted from the pinned source in
+`tests/fixtures/jmdict-source.json` and `reader/src/test/dictionary-entries.json`,
+with the same data licence and attribution. They never download the full dataset.
+Python tests cover transformation, blank translations, deterministic output and
+invalid inputs. Frontend tests cover matching/ranking/restrictions, normalization,
+Spanish/English, ambiguity, unknown words, indexed storage, persistence, checksums,
+interrupted imports, update rollback, unavailable storage, cancellation, and the
+reader-to-sheet flow. Run the existing validation commands above.
+
+The full generated dataset is also validated against the runtime parser during
+development. Desktop Edge and representative tablet/mobile viewports are checked;
+an actual iPad/Safari and native Android pass remain outstanding. Spanish coverage
+and wording reflect upstream data; English senses are available for fuller detail.
+
+Verification of this phase: **75 Python tests and 44 frontend tests pass**, along
+with story/profile validation, typechecking and the production build. All 218,863
+generated entries pass the runtime parser. Full import and reuse after a production
+reload were checked in Edge. With the local server stopped, a previously untapped
+word rendered in about 0.3 seconds including browser automation overhead; the
+first lookup after production reload took about 1.3 seconds including that overhead.
+These are sanity checks on this computer rather than device benchmarks. Tablet
+(820×1180) and phone (390×844) sheets fit without horizontal overflow.

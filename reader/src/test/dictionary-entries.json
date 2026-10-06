@@ -1,0 +1,2511 @@
+[
+  {
+    "id": "1145310",
+    "provider": "jmdict",
+    "spellings": [],
+    "readings": [
+      {
+        "text": "レストラン",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "restaurant (esp. Western-style)"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "restaurante (fr:)"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1202440",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "開く",
+        "common": true,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "ひらく",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "ヒラく",
+        "common": false,
+        "labels": [],
+        "appliesToSpellings": []
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open"
+          },
+          {
+            "language": "en",
+            "text": "to undo"
+          },
+          {
+            "language": "en",
+            "text": "to unseal"
+          },
+          {
+            "language": "en",
+            "text": "to unpack"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to bloom"
+          },
+          {
+            "language": "en",
+            "text": "to unfold"
+          },
+          {
+            "language": "en",
+            "text": "to spread out"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (for business, e.g. in the morning)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to be wide (gap, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to widen"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to hold (meeting, party, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to give"
+          },
+          {
+            "language": "en",
+            "text": "to open"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to found (nation, dynasty, sect, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to open (a new business)"
+          },
+          {
+            "language": "en",
+            "text": "to set up"
+          },
+          {
+            "language": "en",
+            "text": "to establish"
+          },
+          {
+            "language": "en",
+            "text": "to start"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (ports, borders, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (an account)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open up (new land, path, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to clear"
+          },
+          {
+            "language": "en",
+            "text": "to develop"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (a file, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [
+          "computing"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to extract (root)"
+          },
+          {
+            "language": "en",
+            "text": "to reduce (equation)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [
+          "mathematics"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to cut open (fish)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [
+          "food, cooking"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "as 魚を開く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to change (kanji into hiragana)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to flare (e.g. skirt)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to slacken (into a poor posture)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [
+          "sports"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "as 体が開く, 肩が開く, etc."
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to extend"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [
+          "go (game)"
+        ],
+        "misc": [
+          "word usually written using kana alone"
+        ],
+        "dialects": [],
+        "notes": [
+          "usu. ヒラく"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "abrirse"
+          },
+          {
+            "language": "es",
+            "text": "quedarse abierto"
+          },
+          {
+            "language": "es",
+            "text": "quedarse vacío"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1212670",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "慣れる",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "馴れる",
+        "common": false,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "なれる",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to get used to"
+          },
+          {
+            "language": "en",
+            "text": "to grow accustomed to"
+          },
+          {
+            "language": "en",
+            "text": "to become familiar with"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 慣れる"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to become skilled in"
+          },
+          {
+            "language": "en",
+            "text": "to become experienced at"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 慣れる"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to become tame"
+          },
+          {
+            "language": "en",
+            "text": "to become domesticated"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 馴れる"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to get used to doing"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "auxiliary verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "after the -masu stem of a verb"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "acostumbrarse"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "auxiliary verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1251270",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "経験",
+        "common": true,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "けいけん",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "experience"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)",
+          "noun or participle which takes the aux. verb suru",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "experimentar"
+          },
+          {
+            "language": "es",
+            "text": "pasar por la experiencia de"
+          },
+          {
+            "language": "es",
+            "text": "experiencia"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)",
+          "noun or participle which takes the aux. verb suru",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1296670",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "材料",
+        "common": true,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "ざいりょう",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "materials"
+          },
+          {
+            "language": "en",
+            "text": "ingredients"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "material (for a novel, experiment, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "subject matter"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "grounds (for a decision, judgement, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "basis"
+          },
+          {
+            "language": "en",
+            "text": "evidence"
+          },
+          {
+            "language": "en",
+            "text": "data"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "(market) factor"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [
+          "finance"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "ingredientes"
+          },
+          {
+            "language": "es",
+            "text": "material"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1304970",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "仕事",
+        "common": true,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "しごと",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "work"
+          },
+          {
+            "language": "en",
+            "text": "job"
+          },
+          {
+            "language": "en",
+            "text": "labor"
+          },
+          {
+            "language": "en",
+            "text": "labour"
+          },
+          {
+            "language": "en",
+            "text": "business"
+          },
+          {
+            "language": "en",
+            "text": "task"
+          },
+          {
+            "language": "en",
+            "text": "assignment"
+          },
+          {
+            "language": "en",
+            "text": "occupation"
+          },
+          {
+            "language": "en",
+            "text": "employment"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)",
+          "noun or participle which takes the aux. verb suru",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "work"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [
+          "physics"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "trabajo"
+          },
+          {
+            "language": "es",
+            "text": "empleo"
+          },
+          {
+            "language": "es",
+            "text": "ocupación"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1307550",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "始める",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "創める",
+        "common": false,
+        "labels": [
+          "rarely used kanji form"
+        ]
+      }
+    ],
+    "readings": [
+      {
+        "text": "はじめる",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to start"
+          },
+          {
+            "language": "en",
+            "text": "to begin"
+          },
+          {
+            "language": "en",
+            "text": "to commence"
+          },
+          {
+            "language": "en",
+            "text": "to initiate"
+          },
+          {
+            "language": "en",
+            "text": "to originate"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "始める"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to start up (a business, society, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to open (e.g. a store)"
+          },
+          {
+            "language": "en",
+            "text": "to establish"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to start ..."
+          },
+          {
+            "language": "en",
+            "text": "to begin to ..."
+          }
+        ],
+        "partsOfSpeech": [
+          "auxiliary verb",
+          "Ichidan verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "after the -masu stem of a verb"
+        ],
+        "appliesToSpellings": [
+          "始める"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "empezar"
+          },
+          {
+            "language": "es",
+            "text": "comenzar"
+          }
+        ],
+        "partsOfSpeech": [
+          "auxiliary verb",
+          "Ichidan verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1353320",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "上手",
+        "common": true,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "じょうず",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "じょうて",
+        "common": false,
+        "labels": [
+          "out-dated or obsolete kana usage"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "じょうしゅ",
+        "common": false,
+        "labels": [
+          "out-dated or obsolete kana usage"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "skillful"
+          },
+          {
+            "language": "en",
+            "text": "skilled"
+          },
+          {
+            "language": "en",
+            "text": "proficient"
+          },
+          {
+            "language": "en",
+            "text": "good (at)"
+          },
+          {
+            "language": "en",
+            "text": "adept"
+          },
+          {
+            "language": "en",
+            "text": "clever"
+          }
+        ],
+        "partsOfSpeech": [
+          "adjectival nouns or quasi-adjectives (keiyodoshi)",
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "flattery"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "nivel"
+          },
+          {
+            "language": "es",
+            "text": "hábil"
+          },
+          {
+            "language": "es",
+            "text": "destreza"
+          },
+          {
+            "language": "es",
+            "text": "mañoso"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1358280",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "食べる",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "喰べる",
+        "common": false,
+        "labels": [
+          "search-only kanji form"
+        ]
+      }
+    ],
+    "readings": [
+      {
+        "text": "たべる",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to eat"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to live on (e.g. a salary)"
+          },
+          {
+            "language": "en",
+            "text": "to live off"
+          },
+          {
+            "language": "en",
+            "text": "to subsist on"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "comer"
+          }
+        ],
+        "partsOfSpeech": [
+          "Ichidan verb",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1578850",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "行く",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "往く",
+        "common": false,
+        "labels": [
+          "rarely used kanji form"
+        ]
+      }
+    ],
+    "readings": [
+      {
+        "text": "いく",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "ゆく",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "イク",
+        "common": false,
+        "labels": [
+          "search-only kana form"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to go"
+          },
+          {
+            "language": "en",
+            "text": "to move (towards)"
+          },
+          {
+            "language": "en",
+            "text": "to head (towards)"
+          },
+          {
+            "language": "en",
+            "text": "to leave (for)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to move through"
+          },
+          {
+            "language": "en",
+            "text": "to travel across"
+          },
+          {
+            "language": "en",
+            "text": "to walk along (e.g. a road)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to go (well, badly, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to proceed"
+          },
+          {
+            "language": "en",
+            "text": "to turn out"
+          },
+          {
+            "language": "en",
+            "text": "to get along"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to do (in a particular way)"
+          },
+          {
+            "language": "en",
+            "text": "to go (with; a choice)"
+          },
+          {
+            "language": "en",
+            "text": "to try"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "oft. as で〜"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to pass (of time, seasons, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to go by"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to stream"
+          },
+          {
+            "language": "en",
+            "text": "to flow"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to die"
+          },
+          {
+            "language": "en",
+            "text": "to pass away"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "usu. written as 逝く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to reach (a stage, extent, age, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to get to"
+          },
+          {
+            "language": "en",
+            "text": "to go (so far as ...)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to reach (of information, instructions, wind, etc.)"
+          },
+          {
+            "language": "en",
+            "text": "to arrive"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to continue ..."
+          },
+          {
+            "language": "en",
+            "text": "to go on ..."
+          },
+          {
+            "language": "en",
+            "text": "to (progress) steadily"
+          },
+          {
+            "language": "en",
+            "text": "to gradually ..."
+          },
+          {
+            "language": "en",
+            "text": "to progressively ..."
+          }
+        ],
+        "partsOfSpeech": [
+          "auxiliary verb",
+          "Godan verb - Iku/Yuku special class"
+        ],
+        "fields": [],
+        "misc": [
+          "word usually written using kana alone"
+        ],
+        "dialects": [],
+        "notes": [
+          "after the -te form of a verb; い sometimes omitted in casual speech"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to have an orgasm"
+          },
+          {
+            "language": "en",
+            "text": "to come"
+          },
+          {
+            "language": "en",
+            "text": "to cum"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [
+          "word usually written using kana alone",
+          "colloquial"
+        ],
+        "dialects": [],
+        "notes": [
+          "oft. written as イク"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to trip"
+          },
+          {
+            "language": "en",
+            "text": "to get high"
+          },
+          {
+            "language": "en",
+            "text": "to have a drug-induced hallucination"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [
+          "word usually written using kana alone",
+          "slang"
+        ],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "ir"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "continuar"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb - Iku/Yuku special class",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1580400",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "上手",
+        "common": false,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "うわて",
+        "common": false,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      },
+      {
+        "text": "かみて",
+        "common": false,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "upper part"
+          }
+        ],
+        "partsOfSpeech": [
+          "adjectival nouns or quasi-adjectives (keiyodoshi)",
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "upper stream"
+          },
+          {
+            "language": "en",
+            "text": "upper course of a river"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "かみて"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "right side of the stage (audience's or camera's POV)"
+          },
+          {
+            "language": "en",
+            "text": "stage left (actor's POV)"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "かみて"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "skillful (in comparisons)"
+          },
+          {
+            "language": "en",
+            "text": "dexterity"
+          }
+        ],
+        "partsOfSpeech": [
+          "adjectival nouns or quasi-adjectives (keiyodoshi)",
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "うわて"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "over-arm grip on opponent's belt"
+          }
+        ],
+        "partsOfSpeech": [
+          "noun (common) (futsuumeishi)"
+        ],
+        "fields": [
+          "sumo"
+        ],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "うわて"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1586270",
+    "provider": "jmdict",
+    "spellings": [
+      {
+        "text": "開く",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "空く",
+        "common": true,
+        "labels": []
+      },
+      {
+        "text": "明く",
+        "common": false,
+        "labels": []
+      }
+    ],
+    "readings": [
+      {
+        "text": "あく",
+        "common": true,
+        "labels": [],
+        "appliesToSpellings": [
+          "*"
+        ]
+      }
+    ],
+    "senses": [
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (e.g. doors)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 開く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (e.g. business, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 開く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to be empty"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 空く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to be vacant"
+          },
+          {
+            "language": "en",
+            "text": "to be available"
+          },
+          {
+            "language": "en",
+            "text": "to be free"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 空く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to be open (e.g. neckline, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 明く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to have been opened (of one's eyes, mouth, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 明く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to come to an end"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 明く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to open (one's eyes, mouth, etc.)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "transitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [
+          "esp. 明く"
+        ],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "en",
+            "text": "to have a hole"
+          },
+          {
+            "language": "en",
+            "text": "to form a gap"
+          },
+          {
+            "language": "en",
+            "text": "to have an interval (between events)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "abrirse"
+          },
+          {
+            "language": "es",
+            "text": "quedarse abierto"
+          },
+          {
+            "language": "es",
+            "text": "quedarse vacío"
+          },
+          {
+            "language": "es",
+            "text": "abrirse"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "quedarse vacío (desocupado)"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "estar libre"
+          },
+          {
+            "language": "es",
+            "text": "tener tiempo libre"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "amanecer"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "abrirse"
+          },
+          {
+            "language": "es",
+            "text": "quedarse abierto"
+          },
+          {
+            "language": "es",
+            "text": "quedarse vacío"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      },
+      {
+        "glosses": [
+          {
+            "language": "es",
+            "text": "estar menos lleno"
+          }
+        ],
+        "partsOfSpeech": [
+          "Godan verb with 'ku' ending",
+          "intransitive verb"
+        ],
+        "fields": [],
+        "misc": [],
+        "dialects": [],
+        "notes": [],
+        "appliesToSpellings": [
+          "*"
+        ],
+        "appliesToReadings": [
+          "*"
+        ]
+      }
+    ]
+  }
+]

@@ -1,5 +1,6 @@
 // Copy the manifest's files byte-for-byte; never copy profiles or private data.
 import { mkdir, readFile, realpath, rename, rm, writeFile } from 'node:fs/promises';
+import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import Ajv2020 from 'ajv/dist/2020.js';
@@ -56,7 +57,15 @@ async function syncContent() {
     await writeFile(output, copy.bytes);
   }
   await rm(destination, { recursive: true, force: true });
-  await rename(staging, destination);
+  // Windows can briefly retain a deleted directory handle after rm resolves.
+  // Retry only transient filesystem locks; all other failures remain immediate.
+  for (let attempt = 0; ; attempt++) {
+    try { await rename(staging, destination); break; }
+    catch (error) {
+      if (process.platform !== 'win32' || !['EPERM', 'EACCES', 'EBUSY'].includes(error.code) || attempt >= 6) throw error;
+      await delay(100 * 2 ** attempt);
+    }
+  }
   console.log(`Prepared ${copies.length} stories from manifest.json.`);
 }
 
