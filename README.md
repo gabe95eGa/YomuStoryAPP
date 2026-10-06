@@ -289,7 +289,8 @@ Sentence rendering preserves unannotated text gaps exactly. Offsets are converte
 using Unicode code points, rather than JavaScript UTF-16 indices. Supplied
 `furigana_segments` are honored; otherwise a kanji-containing token receives ruby
 over its entire surface. Pure kana never receives redundant furigana. Readings
-display as supplied (the current tokenizer supplies katakana). The vocabulary
+in furigana display as hiragana, converting the tokenizer's katakana readings
+only for presentation. Original token readings and word spellings are preserved. The vocabulary
 panel presents real dictionary definitions, with token annotations and optional
 target/type information retained in a disclosure. Particles,
 auxiliaries, punctuation, and `ignore_lookup` tokens are not lookup controls.
