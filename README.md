@@ -1,4 +1,4 @@
-# YomuStory content system V1
+# YomuStoryAPP — content and reader V1
 
 A structured Japanese graded-reading content library and local Python tooling.
 Stories target approximately JLPT N4 moving toward N3, with Spanish translations
@@ -6,8 +6,10 @@ and explanations. Content is original fictional demo material. No paid API,
 running LLM, Docker, database, or cloud service is needed to validate or read it.
 
 The human-readable source of truth is [YOMUSTORY_SPEC.md](YOMUSTORY_SPEC.md).
-[CODEX_MASTER_PROMPT_YOMUSTORY.md](CODEX_MASTER_PROMPT_YOMUSTORY.md) defines this
-phase: content tooling. The full reader application comes later.
+[CODEX_MASTER_PROMPT_YOMUSTORY.md](CODEX_MASTER_PROMPT_YOMUSTORY.md) defines the
+original content-tooling phase. Reader V1 now adds a browser reading application;
+see the [reader section](#reader-v1) below. Its implementation brief is preserved
+in [docs/YOMUSTORY_READER_V1_PROMPT.md](docs/YOMUSTORY_READER_V1_PROMPT.md).
 
 ## Setup
 
@@ -121,8 +123,9 @@ measure actual familiar-word proportions or update learner state.
   Optional pitch-accent/frequency datasets also stay separate. Stories contain
   contextual glosses, never full dictionary records or invented dictionary IDs.
 - **User state:** a separate profile now and a separate user database later.
-- **Reader:** consumes `manifest.json` and story JSON; cache, dictionary cards,
-  UI, audio, and progress tracking are later reader work.
+- **Reader:** consumes `manifest.json` and story JSON. Reader V1 supplies the UI,
+  token annotations, and browser-local reading progress. Full dictionary lookup,
+  audio, persistent offline content caching, and cloud sync remain future work.
 - **Generator:** any LLM, Codex, a human, or a future local Ollama workflow.
   Generated output is parsed and validated before publication. No runtime AI is
   required by a future reader.
@@ -172,7 +175,9 @@ schema version `1.0` and resolves them as follows:
   An empty library also fails, avoiding accidental publication of an empty index.
 - §32 mentions reader caching/dictionary lookup, but the master prompt explicitly
   limits this phase to content tooling and defers reader/dictionary implementation.
-  This repository prepares the data interface for that later phase.
+  That decision describes the original content phase. Reader V1 now implements the
+  reading interface while preserving its data boundary; dictionary integration
+  and persistent content caching remain deferred.
 
 ## Local tokenizer and licensing
 
@@ -211,3 +216,123 @@ In Git Extensions, open this project folder to browse commits, review changes,
 and use Commit and Push. Dependencies, temporary drafts, and personal profile
 files are ignored. A second local directory or disk backup is not created by
 Git Extensions; use a separate backup location if one is needed later.
+
+## Reader V1
+
+The reader uses React, TypeScript, and Vite under `reader/`. Its Spanish interface
+offers a manifest-driven library, topic filtering, structured Japanese paragraphs,
+furigana on kanji, sentence translations, token information, grammar annotations,
+text sizing, sentence navigation, resume, and completion. Layouts adapt to desktop,
+tablet, and phone widths. System Japanese fonts are used; no external fonts or
+assets are loaded. The optional local tokenizer is not needed to run the reader.
+
+### Install and run
+
+Use Node.js 22.12+ (Node 24 was used for verification) and pnpm 11.19.0. From the
+repository root:
+
+```shell
+pnpm install --frozen-lockfile
+pnpm dev
+```
+
+Open the local URL printed by Vite, normally `http://127.0.0.1:5173/`. The desktop
+workspace supplies Node/pnpm, so the commands work from this project's terminal.
+On another computer, install Node and pnpm before running them. Dependencies are
+recorded in `package.json` and `pnpm-lock.yaml`; installing them requires network
+access once. Reading after setup requires only the local HTTP server, with no
+paid service, API key, database, or remote backend.
+
+```shell
+pnpm typecheck
+pnpm test
+pnpm build
+pnpm preview
+```
+
+The production output is `reader/dist/`; `pnpm preview` serves it locally. Serve
+the built files over HTTP rather than opening `index.html` with `file://`, since
+the reader fetches JSON files. The relative asset base and hash routes also allow
+serving from a static subdirectory without server route rewrites. The dev server
+binds to the local computer by default. To test on an iPad over your own LAN, run
+`pnpm dev --host 0.0.0.0` and use this computer's LAN address and Vite port.
+
+### Content flow
+
+`scripts/sync-content.mjs` reads the root manifest and copies it and only its
+referenced story files byte-for-byte into ignored `reader/public/content/`.
+It checks schema validity, IDs, safe paths, and manifest metadata consistency
+before replacing that generated directory. No personal profile, dictionary, or
+second competing content format is created. `pnpm dev` and `pnpm build` run the
+sync automatically; Vite includes the same files under `reader/dist/content/`.
+
+After adding or editing content, run the existing Python validators and rebuild
+the manifest first, then `pnpm sync-content` and reload the browser. The frontend
+sync's schema checks complement the Python semantic validator; they do not
+replace it. The original story JSON and schemas are unchanged by reader work.
+
+The browser loads the manifest, then fetches a selected story on demand. The
+runtime uses the existing JSON Schema with Ajv and verifies duplicate paragraph/
+sentence IDs, token order/offsets, translations, and segmented furigana. A missing
+or malformed file produces a recoverable message, not a blank reader. All data
+renders as React text, never raw HTML.
+
+Sentence rendering preserves unannotated text gaps exactly. Offsets are converted
+using Unicode code points, rather than JavaScript UTF-16 indices. Supplied
+`furigana_segments` are honored; otherwise a kanji-containing token receives ruby
+over its entire surface. Pure kana never receives redundant furigana. Readings
+display as supplied (the current tokenizer supplies katakana). The vocabulary
+panel presents token annotations and optional target/type information. Particles,
+auxiliaries, punctuation, and `ignore_lookup` tokens are not lookup controls.
+
+### Progress and accessibility
+
+`reader/src/lib/progress.ts` abstracts persistence through `ProgressStore`.
+Browser localStorage key `yomustory.reader.progress.v1` stores a versioned map of
+story ID, last-opened UTC timestamp, completion, and last selected sentence.
+Sentence position updates when navigating, selecting vocabulary, or revealing a
+translation. It does not infer reading comprehension from scrolling. Resume uses
+that saved position; completed stories remain visible and reopen from the start.
+Furigana, text size, and translation visibility are session controls and reset
+when a story is reopened. No progress is written into story files or the profile.
+
+Corrupt entries are ignored with a notice. Blocked storage allows reading and
+completion in memory and explains that saving is unavailable. Progress is specific
+to the browser and origin: different ports, localhost vs 127.0.0.1, or a different
+device have separate storage. Clearing site data removes it. Cloud sync is absent.
+
+Buttons and links are semantic, token controls have accessible names, native
+`dialog` provides modal behavior, Escape/close dismiss the vocabulary sheet,
+focus returns to the word, and visible keyboard focus is retained. A skip link,
+per-sentence translation controls, and labeled navigation/progress are included.
+The toolbar remains available while scrolling. The vocabulary modal becomes a
+bottom sheet on tablet/mobile widths.
+
+### Tests, limitations, and next step
+
+Vitest and Testing Library exercise actual sample data, manifest/story loading,
+exact text preservation, malformed content, library filtering, furigana,
+translation reveal, vocabulary, completion/remount, resume, skip links, and
+unavailable storage. Backend tests remain separate and must still pass:
+
+```powershell
+.\.venv\Scripts\python.exe tools/validate_stories.py
+.\.venv\Scripts\python.exe tools/build_manifest.py
+.\.venv\Scripts\python.exe -m pytest
+pnpm typecheck
+pnpm test
+pnpm build
+```
+
+Reader V1 does not yet include a full dictionary, SRS, audio, comprehension quiz
+UI, automatic known-word state, profile editing, accounts, or service-worker
+offline caching. Story comprehension data is retained for later use. Mixed
+kanji/kana readings use the simplest available ruby representation; no inferred
+alignment engine is added. Mobile/tablet verification uses representative browser
+viewports; an actual iPad/Safari pass remains useful before tablet distribution.
+
+The next dictionary step is a local JMdict adapter implementing
+`DictionaryService.lookup(lemma)` in `reader/src/lib/dictionary.ts`, with real
+definitions and upstream license notices kept outside the story assets. The V1
+adapter returns `null` honestly, while token annotations remain usable. A future
+cloud progress adapter can replace `ProgressStore` without changing story files.

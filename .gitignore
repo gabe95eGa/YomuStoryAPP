@@ -5,6 +5,12 @@ __pycache__/
 *.egg-info/
 build/
 dist/
+node_modules/
+reader/public/content/
+reader/public/content-staging/
+*.tsbuildinfo
+playwright-report/
+test-results/
 .tmp/
 profiles/learner-profile.local.json
 .env
