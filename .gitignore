@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.tmp/
+profiles/learner-profile.local.json
+.env
+.env.*
+!.env.example

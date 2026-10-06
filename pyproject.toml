@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "yomustory-content"
+version = "1.0.0"
+description = "Offline structured Japanese graded-reading content tooling"
+requires-python = ">=3.11"
+dependencies = ["jsonschema>=4.23,<5"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10"]
+tokenizer = ["sudachipy==0.6.11", "sudachidict_core==20260723"]
+
+[tool.setuptools]
+packages = ["tools"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

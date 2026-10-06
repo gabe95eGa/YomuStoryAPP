@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "id": "work_001",
+  "metadata": {
+    "title": "新しい仕事",
+    "title_es": "El nuevo trabajo",
+    "level": "N4-N3",
+    "difficulty": 2,
+    "topics": ["仕事"],
+    "estimated_minutes": 3
+  },
+  "targets": {
+    "vocabulary": [{"lemma": "慣れる", "reading": "なれる"}],
+    "grammar": [{"pattern": "〜てくる"}]
+  },
+  "content": {
+    "paragraphs": [{
+      "id": "p1",
+      "sentences": [{
+        "id": "s1",
+        "text": "仕事に慣れてきました。",
+        "translation_es": "Me he ido acostumbrando al trabajo.",
+        "tokens": [
+          {"surface": "仕事", "lemma": "仕事", "reading": "しごと", "start": 0, "end": 2},
+          {"surface": "慣れて", "lemma": "慣れる", "reading": "なれて", "start": 3, "end": 6, "target": true}
+        ],
+        "grammar_points": [{"pattern": "〜てくる", "start": 3, "end": 10, "target": true}]
+      }]
+    }]
+  },
+  "comprehension": {
+    "questions": [{
+      "id": "q1",
+      "type": "multiple_choice",
+      "question_ja": "何に慣れてきましたか。",
+      "options": [{"id": "a", "text": "仕事"}, {"id": "b", "text": "学校"}],
+      "answer": "a"
+    }]
+  },
+  "generation": {"generator": "human", "prompt_version": "1.0", "created_at": "2026-10-06", "validated": false}
+}

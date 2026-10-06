@@ -1,0 +1,28 @@
+{
+  "profile_version": "1.0",
+  "native_language": "es",
+  "target_language": "ja",
+  "current_level": "N4",
+  "target_level": "N3",
+  "known_vocabulary": [
+    {"lemma": "仕事", "reading": "しごと", "status": "known"},
+    {"lemma": "食べる", "reading": "たべる", "status": "known"}
+  ],
+  "learning_vocabulary": [
+    {"lemma": "慣れる", "reading": "なれる", "status": "learning", "notes": "Practicar en contextos de trabajo."},
+    {"lemma": "準備", "reading": "じゅんび", "status": "learning"},
+    {"lemma": "確認", "reading": "かくにん", "status": "learning"}
+  ],
+  "known_grammar": [{"pattern": "〜たい"}],
+  "learning_grammar": [{"pattern": "〜ようになる"}, {"pattern": "〜ておく"}],
+  "interests": ["料理", "バイク", "日本生活"],
+  "preferred_topics": ["仕事", "日常生活", "旅行"],
+  "avoid_topics": [],
+  "generation_preferences": {
+    "default_story_length": "standard",
+    "desired_difficulty": 2,
+    "maximum_new_vocabulary": 8,
+    "desired_grammar_target_count": 2,
+    "preferred_familiar_vocabulary_proportion": 0.85
+  }
+}

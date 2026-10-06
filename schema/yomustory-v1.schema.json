@@ -1,0 +1,634 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "id",
+    "metadata",
+    "targets",
+    "content",
+    "generation"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "minLength": 1
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "title",
+        "title_es",
+        "level",
+        "difficulty",
+        "topics",
+        "estimated_minutes"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "title_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "summary_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "level": {
+          "enum": [
+            "N5",
+            "N5-N4",
+            "N4",
+            "N4-N3",
+            "N3",
+            "N3-N2",
+            "N2",
+            "N2-N1",
+            "N1"
+          ]
+        },
+        "difficulty": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "estimated_minutes": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "character_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sentence_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "paragraph_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "series": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "series_order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "cover_asset": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "author_label": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "targets": {
+      "type": "object",
+      "required": [
+        "vocabulary",
+        "grammar"
+      ],
+      "properties": {
+        "vocabulary": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/vocabulary"
+          },
+          "minItems": 0
+        },
+        "grammar": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/grammar"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": [
+        "paragraphs"
+      ],
+      "properties": {
+        "paragraphs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "sentences"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "sentences": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "text",
+                    "tokens"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "translation_es": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "tokens": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/token"
+                      },
+                      "minItems": 1
+                    },
+                    "grammar_points": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/$defs/grammar"
+                      },
+                      "minItems": 0
+                    },
+                    "notes_es": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "audio": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "difficulty": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 5
+                    }
+                  }
+                },
+                "minItems": 1
+              }
+            }
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "comprehension": {
+      "type": "object",
+      "required": [
+        "questions"
+      ],
+      "properties": {
+        "questions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/question"
+          },
+          "minItems": 0
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "required": [
+        "generator",
+        "prompt_version",
+        "created_at"
+      ],
+      "properties": {
+        "generator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "model": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "profile_version": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "validated": {
+          "type": "boolean"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_prompt_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YomuStory 1.0",
+  "$defs": {
+    "vocabulary": {
+      "type": "object",
+      "required": [
+        "lemma",
+        "reading"
+      ],
+      "properties": {
+        "lemma": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "reading": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[\\u3041-\\u3096\\u3099-\\u309f\\u30a1-\\u30fa\\u30fc-\\u30ff]+$"
+        },
+        "meaning_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "level": {
+          "enum": [
+            "N5",
+            "N5-N4",
+            "N4",
+            "N4-N3",
+            "N3",
+            "N3-N2",
+            "N2",
+            "N2-N1",
+            "N1"
+          ]
+        },
+        "dictionary_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "frequency_rank": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "notes_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        }
+      }
+    },
+    "grammar": {
+      "type": "object",
+      "required": [
+        "pattern"
+      ],
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "meaning_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "level": {
+          "enum": [
+            "N5",
+            "N5-N4",
+            "N4",
+            "N4-N3",
+            "N3",
+            "N3-N2",
+            "N2",
+            "N2-N1",
+            "N1"
+          ]
+        },
+        "target": {
+          "type": "boolean"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    },
+    "token": {
+      "type": "object",
+      "required": [
+        "surface",
+        "lemma",
+        "reading"
+      ],
+      "properties": {
+        "surface": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "lemma": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "reading": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "target": {
+          "type": "boolean"
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "dictionary_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "ignore_lookup": {
+          "type": "boolean"
+        },
+        "known_hint": {
+          "type": "boolean"
+        },
+        "furigana_segments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "text",
+              "reading"
+            ],
+            "properties": {
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "reading": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "^[\\u3041-\\u3096\\u3099-\\u309f\\u30a1-\\u30fa\\u30fc-\\u30ff]+$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            }
+          },
+          "minItems": 1
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    },
+    "question": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "question_ja",
+        "answer"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "type": {
+          "enum": [
+            "multiple_choice",
+            "true_false",
+            "short_answer"
+          ]
+        },
+        "question_ja": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "question_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "explanation_es": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "text"
+            ],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          },
+          "minItems": 2
+        },
+        "answer": {}
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "multiple_choice"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "options"
+            ],
+            "properties": {
+              "answer": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "true_false"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "answer": {
+                "type": "boolean"
+              }
+            },
+            "not": {
+              "required": [
+                "options"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "short_answer"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "answer": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "minLength": 1,
+                    "pattern": "\\S"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "pattern": "\\S"
+                    },
+                    "minItems": 1,
+                    "uniqueItems": true
+                  }
+                ]
+              }
+            },
+            "not": {
+              "required": [
+                "options"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  }
+}

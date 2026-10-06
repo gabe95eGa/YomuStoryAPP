@@ -1,0 +1,75 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-10-06",
+  "stories": [
+    {
+      "id": "cooking_001",
+      "title": "足りない材料",
+      "title_es": "El ingrediente que faltaba",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 5,
+      "topics": [
+        "料理",
+        "買い物",
+        "友達"
+      ],
+      "path": "stories/cooking/cooking_001.json"
+    },
+    {
+      "id": "daily_001",
+      "title": "雨の日の約束",
+      "title_es": "Un encuentro en un día de lluvia",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 5,
+      "topics": [
+        "日常生活",
+        "オーストラリア",
+        "人間関係"
+      ],
+      "path": "stories/daily/daily_001.json"
+    },
+    {
+      "id": "japan_001",
+      "title": "日本へ行く前に",
+      "title_es": "Antes de ir a Japón",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 5,
+      "topics": [
+        "日本生活",
+        "留学",
+        "準備"
+      ],
+      "path": "stories/japan/japan_001.json"
+    },
+    {
+      "id": "travel_001",
+      "title": "海までの小さな旅",
+      "title_es": "Una pequeña excursión al mar",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 5,
+      "topics": [
+        "旅行",
+        "バイク",
+        "自然"
+      ],
+      "path": "stories/travel/travel_001.json"
+    },
+    {
+      "id": "work_001",
+      "title": "注文をもう一度",
+      "title_es": "Confirmar el pedido",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 5,
+      "topics": [
+        "仕事",
+        "レストラン"
+      ],
+      "path": "stories/work/work_001.json"
+    }
+  ]
+}

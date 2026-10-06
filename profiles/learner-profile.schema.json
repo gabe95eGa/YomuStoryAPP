@@ -1,0 +1,244 @@
+{
+  "type": "object",
+  "required": [
+    "profile_version",
+    "native_language",
+    "target_language",
+    "current_level",
+    "target_level",
+    "known_vocabulary",
+    "learning_vocabulary",
+    "known_grammar",
+    "learning_grammar",
+    "interests",
+    "preferred_topics",
+    "avoid_topics",
+    "generation_preferences"
+  ],
+  "properties": {
+    "profile_version": {
+      "const": "1.0"
+    },
+    "native_language": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    },
+    "target_language": {
+      "const": "ja"
+    },
+    "current_level": {
+      "enum": [
+        "N5",
+        "N5-N4",
+        "N4",
+        "N4-N3",
+        "N3",
+        "N3-N2",
+        "N2",
+        "N2-N1",
+        "N1"
+      ]
+    },
+    "target_level": {
+      "enum": [
+        "N5",
+        "N5-N4",
+        "N4",
+        "N4-N3",
+        "N3",
+        "N3-N2",
+        "N2",
+        "N2-N1",
+        "N1"
+      ]
+    },
+    "known_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "lemma",
+          "reading"
+        ],
+        "properties": {
+          "lemma": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reading": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[\\u3041-\\u3096\\u3099-\\u309f\\u30a1-\\u30fa\\u30fc-\\u30ff]+$"
+          },
+          "status": {
+            "enum": [
+              "known",
+              "learning",
+              "mastered"
+            ]
+          },
+          "proficiency": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "learning_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "lemma",
+          "reading"
+        ],
+        "properties": {
+          "lemma": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reading": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[\\u3041-\\u3096\\u3099-\\u309f\\u30a1-\\u30fa\\u30fc-\\u30ff]+$"
+          },
+          "status": {
+            "enum": [
+              "known",
+              "learning",
+              "mastered"
+            ]
+          },
+          "proficiency": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "known_grammar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "learning_grammar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      },
+      "minItems": 0
+    },
+    "interests": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "preferred_topics": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "avoid_topics": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "\\S"
+      },
+      "minItems": 0,
+      "uniqueItems": true
+    },
+    "generation_preferences": {
+      "type": "object",
+      "required": [],
+      "properties": {
+        "default_story_length": {
+          "enum": [
+            "short",
+            "standard",
+            "long"
+          ]
+        },
+        "desired_difficulty": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "maximum_new_vocabulary": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "desired_grammar_target_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "preferred_familiar_vocabulary_proportion": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YomuStory learner profile 1.0"
+}

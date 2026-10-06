@@ -1,0 +1,2252 @@
+{
+  "schema_version": "1.0",
+  "id": "cooking_001",
+  "metadata": {
+    "title": "足りない材料",
+    "title_es": "El ingrediente que faltaba",
+    "summary_es": "Dos amigos improvisan una cena usando los ingredientes que tienen en casa.",
+    "level": "N4-N3",
+    "difficulty": 2,
+    "topics": [
+      "料理",
+      "買い物",
+      "友達"
+    ],
+    "estimated_minutes": 5,
+    "character_count": 370,
+    "sentence_count": 15,
+    "paragraph_count": 4
+  },
+  "targets": {
+    "vocabulary": [
+      {
+        "lemma": "材料",
+        "reading": "ざいりょう",
+        "meaning_es": "ingrediente"
+      },
+      {
+        "lemma": "代わり",
+        "reading": "かわり",
+        "meaning_es": "sustituto"
+      },
+      {
+        "lemma": "味",
+        "reading": "あじ",
+        "meaning_es": "sabor"
+      },
+      {
+        "lemma": "足りる",
+        "reading": "たりる",
+        "meaning_es": "ser suficiente"
+      },
+      {
+        "lemma": "相談",
+        "reading": "そうだん",
+        "meaning_es": "consulta"
+      }
+    ],
+    "grammar": [
+      {
+        "pattern": "〜てみる",
+        "meaning_es": "probar a hacer algo"
+      },
+      {
+        "pattern": "〜ながら",
+        "meaning_es": "mientras"
+      }
+    ]
+  },
+  "content": {
+    "paragraphs": [
+      {
+        "id": "p1",
+        "sentences": [
+          {
+            "id": "s1",
+            "text": "土曜日の夕方、友達と家でカレーを作ることになりました。",
+            "translation_es": "El sábado por la tarde acordamos preparar curry en casa con un amigo.",
+            "tokens": [
+              {
+                "surface": "土曜日",
+                "lemma": "土曜日",
+                "reading": "ドヨウビ",
+                "start": 0,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "夕方",
+                "lemma": "夕方",
+                "reading": "ユウガタ",
+                "start": 4,
+                "end": 6,
+                "type": "noun"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 6,
+                "end": 7,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "友達",
+                "lemma": "友達",
+                "reading": "トモダチ",
+                "start": 7,
+                "end": 9,
+                "type": "noun"
+              },
+              {
+                "surface": "と",
+                "lemma": "と",
+                "reading": "ト",
+                "start": 9,
+                "end": 10,
+                "type": "particle"
+              },
+              {
+                "surface": "家",
+                "lemma": "家",
+                "reading": "イエ",
+                "start": 10,
+                "end": 11,
+                "type": "noun"
+              },
+              {
+                "surface": "で",
+                "lemma": "で",
+                "reading": "デ",
+                "start": 11,
+                "end": 12,
+                "type": "particle"
+              },
+              {
+                "surface": "カレー",
+                "lemma": "カレー",
+                "reading": "カレー",
+                "start": 12,
+                "end": 15,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 15,
+                "end": 16,
+                "type": "particle"
+              },
+              {
+                "surface": "作る",
+                "lemma": "作る",
+                "reading": "ツクル",
+                "start": 16,
+                "end": 18,
+                "type": "verb"
+              },
+              {
+                "surface": "こと",
+                "lemma": "こと",
+                "reading": "コト",
+                "start": 18,
+                "end": 20,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 20,
+                "end": 21,
+                "type": "particle"
+              },
+              {
+                "surface": "なり",
+                "lemma": "なる",
+                "reading": "ナリ",
+                "start": 21,
+                "end": 23,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 23,
+                "end": 25,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 25,
+                "end": 26,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 26,
+                "end": 27,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s2",
+            "text": "買い物に行く前に、冷蔵庫の中の材料を確認しました。",
+            "translation_es": "Antes de hacer la compra, comprobé los ingredientes que había en la nevera.",
+            "tokens": [
+              {
+                "surface": "買い物",
+                "lemma": "買い物",
+                "reading": "カイモノ",
+                "start": 0,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "行く",
+                "lemma": "行く",
+                "reading": "イク",
+                "start": 4,
+                "end": 6,
+                "type": "verb"
+              },
+              {
+                "surface": "前",
+                "lemma": "前",
+                "reading": "マエ",
+                "start": 6,
+                "end": 7,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 8,
+                "end": 9,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "冷蔵庫",
+                "lemma": "冷蔵庫",
+                "reading": "レイゾウコ",
+                "start": 9,
+                "end": 12,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 12,
+                "end": 13,
+                "type": "particle"
+              },
+              {
+                "surface": "中",
+                "lemma": "中",
+                "reading": "ナカ",
+                "start": 13,
+                "end": 14,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 14,
+                "end": 15,
+                "type": "particle"
+              },
+              {
+                "surface": "材料",
+                "lemma": "材料",
+                "reading": "ザイリョウ",
+                "start": 15,
+                "end": 17,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 17,
+                "end": 18,
+                "type": "particle"
+              },
+              {
+                "surface": "確認",
+                "lemma": "確認",
+                "reading": "カクニン",
+                "start": 18,
+                "end": 20,
+                "type": "noun"
+              },
+              {
+                "surface": "し",
+                "lemma": "する",
+                "reading": "シ",
+                "start": 20,
+                "end": 21,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 21,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 24,
+                "end": 25,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s3",
+            "text": "玉ねぎと肉はありましたが、じゃがいもが足りませんでした。",
+            "translation_es": "Había cebolla y carne, pero no suficientes patatas.",
+            "tokens": [
+              {
+                "surface": "玉ねぎ",
+                "lemma": "玉ねぎ",
+                "reading": "タマネギ",
+                "start": 0,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "と",
+                "lemma": "と",
+                "reading": "ト",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "肉",
+                "lemma": "肉",
+                "reading": "ニク",
+                "start": 4,
+                "end": 5,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 5,
+                "end": 6,
+                "type": "particle"
+              },
+              {
+                "surface": "あり",
+                "lemma": "ある",
+                "reading": "アリ",
+                "start": 6,
+                "end": 8,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 8,
+                "end": 10,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 10,
+                "end": 11,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 11,
+                "end": 12,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 12,
+                "end": 13,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "じゃがいも",
+                "lemma": "じゃがいも",
+                "reading": "ジャガイモ",
+                "start": 13,
+                "end": 18,
+                "type": "noun"
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "足り",
+                "lemma": "足りる",
+                "reading": "タリ",
+                "start": 19,
+                "end": 21,
+                "type": "verb",
+                "target": true
+              },
+              {
+                "surface": "ませ",
+                "lemma": "ます",
+                "reading": "マセ",
+                "start": 21,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "ん",
+                "lemma": "ぬ",
+                "reading": "ン",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "でし",
+                "lemma": "です",
+                "reading": "デシ",
+                "start": 24,
+                "end": 26,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 26,
+                "end": 27,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 27,
+                "end": 28,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s4",
+            "text": "私は必要な材料を紙に書いて、近くの店へ行きました。",
+            "translation_es": "Anoté los ingredientes necesarios en una hoja y fui a una tienda cercana.",
+            "tokens": [
+              {
+                "surface": "私",
+                "lemma": "私",
+                "reading": "ワタクシ",
+                "start": 0,
+                "end": 1
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 1,
+                "end": 2,
+                "type": "particle"
+              },
+              {
+                "surface": "必要",
+                "lemma": "必要",
+                "reading": "ヒツヨウ",
+                "start": 2,
+                "end": 4,
+                "type": "noun"
+              },
+              {
+                "surface": "な",
+                "lemma": "だ",
+                "reading": "ナ",
+                "start": 4,
+                "end": 5,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "材料",
+                "lemma": "材料",
+                "reading": "ザイリョウ",
+                "start": 5,
+                "end": 7,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "紙",
+                "lemma": "紙",
+                "reading": "カミ",
+                "start": 8,
+                "end": 9,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 9,
+                "end": 10,
+                "type": "particle"
+              },
+              {
+                "surface": "書い",
+                "lemma": "書く",
+                "reading": "カイ",
+                "start": 10,
+                "end": 12,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 12,
+                "end": 13,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 13,
+                "end": 14,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "近く",
+                "lemma": "近く",
+                "reading": "チカク",
+                "start": 14,
+                "end": 16,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 16,
+                "end": 17,
+                "type": "particle"
+              },
+              {
+                "surface": "店",
+                "lemma": "店",
+                "reading": "ミセ",
+                "start": 17,
+                "end": 18,
+                "type": "noun"
+              },
+              {
+                "surface": "へ",
+                "lemma": "へ",
+                "reading": "ヘ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "行き",
+                "lemma": "行く",
+                "reading": "イキ",
+                "start": 19,
+                "end": 21,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 21,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 24,
+                "end": 25,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          }
+        ]
+      },
+      {
+        "id": "p2",
+        "sentences": [
+          {
+            "id": "s5",
+            "text": "ところが、店でもじゃがいもは売り切れていました。",
+            "translation_es": "Sin embargo, en la tienda también se habían agotado las patatas.",
+            "tokens": [
+              {
+                "surface": "ところ",
+                "lemma": "ところ",
+                "reading": "トコロ",
+                "start": 0,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 4,
+                "end": 5,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "店",
+                "lemma": "店",
+                "reading": "ミセ",
+                "start": 5,
+                "end": 6,
+                "type": "noun"
+              },
+              {
+                "surface": "で",
+                "lemma": "で",
+                "reading": "デ",
+                "start": 6,
+                "end": 7,
+                "type": "particle"
+              },
+              {
+                "surface": "も",
+                "lemma": "も",
+                "reading": "モ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "じゃがいも",
+                "lemma": "じゃがいも",
+                "reading": "ジャガイモ",
+                "start": 8,
+                "end": 13,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 13,
+                "end": 14,
+                "type": "particle"
+              },
+              {
+                "surface": "売り切れ",
+                "lemma": "売り切れる",
+                "reading": "ウリキレ",
+                "start": 14,
+                "end": 18,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "い",
+                "lemma": "いる",
+                "reading": "イ",
+                "start": 19,
+                "end": 20,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 20,
+                "end": 22,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 22,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 23,
+                "end": 24,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s6",
+            "text": "別の店は遠いので、友達に電話して相談しました。",
+            "translation_es": "Como la otra tienda quedaba lejos, llamé a mi amigo para consultárselo.",
+            "tokens": [
+              {
+                "surface": "別",
+                "lemma": "別",
+                "reading": "ベツ",
+                "start": 0,
+                "end": 1,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 1,
+                "end": 2,
+                "type": "particle"
+              },
+              {
+                "surface": "店",
+                "lemma": "店",
+                "reading": "ミセ",
+                "start": 2,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "遠い",
+                "lemma": "遠い",
+                "reading": "トオイ",
+                "start": 4,
+                "end": 6,
+                "type": "adjective"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 6,
+                "end": 7,
+                "type": "particle"
+              },
+              {
+                "surface": "で",
+                "lemma": "だ",
+                "reading": "デ",
+                "start": 7,
+                "end": 8,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 8,
+                "end": 9,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "友達",
+                "lemma": "友達",
+                "reading": "トモダチ",
+                "start": 9,
+                "end": 11,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 11,
+                "end": 12,
+                "type": "particle"
+              },
+              {
+                "surface": "電話",
+                "lemma": "電話",
+                "reading": "デンワ",
+                "start": 12,
+                "end": 14,
+                "type": "noun"
+              },
+              {
+                "surface": "し",
+                "lemma": "する",
+                "reading": "シ",
+                "start": 14,
+                "end": 15,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 15,
+                "end": 16,
+                "type": "particle"
+              },
+              {
+                "surface": "相談",
+                "lemma": "相談",
+                "reading": "ソウダン",
+                "start": 16,
+                "end": 18,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "し",
+                "lemma": "する",
+                "reading": "シ",
+                "start": 18,
+                "end": 19,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 19,
+                "end": 21,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 21,
+                "end": 22,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 22,
+                "end": 23,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s7",
+            "text": "友達は「代わりに、かぼちゃを使ってみよう」と言いました。",
+            "translation_es": "Mi amigo dijo: «Probemos a usar calabaza en su lugar».",
+            "tokens": [
+              {
+                "surface": "友達",
+                "lemma": "友達",
+                "reading": "トモダチ",
+                "start": 0,
+                "end": 2,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 2,
+                "end": 3,
+                "type": "particle"
+              },
+              {
+                "surface": "「",
+                "lemma": "「",
+                "reading": "「",
+                "start": 3,
+                "end": 4,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "代わり",
+                "lemma": "代わり",
+                "reading": "カワリ",
+                "start": 4,
+                "end": 7,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 8,
+                "end": 9,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "かぼちゃ",
+                "lemma": "かぼちゃ",
+                "reading": "カボチャ",
+                "start": 9,
+                "end": 13,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 13,
+                "end": 14,
+                "type": "particle"
+              },
+              {
+                "surface": "使っ",
+                "lemma": "使う",
+                "reading": "ツカッ",
+                "start": 14,
+                "end": 16,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 16,
+                "end": 17,
+                "type": "particle"
+              },
+              {
+                "surface": "みよう",
+                "lemma": "みる",
+                "reading": "ミヨウ",
+                "start": 17,
+                "end": 20,
+                "type": "verb"
+              },
+              {
+                "surface": "」",
+                "lemma": "」",
+                "reading": "」",
+                "start": 20,
+                "end": 21,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "と",
+                "lemma": "と",
+                "reading": "ト",
+                "start": 21,
+                "end": 22,
+                "type": "particle"
+              },
+              {
+                "surface": "言い",
+                "lemma": "言う",
+                "reading": "イイ",
+                "start": 22,
+                "end": 24,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 24,
+                "end": 26,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 26,
+                "end": 27,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 27,
+                "end": 28,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": [
+              {
+                "pattern": "〜てみる",
+                "meaning_es": "probar a hacer algo",
+                "start": 14,
+                "end": 20,
+                "target": true
+              }
+            ]
+          },
+          {
+            "id": "s8",
+            "text": "いつもと違う味になりそうで、少し楽しみになりました。",
+            "translation_es": "Parecía que tendría un sabor distinto al habitual, y me empezó a hacer ilusión.",
+            "tokens": [
+              {
+                "surface": "いつも",
+                "lemma": "いつも",
+                "reading": "イツモ",
+                "start": 0,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "と",
+                "lemma": "と",
+                "reading": "ト",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "違う",
+                "lemma": "違う",
+                "reading": "チガウ",
+                "start": 4,
+                "end": 6,
+                "type": "verb"
+              },
+              {
+                "surface": "味",
+                "lemma": "味",
+                "reading": "アジ",
+                "start": 6,
+                "end": 7,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "なり",
+                "lemma": "なる",
+                "reading": "ナリ",
+                "start": 8,
+                "end": 10,
+                "type": "verb"
+              },
+              {
+                "surface": "そう",
+                "lemma": "そう",
+                "reading": "ソウ",
+                "start": 10,
+                "end": 12
+              },
+              {
+                "surface": "で",
+                "lemma": "だ",
+                "reading": "デ",
+                "start": 12,
+                "end": 13,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 13,
+                "end": 14,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "少し",
+                "lemma": "少し",
+                "reading": "スコシ",
+                "start": 14,
+                "end": 16,
+                "type": "adverb"
+              },
+              {
+                "surface": "楽しみ",
+                "lemma": "楽しみ",
+                "reading": "タノシミ",
+                "start": 16,
+                "end": 19,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 19,
+                "end": 20,
+                "type": "particle"
+              },
+              {
+                "surface": "なり",
+                "lemma": "なる",
+                "reading": "ナリ",
+                "start": 20,
+                "end": 22,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 22,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 24,
+                "end": 25,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 25,
+                "end": 26,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          }
+        ]
+      },
+      {
+        "id": "p3",
+        "sentences": [
+          {
+            "id": "s9",
+            "text": "家に戻って、二人で野菜を小さく切りました。",
+            "translation_es": "Volví a casa y cortamos las verduras en trozos pequeños entre los dos.",
+            "tokens": [
+              {
+                "surface": "家",
+                "lemma": "家",
+                "reading": "イエ",
+                "start": 0,
+                "end": 1,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 1,
+                "end": 2,
+                "type": "particle"
+              },
+              {
+                "surface": "戻っ",
+                "lemma": "戻る",
+                "reading": "モドッ",
+                "start": 2,
+                "end": 4,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 4,
+                "end": 5,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 5,
+                "end": 6,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "二人",
+                "lemma": "二人",
+                "reading": "フタリ",
+                "start": 6,
+                "end": 8,
+                "type": "noun"
+              },
+              {
+                "surface": "で",
+                "lemma": "で",
+                "reading": "デ",
+                "start": 8,
+                "end": 9,
+                "type": "particle"
+              },
+              {
+                "surface": "野菜",
+                "lemma": "野菜",
+                "reading": "ヤサイ",
+                "start": 9,
+                "end": 11,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 11,
+                "end": 12,
+                "type": "particle"
+              },
+              {
+                "surface": "小さく",
+                "lemma": "小さい",
+                "reading": "チイサク",
+                "start": 12,
+                "end": 15,
+                "type": "adjective"
+              },
+              {
+                "surface": "切り",
+                "lemma": "切る",
+                "reading": "キリ",
+                "start": 15,
+                "end": 17,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 17,
+                "end": 19,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 19,
+                "end": 20,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 20,
+                "end": 21,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s10",
+            "text": "友達が野菜を炒めている間に、私はご飯を炊きました。",
+            "translation_es": "Mientras mi amigo salteaba las verduras, yo preparé el arroz.",
+            "tokens": [
+              {
+                "surface": "友達",
+                "lemma": "友達",
+                "reading": "トモダチ",
+                "start": 0,
+                "end": 2,
+                "type": "noun"
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 2,
+                "end": 3,
+                "type": "particle"
+              },
+              {
+                "surface": "野菜",
+                "lemma": "野菜",
+                "reading": "ヤサイ",
+                "start": 3,
+                "end": 5,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 5,
+                "end": 6,
+                "type": "particle"
+              },
+              {
+                "surface": "炒め",
+                "lemma": "炒める",
+                "reading": "イタメ",
+                "start": 6,
+                "end": 8,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 8,
+                "end": 9,
+                "type": "particle"
+              },
+              {
+                "surface": "いる",
+                "lemma": "いる",
+                "reading": "イル",
+                "start": 9,
+                "end": 11,
+                "type": "verb"
+              },
+              {
+                "surface": "間",
+                "lemma": "間",
+                "reading": "アイダ",
+                "start": 11,
+                "end": 12,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 12,
+                "end": 13,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 13,
+                "end": 14,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "私",
+                "lemma": "私",
+                "reading": "ワタクシ",
+                "start": 14,
+                "end": 15
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 15,
+                "end": 16,
+                "type": "particle"
+              },
+              {
+                "surface": "ご飯",
+                "lemma": "ご飯",
+                "reading": "ゴハン",
+                "start": 16,
+                "end": 18,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "炊き",
+                "lemma": "炊く",
+                "reading": "タキ",
+                "start": 19,
+                "end": 21,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 21,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 24,
+                "end": 25,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s11",
+            "text": "音楽を聞きながら作ったので、待つ時間も楽しかったです。",
+            "translation_es": "Como cocinamos escuchando música, también disfrutamos del tiempo de espera.",
+            "tokens": [
+              {
+                "surface": "音楽",
+                "lemma": "音楽",
+                "reading": "オンガク",
+                "start": 0,
+                "end": 2,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 2,
+                "end": 3,
+                "type": "particle"
+              },
+              {
+                "surface": "聞き",
+                "lemma": "聞く",
+                "reading": "キキ",
+                "start": 3,
+                "end": 5,
+                "type": "verb"
+              },
+              {
+                "surface": "ながら",
+                "lemma": "ながら",
+                "reading": "ナガラ",
+                "start": 5,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "作っ",
+                "lemma": "作る",
+                "reading": "ツクッ",
+                "start": 8,
+                "end": 10,
+                "type": "verb"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 10,
+                "end": 11,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 11,
+                "end": 12,
+                "type": "particle"
+              },
+              {
+                "surface": "で",
+                "lemma": "だ",
+                "reading": "デ",
+                "start": 12,
+                "end": 13,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 13,
+                "end": 14,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "待つ",
+                "lemma": "待つ",
+                "reading": "マツ",
+                "start": 14,
+                "end": 16,
+                "type": "verb"
+              },
+              {
+                "surface": "時間",
+                "lemma": "時間",
+                "reading": "ジカン",
+                "start": 16,
+                "end": 18,
+                "type": "noun"
+              },
+              {
+                "surface": "も",
+                "lemma": "も",
+                "reading": "モ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "楽しかっ",
+                "lemma": "楽しい",
+                "reading": "タノシカッ",
+                "start": 19,
+                "end": 23,
+                "type": "adjective"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "です",
+                "lemma": "です",
+                "reading": "デス",
+                "start": 24,
+                "end": 26,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 26,
+                "end": 27,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": [
+              {
+                "pattern": "〜ながら",
+                "meaning_es": "mientras",
+                "start": 3,
+                "end": 8,
+                "target": true
+              }
+            ]
+          },
+          {
+            "id": "s12",
+            "text": "最後に味を見て、塩を少しだけ足しました。",
+            "translation_es": "Al final probamos el sabor y añadimos solo un poco de sal.",
+            "tokens": [
+              {
+                "surface": "最後",
+                "lemma": "最後",
+                "reading": "サイゴ",
+                "start": 0,
+                "end": 2,
+                "type": "noun"
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 2,
+                "end": 3,
+                "type": "particle"
+              },
+              {
+                "surface": "味",
+                "lemma": "味",
+                "reading": "アジ",
+                "start": 3,
+                "end": 4,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 4,
+                "end": 5,
+                "type": "particle"
+              },
+              {
+                "surface": "見",
+                "lemma": "見る",
+                "reading": "ミ",
+                "start": 5,
+                "end": 6,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 6,
+                "end": 7,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 7,
+                "end": 8,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "塩",
+                "lemma": "塩",
+                "reading": "シオ",
+                "start": 8,
+                "end": 9,
+                "type": "noun"
+              },
+              {
+                "surface": "を",
+                "lemma": "を",
+                "reading": "ヲ",
+                "start": 9,
+                "end": 10,
+                "type": "particle"
+              },
+              {
+                "surface": "少し",
+                "lemma": "少し",
+                "reading": "スコシ",
+                "start": 10,
+                "end": 12,
+                "type": "adverb"
+              },
+              {
+                "surface": "だけ",
+                "lemma": "だけ",
+                "reading": "ダケ",
+                "start": 12,
+                "end": 14,
+                "type": "particle"
+              },
+              {
+                "surface": "足し",
+                "lemma": "足す",
+                "reading": "タシ",
+                "start": 14,
+                "end": 16,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 16,
+                "end": 18,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 18,
+                "end": 19,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 19,
+                "end": 20,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          }
+        ]
+      },
+      {
+        "id": "p4",
+        "sentences": [
+          {
+            "id": "s13",
+            "text": "かぼちゃの甘さで、カレーはやさしい味になりました。",
+            "translation_es": "La dulzura de la calabaza le dio al curry un sabor suave.",
+            "tokens": [
+              {
+                "surface": "かぼちゃ",
+                "lemma": "かぼちゃ",
+                "reading": "カボチャ",
+                "start": 0,
+                "end": 4,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 4,
+                "end": 5,
+                "type": "particle"
+              },
+              {
+                "surface": "甘",
+                "lemma": "甘い",
+                "reading": "アマ",
+                "start": 5,
+                "end": 6,
+                "type": "adjective"
+              },
+              {
+                "surface": "さ",
+                "lemma": "さ",
+                "reading": "サ",
+                "start": 6,
+                "end": 7
+              },
+              {
+                "surface": "で",
+                "lemma": "だ",
+                "reading": "デ",
+                "start": 7,
+                "end": 8,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 8,
+                "end": 9,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "カレー",
+                "lemma": "カレー",
+                "reading": "カレー",
+                "start": 9,
+                "end": 12,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 12,
+                "end": 13,
+                "type": "particle"
+              },
+              {
+                "surface": "やさしい",
+                "lemma": "やさしい",
+                "reading": "ヤサシイ",
+                "start": 13,
+                "end": 17,
+                "type": "adjective"
+              },
+              {
+                "surface": "味",
+                "lemma": "味",
+                "reading": "アジ",
+                "start": 17,
+                "end": 18,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "に",
+                "lemma": "に",
+                "reading": "ニ",
+                "start": 18,
+                "end": 19,
+                "type": "particle"
+              },
+              {
+                "surface": "なり",
+                "lemma": "なる",
+                "reading": "ナリ",
+                "start": 19,
+                "end": 21,
+                "type": "verb"
+              },
+              {
+                "surface": "まし",
+                "lemma": "ます",
+                "reading": "マシ",
+                "start": 21,
+                "end": 23,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "た",
+                "lemma": "た",
+                "reading": "タ",
+                "start": 23,
+                "end": 24,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 24,
+                "end": 25,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s14",
+            "text": "材料が足りないときも、相談すると新しい考えが見つかります。",
+            "translation_es": "Incluso cuando faltan ingredientes, consultar con alguien puede dar nuevas ideas.",
+            "tokens": [
+              {
+                "surface": "材料",
+                "lemma": "材料",
+                "reading": "ザイリョウ",
+                "start": 0,
+                "end": 2,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 2,
+                "end": 3,
+                "type": "particle"
+              },
+              {
+                "surface": "足り",
+                "lemma": "足りる",
+                "reading": "タリ",
+                "start": 3,
+                "end": 5,
+                "type": "verb",
+                "target": true
+              },
+              {
+                "surface": "ない",
+                "lemma": "ない",
+                "reading": "ナイ",
+                "start": 5,
+                "end": 7,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "とき",
+                "lemma": "とき",
+                "reading": "トキ",
+                "start": 7,
+                "end": 9,
+                "type": "noun"
+              },
+              {
+                "surface": "も",
+                "lemma": "も",
+                "reading": "モ",
+                "start": 9,
+                "end": 10,
+                "type": "particle"
+              },
+              {
+                "surface": "、",
+                "lemma": "、",
+                "reading": "、",
+                "start": 10,
+                "end": 11,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              },
+              {
+                "surface": "相談",
+                "lemma": "相談",
+                "reading": "ソウダン",
+                "start": 11,
+                "end": 13,
+                "type": "noun",
+                "target": true
+              },
+              {
+                "surface": "する",
+                "lemma": "する",
+                "reading": "スル",
+                "start": 13,
+                "end": 15,
+                "type": "verb"
+              },
+              {
+                "surface": "と",
+                "lemma": "と",
+                "reading": "ト",
+                "start": 15,
+                "end": 16,
+                "type": "particle"
+              },
+              {
+                "surface": "新しい",
+                "lemma": "新しい",
+                "reading": "アタラシイ",
+                "start": 16,
+                "end": 19,
+                "type": "adjective"
+              },
+              {
+                "surface": "考え",
+                "lemma": "考え",
+                "reading": "カンガエ",
+                "start": 19,
+                "end": 21,
+                "type": "noun"
+              },
+              {
+                "surface": "が",
+                "lemma": "が",
+                "reading": "ガ",
+                "start": 21,
+                "end": 22,
+                "type": "particle"
+              },
+              {
+                "surface": "見つかり",
+                "lemma": "見つかる",
+                "reading": "ミツカリ",
+                "start": 22,
+                "end": 26,
+                "type": "verb"
+              },
+              {
+                "surface": "ます",
+                "lemma": "ます",
+                "reading": "マス",
+                "start": 26,
+                "end": 28,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 28,
+                "end": 29,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": []
+          },
+          {
+            "id": "s15",
+            "text": "次は別の野菜でも作ってみたいです。",
+            "translation_es": "La próxima vez quiero probar a prepararlo con otra verdura.",
+            "tokens": [
+              {
+                "surface": "次",
+                "lemma": "次",
+                "reading": "ツギ",
+                "start": 0,
+                "end": 1,
+                "type": "noun"
+              },
+              {
+                "surface": "は",
+                "lemma": "は",
+                "reading": "ハ",
+                "start": 1,
+                "end": 2,
+                "type": "particle"
+              },
+              {
+                "surface": "別",
+                "lemma": "別",
+                "reading": "ベツ",
+                "start": 2,
+                "end": 3,
+                "type": "noun"
+              },
+              {
+                "surface": "の",
+                "lemma": "の",
+                "reading": "ノ",
+                "start": 3,
+                "end": 4,
+                "type": "particle"
+              },
+              {
+                "surface": "野菜",
+                "lemma": "野菜",
+                "reading": "ヤサイ",
+                "start": 4,
+                "end": 6,
+                "type": "noun"
+              },
+              {
+                "surface": "で",
+                "lemma": "で",
+                "reading": "デ",
+                "start": 6,
+                "end": 7,
+                "type": "particle"
+              },
+              {
+                "surface": "も",
+                "lemma": "も",
+                "reading": "モ",
+                "start": 7,
+                "end": 8,
+                "type": "particle"
+              },
+              {
+                "surface": "作っ",
+                "lemma": "作る",
+                "reading": "ツクッ",
+                "start": 8,
+                "end": 10,
+                "type": "verb"
+              },
+              {
+                "surface": "て",
+                "lemma": "て",
+                "reading": "テ",
+                "start": 10,
+                "end": 11,
+                "type": "particle"
+              },
+              {
+                "surface": "み",
+                "lemma": "みる",
+                "reading": "ミ",
+                "start": 11,
+                "end": 12,
+                "type": "verb"
+              },
+              {
+                "surface": "たい",
+                "lemma": "たい",
+                "reading": "タイ",
+                "start": 12,
+                "end": 14,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "です",
+                "lemma": "です",
+                "reading": "デス",
+                "start": 14,
+                "end": 16,
+                "type": "auxiliary"
+              },
+              {
+                "surface": "。",
+                "lemma": "。",
+                "reading": "。",
+                "start": 16,
+                "end": 17,
+                "ignore_lookup": true,
+                "type": "punctuation"
+              }
+            ],
+            "grammar_points": [
+              {
+                "pattern": "〜てみる",
+                "meaning_es": "probar a hacer algo",
+                "start": 8,
+                "end": 14,
+                "target": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "comprehension": {
+    "questions": [
+      {
+        "id": "q1",
+        "question_ja": "じゃがいもの代わりに何を使いましたか。",
+        "question_es": "¿Qué usaron en lugar de patatas?",
+        "type": "multiple_choice",
+        "options": [
+          {
+            "id": "a",
+            "text": "魚"
+          },
+          {
+            "id": "b",
+            "text": "りんご"
+          },
+          {
+            "id": "c",
+            "text": "かぼちゃ"
+          }
+        ],
+        "answer": "c",
+        "explanation_es": "El amigo propuso usar calabaza en lugar de patatas."
+      },
+      {
+        "id": "q2",
+        "question_ja": "主人公は別の遠い店まで買い物に行きました。",
+        "question_es": "El protagonista fue a comprar a otra tienda lejana.",
+        "type": "true_false",
+        "answer": false,
+        "explanation_es": "La otra tienda estaba lejos, así que consultó con su amigo y cambió de ingrediente."
+      },
+      {
+        "id": "q3",
+        "question_ja": "友達が野菜を炒めている間、主人公は何をしましたか。",
+        "question_es": "¿Qué hizo el protagonista mientras su amigo salteaba las verduras?",
+        "type": "short_answer",
+        "answer": "ご飯を炊きました。",
+        "explanation_es": "Preparó el arroz mientras su amigo salteaba las verduras."
+      }
+    ]
+  },
+  "generation": {
+    "generator": "codex",
+    "model": "unknown",
+    "prompt_version": "1.0",
+    "profile_version": "1.0",
+    "created_at": "2026-10-06",
+    "validated": true,
+    "notes": "Fictional demo content. Tokens: SudachiPy 0.6.11, core 20260723, split C. Linguistic difficulty is approximate."
+  }
+}
