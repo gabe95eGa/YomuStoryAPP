@@ -1,0 +1,39 @@
+{
+  "app": "YomuStory",
+  "backup_version": "1.0",
+  "exported_at": "2026-10-07T01:00:00.000Z",
+  "vocabulary": [
+    {
+      "id": "jmdict:1212670:%E6%85%A3%E3%82%8C%E3%82%8B:%E3%81%AA%E3%82%8C%E3%82%8B",
+      "dictionaryEntryId": "1212670",
+      "lemma": "慣れる",
+      "reading": "なれる",
+      "status": "mastered",
+      "createdAt": "2026-10-07T01:00:00.000Z",
+      "updatedAt": "2026-10-07T01:00:00.000Z"
+    },
+    {
+      "id": "jmdict:1304970:%E4%BB%95%E4%BA%8B:%E3%81%97%E3%81%94%E3%81%A8",
+      "dictionaryEntryId": "1304970",
+      "lemma": "仕事",
+      "reading": "しごと",
+      "status": "known",
+      "createdAt": "2026-10-07T01:00:00.000Z",
+      "updatedAt": "2026-10-07T01:00:00.000Z"
+    }
+  ],
+  "reading_progress": [
+    {
+      "story_id": "work_001",
+      "last_opened": "2026-10-07T01:00:00.000Z",
+      "completed": true,
+      "last_sentence": "s15",
+      "updated_at": "2026-10-07T01:00:00.000Z"
+    }
+  ],
+  "preferences": {
+    "furigana": true,
+    "textSize": "normal",
+    "updatedAt": "2026-10-07T01:00:00.000Z"
+  }
+}

@@ -1,10 +1,16 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { contentService, type ContentService } from './lib/content';
 import { localProgressStore, type ProgressStore } from './lib/progress';
 import type { Manifest, Story, StoryProgress } from './lib/types';
 import { StoryLibrary } from './components/StoryLibrary';
 import { ReaderPage } from './components/ReaderPage';
 import type { DictionaryService } from './lib/dictionaryModel';
+import { localPreferencesStore, type PreferencesStore, type ReaderPreferences } from './lib/preferences';
+import { createBackupService } from './lib/backup';
+import type { VocabularyStateService } from './lib/vocabulary';
+import { vocabularyStateService } from './lib/vocabularyStorage';
+import { LearnerContext, useVocabularyItems } from './components/LearnerState';
+import { VocabularyPage } from './components/VocabularyPage';
 
 type LoadState<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error'; message: string };
 const getStoryId = () => window.location.hash.match(/^#\/story\/([a-z0-9_]+)$/)?.[1] ?? null;
@@ -20,14 +26,20 @@ function LoadMessage({ error, onRetry, onBack }: { error?: string; onRetry?: () 
   </main>;
 }
 
-export default function App({ content = contentService, store = localProgressStore, dictionary }: {
-  content?: ContentService; store?: ProgressStore; dictionary?: DictionaryService;
+export default function App({ content = contentService, store = localProgressStore, dictionary, vocabulary = vocabularyStateService,
+  preferenceStore = localPreferencesStore }: {
+  content?: ContentService; store?: ProgressStore; dictionary?: DictionaryService; vocabulary?: VocabularyStateService; preferenceStore?: PreferencesStore;
 }) {
   const [initial] = useState(() => store.load());
+  const [initialPreferences] = useState(() => preferenceStore.load());
   const [progress, setProgress] = useState(initial.progress);
   const progressRef = useRef(progress);
-  const [notice, setNotice] = useState(initial.notice);
+  const [notice, setNotice] = useState(initial.notice ?? initialPreferences.notice);
   const [storyId, setStoryId] = useState(getStoryId);
+  const [isVocabulary, setIsVocabulary] = useState(() => window.location.hash === '#/vocabulary');
+  const [preferences, setPreferences] = useState(initialPreferences.preferences);
+  const preferencesRef = useRef(preferences);
+  const learner = useVocabularyItems(vocabulary);
   const [library, setLibrary] = useState<LoadState<Manifest>>({ status: 'loading' });
   const [story, setStory] = useState<LoadState<Story>>({ status: 'loading' });
   const [retry, setRetry] = useState(0);
@@ -36,15 +48,41 @@ export default function App({ content = contentService, store = localProgressSto
     const previous = Object.hasOwn(progressRef.current, id) ? progressRef.current[id] : undefined;
     const next = { ...progressRef.current, [id]: {
       ...(previous ?? { last_opened: new Date().toISOString(), completed: false }), ...patch, story_id: id,
+      updated_at: new Date(Math.max(Date.now(), previous ? Date.parse(previous.updated_at ?? previous.last_opened) + 1 : 0)).toISOString(),
     } };
     progressRef.current = next;
     setProgress(next);
     const warning = store.save(next);
     if (warning) setNotice(warning);
   }, [store]);
+  const updatePreferences = useCallback((patch: Partial<ReaderPreferences>) => {
+    const next = { ...preferencesRef.current, ...patch,
+      updatedAt: new Date(Math.max(Date.now(), Date.parse(preferencesRef.current.updatedAt) + 1)).toISOString() };
+    preferencesRef.current = next; setPreferences(next);
+    const warning = preferenceStore.save(next); if (warning) setNotice(warning);
+  }, [preferenceStore]);
+  const backup = useMemo(() => createBackupService(vocabulary, {
+    read: () => ({ progress: progressRef.current, preferences: preferencesRef.current }),
+    stage(next) {
+      const previous = { progress: progressRef.current, preferences: preferencesRef.current };
+      const restore = () => {
+        const warnings = [store.save(previous.progress), preferenceStore.save(previous.preferences)].filter(Boolean);
+        if (warnings.length) throw new Error('No se pudo restaurar el almacenamiento local. Conserva la copia de seguridad.');
+      };
+      try {
+        const progressWarning = store.save(next.progress); if (progressWarning) throw new Error(progressWarning);
+        const preferenceWarning = preferenceStore.save(next.preferences); if (preferenceWarning) throw new Error(preferenceWarning);
+      } catch (error) { restore(); throw error; }
+      return restore;
+    },
+    committed(next) {
+      progressRef.current = next.progress; preferencesRef.current = next.preferences;
+      setProgress(next.progress); setPreferences(next.preferences); setNotice(undefined);
+    },
+  }), [vocabulary, store, preferenceStore]);
 
   useEffect(() => {
-    const handler = () => setStoryId(getStoryId());
+    const handler = () => { setStoryId(getStoryId()); setIsVocabulary(window.location.hash === '#/vocabulary'); };
     window.addEventListener('hashchange', handler);
     return () => window.removeEventListener('hashchange', handler);
   }, []);
@@ -73,21 +111,24 @@ export default function App({ content = contentService, store = localProgressSto
 
   function goLibrary() { window.location.hash = ''; }
   const retryLoad = () => setRetry((count) => count + 1);
-  return <div className="app-shell">
+  return <LearnerContext.Provider value={learner}><div className="app-shell">
     <a className="skip-link" href="#main-content" onClick={(event) => {
       event.preventDefault(); document.getElementById('main-content')?.focus();
     }}>Saltar al contenido</a>
     <header className="app-header"><button type="button" className="brand" onClick={goLibrary} aria-label="YomuStory, biblioteca">
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 6h8c2 0 3 1 3 3v18c0-2-1-3-3-3H5zM27 6h-8c-2 0-3 1-3 3v18c0-2 1-3 3-3h8z" /></svg>
-      <span>Yomu<span>Story</span></span></button><span className="header-note">Tu japonés, a tu ritmo.</span></header>
+      <span>Yomu<span>Story</span></span></button><div className="header-navigation"><span className="header-note">Tu japonés, a tu ritmo.</span>
+      <nav aria-label="Navegación principal"><a href="#/" aria-current={!storyId && !isVocabulary ? 'page' : undefined}>Biblioteca</a>
+        <a href="#/vocabulary" aria-current={isVocabulary ? 'page' : undefined}>Vocabulario</a></nav></div></header>
     {notice && <p className="storage-notice" role="status">{notice}</p>}
-    {library.status === 'loading' ? <LoadMessage />
+    {isVocabulary ? <VocabularyPage backup={backup} /> : library.status === 'loading' ? <LoadMessage />
       : library.status === 'error' ? <LoadMessage error={library.message} onRetry={retryLoad} />
       : !storyId ? <StoryLibrary stories={library.data.stories} progress={progress} onOpen={(id) => { window.location.hash = `/story/${id}`; }} />
       : story.status === 'error' ? <LoadMessage error={story.message} onRetry={retryLoad} onBack={goLibrary} />
       : story.status !== 'ready' || story.data.id !== storyId ? <LoadMessage />
       : <ReaderPage key={story.data.id} story={story.data} progress={progress[storyId]} onBack={goLibrary} dictionary={dictionary}
+          preferences={preferences} onPreferences={updatePreferences}
           onPosition={(id) => updateProgress(storyId, { last_sentence: id })}
           onComplete={() => updateProgress(storyId, { completed: true, last_sentence: story.data.content.paragraphs.at(-1)!.sentences.at(-1)!.id })} />}
-  </div>;
+  </div></LearnerContext.Provider>;
 }

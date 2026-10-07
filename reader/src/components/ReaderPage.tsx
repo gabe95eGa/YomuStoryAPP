@@ -3,17 +3,23 @@ import type { Story, StoryProgress, Token } from '../lib/types';
 import { StorySentence } from './StorySentence';
 import { VocabularySheet } from './VocabularySheet';
 import type { DictionaryService } from '../lib/dictionaryModel';
+import type { ReaderPreferences } from '../lib/preferences';
+import { useTokenStatuses } from './LearnerState';
 
-export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary }: {
+export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary, preferences, onPreferences }: {
   story: Story; progress?: StoryProgress; onBack: () => void;
   onPosition: (id: string) => void; onComplete: () => void;
   dictionary?: DictionaryService;
+  preferences?: ReaderPreferences; onPreferences?: (patch: Partial<ReaderPreferences>) => void;
 }) {
   const allSentences = story.content.paragraphs.flatMap((paragraph) => paragraph.sentences);
   const [current, setCurrent] = useState(() => progress?.completed ? 0
     : Math.max(0, allSentences.findIndex((sentence) => sentence.id === progress?.last_sentence)));
-  const [furigana, setFurigana] = useState(true);
-  const [largeText, setLargeText] = useState(false);
+  const [sessionFurigana, setFurigana] = useState(true);
+  const [sessionLargeText, setLargeText] = useState(false);
+  const furigana = preferences?.furigana ?? sessionFurigana;
+  const largeText = preferences ? preferences.textSize === 'large' : sessionLargeText;
+  const vocabularyStatuses = useTokenStatuses(story, dictionary);
   const [selected, setSelected] = useState<Token | null>(null);
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -36,10 +42,10 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     <nav className="reader-toolbar" aria-label="Controles de lectura">
       <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span> Biblioteca</button>
       <div className="reader-options">
-        <button type="button" className={`toggle-button${furigana ? ' toggle-on' : ''}`} aria-pressed={furigana} onClick={() => setFurigana(!furigana)}>
+        <button type="button" className={`toggle-button${furigana ? ' toggle-on' : ''}`} aria-pressed={furigana} onClick={() => onPreferences ? onPreferences({ furigana: !furigana }) : setFurigana(!furigana)}>
           <span lang="ja" aria-hidden="true">あ</span> Furigana <span className="toggle-track" aria-hidden="true"><i /></span>
         </button>
-        <button type="button" className="size-button" aria-label="Texto grande" aria-pressed={largeText} onClick={() => setLargeText(!largeText)}>A<span>A</span></button>
+        <button type="button" className="size-button" aria-label="Texto grande" aria-pressed={largeText} onClick={() => onPreferences ? onPreferences({ textSize: largeText ? 'normal' : 'large' }) : setLargeText(!largeText)}>A<span>A</span></button>
       </div>
     </nav>
     <header className="reader-header"><p className="eyebrow">Una lectura de YomuStory</p>
@@ -56,7 +62,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
           {paragraph.sentences.map((sentence) => {
             const sentenceIndex = index++;
             return <StorySentence key={sentence.id} sentence={sentence} number={sentenceIndex + 1} active={sentenceIndex === current}
-              furigana={furigana} onSelect={() => selectSentence(sentenceIndex)}
+              furigana={furigana} vocabularyStatuses={vocabularyStatuses} onSelect={() => selectSentence(sentenceIndex)}
               onToken={(token) => { selectSentence(sentenceIndex); setSelected(token); }} />;
           })}
         </div>)}

@@ -16,6 +16,8 @@ playwright-report/
 test-results/
 .tmp/
 profiles/learner-profile.local.json
+yomustory-backup-*.json
+yomustory-context-*.json
 .env
 .env.*
 !.env.example

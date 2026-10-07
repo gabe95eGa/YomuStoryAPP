@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { dictionaryService, type DictionaryResult, type DictionaryService, type DictionaryStatus } from '../lib/dictionary';
 import type { Token } from '../lib/types';
 import { DictionaryDefinition } from './DictionaryDefinition';
+import { VocabularyControls } from './LearnerState';
+import { identityForToken } from '../lib/vocabulary';
 
 export function VocabularySheet({ token, onClose, dictionary = dictionaryService }: {
   token: Token; onClose: () => void; dictionary?: DictionaryService;
@@ -59,7 +61,7 @@ export function VocabularySheet({ token, onClose, dictionary = dictionaryService
         {entries.slice(1).map((entry) => <DictionaryDefinition key={entry.id} entry={entry} />)}</details>}
       <details className="dictionary-details token-annotations"><summary>Información de la lectura</summary>{tokenFacts}</details>
       {status.message && <p className="dictionary-note" role="status">{status.message}</p>}
-    </> : tokenFacts}
+    </> : <>{tokenFacts}{state !== 'loading' && <VocabularyControls identity={identityForToken(token)} />}</>}
     <footer className="dictionary-attribution">
       <p>JMdict · © James William Breen y EDRDG. Datos JSON: jmdict-simplified.</p>
       <a href="https://www.edrdg.org/wiki/JMdict-EDICT_Dictionary_Project.html" target="_blank" rel="noreferrer">Fuente</a>

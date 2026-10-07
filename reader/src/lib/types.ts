@@ -34,5 +34,6 @@ export interface StoryProgress {
   last_opened: string;
   completed: boolean;
   last_sentence?: string;
+  updated_at?: string;
 }
 export type ProgressMap = Record<string, StoryProgress>;

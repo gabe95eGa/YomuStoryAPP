@@ -1,16 +1,18 @@
 import { useState } from 'react';
 import type { Sentence, Token } from '../lib/types';
 import { JapaneseText } from './JapaneseText';
+import type { VocabularyStatus } from '../lib/vocabulary';
 
-export function StorySentence({ sentence, number, active, furigana, onToken, onSelect }: {
+export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses }: {
   sentence: Sentence; number: number; active: boolean; furigana: boolean;
   onToken: (token: Token) => void; onSelect: () => void;
+  vocabularyStatuses?: Map<string, VocabularyStatus>;
 }) {
   const [translated, setTranslated] = useState(false);
   const translationId = `translation-${sentence.id}`;
   return <section id={`sentence-${sentence.id}`} className={`sentence${active ? ' sentence-active' : ''}`}
     tabIndex={-1} aria-label={`Frase ${number}`}>
-    <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} />
+    <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} vocabularyStatuses={vocabularyStatuses} />
     <div className="sentence-tools">
       <button type="button" className="text-button" aria-expanded={translated}
         aria-controls={translationId} aria-label={`${translated ? 'Ocultar' : 'Mostrar'} traducción de la frase ${number}`}

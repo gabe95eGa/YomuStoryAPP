@@ -13,7 +13,8 @@ function isEntry(value: unknown, id: string): value is StoryProgress {
   const entry = value as Record<string, unknown>;
   return entry.story_id === id && /^[a-z0-9_]+$/.test(id) && typeof entry.completed === 'boolean'
     && typeof entry.last_opened === 'string' && Number.isFinite(Date.parse(entry.last_opened))
-    && (entry.last_sentence === undefined || typeof entry.last_sentence === 'string');
+    && (entry.last_sentence === undefined || typeof entry.last_sentence === 'string')
+    && (entry.updated_at === undefined || typeof entry.updated_at === 'string' && Number.isFinite(Date.parse(entry.updated_at)));
 }
 
 export function createProgressStore(access: StorageAccess = () => window.localStorage): ProgressStore {

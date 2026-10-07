@@ -1,4 +1,6 @@
 import { formatPartOfSpeech, preferredSenses, type DictionaryResult, type DictionarySense } from '../lib/dictionaryModel';
+import { identityForEntry } from '../lib/vocabulary';
+import { VocabularyControls } from './LearnerState';
 
 function Sense({ sense, language }: { sense: DictionarySense; language: 'es' | 'en' }) {
   const glosses = sense.glosses.filter((gloss) => gloss.language === language);
@@ -22,6 +24,7 @@ export function DictionaryDefinition({ entry }: { entry: DictionaryResult }) {
     </div>
     {entry.formLabels.length > 0 && <p className="sense-notes">{entry.formLabels.join(' · ')}</p>}
     <Sense sense={senses[0]} language={language} />
+    <VocabularyControls identity={identityForEntry(entry)} />
     {senses.length > 1 && <details className="dictionary-details"><summary>Otros sentidos ({senses.length - 1})</summary>
       {senses.slice(1).map((sense, index) => <Sense key={index} sense={sense} language={language} />)}</details>}
     {english.length > 0 && <details className="dictionary-details"><summary>Consultar también en inglés</summary>

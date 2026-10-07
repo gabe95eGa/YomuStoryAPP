@@ -12,6 +12,8 @@ see the [reader section](#reader-v1) below. Its implementation brief is preserve
 in [docs/YOMUSTORY_READER_V1_PROMPT.md](docs/YOMUSTORY_READER_V1_PROMPT.md).
 The dictionary implementation brief is preserved in
 [docs/YOMUSTORY_DICTIONARY_V1_PROMPT.md](docs/YOMUSTORY_DICTIONARY_V1_PROMPT.md).
+Vocabulary state and backup requirements are preserved in
+[docs/YOMUSTORY_VOCABULARY_BACKUP_V1_PROMPT.md](docs/YOMUSTORY_VOCABULARY_BACKUP_V1_PROMPT.md).
 
 ## Setup
 
@@ -114,7 +116,8 @@ That personal file is ignored by Git; the example contains no identifying data.
 Vocabulary entries are objects with `lemma` and `reading`, plus optional `status`,
 `proficiency` (0–1), and `notes`. Grammar entries are objects with `pattern` and
 optional `notes`. Preferences guide generation; this V1 does not automatically
-measure actual familiar-word proportions or update learner state.
+measure actual familiar-word proportions. Runtime vocabulary classifications are
+managed by the reader's learner-state service described below.
 
 ## Architecture and V1 decisions
 
@@ -124,7 +127,9 @@ measure actual familiar-word proportions or update learner state.
   resolve `token.lemma` to vocabulary definitions. KANJIDIC2 and JMnedict are future providers.
   Optional pitch-accent/frequency datasets also stay separate. Stories contain
   contextual glosses, never full dictionary records or invented dictionary IDs.
-- **User state:** a separate profile now and a separate user database later.
+- **User state:** runtime vocabulary in a separate learner IndexedDB database;
+  progress and preferences in existing/versioned localStorage. The static profile
+  supplies generation configuration and examples, not a competing live state store.
 - **Reader:** consumes `manifest.json` and story JSON. Reader V1 supplies the UI,
   token annotations, local dictionary lookup, and browser-local reading progress.
   Audio, persistent offline content caching, and cloud sync remain future work.
@@ -303,8 +308,10 @@ story ID, last-opened UTC timestamp, completion, and last selected sentence.
 Sentence position updates when navigating, selecting vocabulary, or revealing a
 translation. It does not infer reading comprehension from scrolling. Resume uses
 that saved position; completed stories remain visible and reopen from the start.
-Furigana, text size, and translation visibility are session controls and reset
-when a story is reopened. No progress is written into story files or the profile.
+Furigana and text size are saved reader preferences and are included in backups.
+Translation visibility resets when a story is reopened. No progress is written
+into story files or the profile. New progress writes also include `updated_at` for
+backup conflict resolution; older records remain valid without it.
 
 Corrupt entries are ignored with a notice. Blocked storage allows reading and
 completion in memory and explains that saving is unavailable. Progress is specific
@@ -335,7 +342,7 @@ pnpm build
 ```
 
 The reader does not yet include SRS, audio, comprehension quiz
-UI, automatic known-word state, profile editing, accounts, or service-worker
+UI, automatic mastery assessment, profile editing, accounts, or service-worker
 offline caching. Story comprehension data is retained for later use. Mixed
 kanji/kana readings use the simplest available ruby representation; no inferred
 alignment engine is added. Mobile/tablet verification uses representative browser
@@ -343,9 +350,9 @@ viewports; an actual iPad/Safari pass remains useful before tablet distribution.
 
 The local JMdict adapter is implemented through `DictionaryService` in
 `reader/src/lib/dictionary.ts`. A future cloud progress adapter can replace
-`ProgressStore` without changing story files. The next useful feature is separate
-known/learning vocabulary state with export/import backups, followed by real
-iPad/Safari verification before tablet distribution.
+`ProgressStore` without changing story files. Known/learning vocabulary state and
+export/import backups are implemented below. Adaptive furigana and real iPad/Safari
+verification are useful next steps before tablet distribution.
 
 ## JMdict dictionary integration V1
 
@@ -459,7 +466,8 @@ dictionary API, paid service or runtime AI is involved.
 Dictionary storage and reading progress remain separate. Both are local to the
 browser/origin; another port/device has separate data. Clearing site data or
 browser eviction removes the dictionary, which can be imported again. Browser
-progress is not backed up by pushing the repository. The web adapter requires
+progress is not backed up by pushing the repository; use the Vocabulary page's
+backup export for learner data. The web adapter requires
 IndexedDB, native gzip DecompressionStream, and Web Crypto in a secure context.
 Blocked storage or insufficient quota leaves token information usable.
 
@@ -485,3 +493,149 @@ word rendered in about 0.3 seconds including browser automation overhead; the
 first lookup after production reload took about 1.3 seconds including that overhead.
 These are sanity checks on this computer rather than device benchmarks. Tablet
 (820×1180) and phone (390×844) sheets fit without horizontal overflow.
+
+## Vocabulary state and backup V1
+
+### Vocabulary and storage
+
+The reader's **Vocabulario** navigation opens a library of learner classifications.
+Word sheets provide **Aprendiendo**, **Conocida**, and **Quitar estado** actions.
+Untracked vocabulary has no saved record. Both statuses can be changed or removed;
+additional ambiguous dictionary entries have their own controls. Learning words
+receive a subtle dotted underline, with every matching visible occurrence updated
+without a refresh. Known words retain normal styling. Global furigana remains
+independent of status and always renders hiragana. Adaptive hiding is deferred.
+
+`VocabularyStateService` is the portable reader boundary. Its web adapter in
+`reader/src/lib/vocabularyStorage.ts` uses **`yomustory.learner.v1`**, database version
+1, with a `vocabulary` object store keyed by application vocabulary ID. This is
+independent of **`yomustory.dictionary.v1`**. Dictionary updates/builds cannot delete
+learner records. UI components receive learner data through a context and never
+access IndexedDB directly. Committed writes notify subscribers, refreshing counts,
+word sheets, list rows and reader indicators. Blocked storage is reported and
+classification actions are disabled; the reader remains usable.
+
+Dictionary identity is **JMdict entry ID + normalized selected headword + normalized
+lemma reading**. `vocabularyId()` percent-encodes these parts in a `jmdict:…` ID.
+Inflected surfaces such as 慣れて / 慣れた resolve to the same 慣れる / なれる
+classification. Distinct JMdict entries or readings of a homograph stay separate.
+Kana/NFKC normalization is shared with dictionary matching. A result with multiple
+compatible readings uses the first displayed dictionary reading; the selected
+identity is labelled beside its actions.
+
+If lookup fails or finds no entry, a **`token:…`** identity uses normalized token
+lemma and supplied reading. This is a conservative fallback; it cannot recover a
+missing lemma reading from an inflected annotation. Fallback records are not
+automatically rebound to later dictionary results, avoiding unverified homograph
+merges. Reclassify a resolved entry and remove the old fallback when needed.
+
+Records contain `id`, optional `dictionaryEntryId`, `lemma`, `reading`, `status`,
+`createdAt` and `updatedAt`. Creation is preserved when reclassifying; update
+timestamps advance monotonically, including after importing a future-dated record.
+Encounters, SRS intervals, mastery inference and learner notes are deferred.
+Merely loading a story does not create vocabulary records or increment counters.
+
+Reading progress keeps its existing **`yomustory.reader.progress.v1`** localStorage
+key and envelope. There is **no migration or reset** of existing completions/resume
+positions. New `updated_at` fields are optional; legacy merge uses `last_opened`.
+Reader preferences use **`yomustory.reader.preferences.v1`**, a version-1 envelope
+containing `{furigana, textSize, updatedAt}`. All stores remain browser/origin-local.
+
+The vocabulary library derives Learning/Known counts from records, supports status
+filters and normalized lemma/reading search, and renders **50 rows per page**.
+It displays saved words/readings/status/date without dictionary definition queries.
+Reader indicators resolve only distinct tokens whose lemmas match tracked dictionary
+items, using the existing indexed lookup/cache; they do not preload JMdict.
+
+### Export and import
+
+Open **Vocabulario → Copias de seguridad → Exportar copia** to download
+`yomustory-backup-YYYY-MM-DD.json`. Store that file outside browser storage, then
+use **Importar copia** on another browser/device or after reinstalling. Export
+contains only learner vocabulary, reading completion/position and reader
+preferences; it excludes dictionary assets, stories and generated caches. GitHub
+pushes protect application/content history, while this file protects learner data.
+Backup/context filenames are ignored by Git if placed inside this checkout.
+
+The portable UTF-8 JSON format is:
+
+```json
+{
+  "app": "YomuStory",
+  "backup_version": "1.0",
+  "exported_at": "2026-10-07T01:00:00.000Z",
+  "vocabulary": [],
+  "reading_progress": [],
+  "preferences": {
+    "furigana": true,
+    "textSize": "normal",
+    "updatedAt": "1970-01-01T00:00:00.000Z"
+  }
+}
+```
+
+`vocabulary` uses the application records above. `reading_progress` is an array
+of existing `{story_id, last_opened, completed, last_sentence?, updated_at?}` records.
+Unknown story IDs are retained for later content availability. Japanese text,
+identities and UTC timestamps survive round trips. The import validates every
+record, canonical identity, status, timestamp, uniqueness, preferences, app and
+supported format version before writing anything. Unsupported fields/data,
+malformed JSON and files above **25 MiB** are rejected; each collection is limited
+to 100,000 records. File selection only shows a validated preview. Applying the
+preview is a separate explicit action.
+
+- **Combinar con mis datos:** vocabulary keeps the entire record with the newer
+  `updatedAt`; progress uses `updated_at`, falling back to `last_opened`. Preferences
+  use `updatedAt`. Equal timestamps keep current data. Sorting/identity resolution
+  are deterministic. A newer progress record may legitimately change completion.
+- **Reemplazar mis datos:** replaces vocabulary, progress and preferences with the
+  selected file, after a native confirmation dialog. Dictionary/assets/stories
+  remain intact. Cancel and Escape leave current data unchanged.
+- **Vaciar vocabulario:** separately confirmed, removes only classifications.
+  Progress and preferences are retained. No generic delete-everything action exists.
+
+Vocabulary replacement/merge writes use a single IndexedDB transaction. Legacy
+progress/preference writes are staged synchronously before that transaction
+commits. A write failure aborts vocabulary changes and restores the previous local
+values; UI state updates only after success. Tests exercise failed preference
+writes and a later IDB abort. IndexedDB and localStorage cannot provide one shared
+crash-atomic transaction: sudden browser termination between writes is a remaining
+limitation. If even rollback fails, the app reports that explicitly; retain the
+backup file. A future consolidation can migrate all learner state into one native
+or web database, preserving these service boundaries.
+
+Removing a classification deletes its record. There are no deletion tombstones in
+V1, so merging an older backup can restore previously removed words. Replacement
+reproduces the selected snapshot. Cross-tab changes are read after a reload;
+updates within the active application appear immediately. Cloud conflict handling
+and tombstones are future sync work.
+
+### Generation, privacy, and verification
+
+**Exportar contexto** downloads compact `known_vocabulary` / `learning_vocabulary`
+arrays through `exportLearnerContext()`, including lemma, reading and optional
+dictionary entry ID. Static profile levels, interests, grammar and generation
+preferences remain configuration. When giving a current context to the generation
+prompt, its vocabulary arrays replace the profile's example arrays for that run.
+The frontend never rewrites profile files or runs an LLM. No competing live
+vocabulary source is created.
+
+State management, filtering and backup export/import work offline in an already
+loaded application. Full offline app-shell installation is still deferred. There
+are no cloud uploads, synchronization, analytics or telemetry. Export occurs only
+through an explicit click; import only uses a user-selected file. A future native
+SQLite or cloud adapter can implement the portable service and backup model.
+
+Small offline fixtures under `reader/src/test/backups/` cover a valid snapshot,
+unsupported version, malformed record and merge conflict. Tests cover status
+transitions/removal, persistence, homographs, repeated-word updates, list filters,
+2,000-word pagination, exports, import validation, merge/replace, confirmations,
+storage rollback, preference persistence, existing progress and dictionary rebuild
+isolation. The existing backend/frontend validation commands above still apply.
+Browser QA checks native IndexedDB, real JSON download/file selection and merge
+with the local server stopped, plus 820×1180 and 390×844 viewports with 44px touch
+controls. Actual iPad/Safari validation remains outstanding.
+
+Verification: **75 backend tests, 67 frontend tests, typechecking and production
+build pass**. A full file inventory and implementation report is available in
+[docs/VOCABULARY_BACKUP_V1_REPORT.md](docs/VOCABULARY_BACKUP_V1_REPORT.md).

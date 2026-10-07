@@ -12,7 +12,7 @@ button, input, select { font: inherit; }
 button { cursor: pointer; color: inherit; }
 button:disabled { cursor: default; opacity: .35; }
 button, a, summary, select { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid #32634f; outline-offset: 4px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid #32634f; outline-offset: 4px; }
 [lang='ja'] { font-family: var(--japanese); }
 h1, h2, h3, p { margin-top: 0; }
 main:focus, .reader-header h1:focus { outline: none; }
@@ -23,6 +23,9 @@ main:focus, .reader-header h1:focus { outline: none; }
 .brand > span > span { font-weight: 400; }
 .brand svg { width: 29px; height: 32px; fill: none; stroke: var(--green); stroke-width: 1.5; stroke-linejoin: round; }
 .header-note { font-size: 12px; color: var(--muted); letter-spacing: .3px; }
+.header-navigation, .header-navigation nav { display: flex; align-items: center; gap: 24px; }
+.header-navigation a { color: var(--muted); text-decoration: none; font-size: 12px; padding: 14px 0; }
+.header-navigation a[aria-current='page'] { color: var(--green); text-decoration: underline; text-underline-offset: 8px; }
 .eyebrow { color: var(--green); text-transform: uppercase; font-size: 10px; letter-spacing: 2px; font-weight: 650; margin-bottom: 22px; }
 .library { max-width: 1240px; margin: auto; padding: 0 40px 36px; }
 .library-intro { display: flex; align-items: center; justify-content: space-between; padding: 64px 0 58px; }
@@ -97,6 +100,7 @@ main:focus, .reader-header h1:focus { outline: none; }
 .word { font: inherit; letter-spacing: inherit; line-height: inherit; border: 0; background: transparent; padding: 0 1px; color: inherit; border-radius: 3px; }
 .word:hover, .word:focus-visible { background: #dce7d6; }
 .word-target { text-decoration: underline; text-decoration-color: #9bad96; text-decoration-thickness: 1px; text-underline-offset: 7px; }
+.word-learning { text-decoration: underline; text-decoration-style: dotted; text-decoration-color: #73977d; text-underline-offset: 7px; text-decoration-thickness: 2px; }
 rt { font-size: .42em; color: #657769; letter-spacing: .1px; font-weight: 400; }
 ruby { ruby-align: center; }
 .sentence-tools { display: flex; gap: 22px; align-items: baseline; padding-top: 2px; }
@@ -156,6 +160,40 @@ progress::-webkit-progress-value { background: var(--green); }
 .dictionary-attribution { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 14px; font-size: 10px; line-height: 1.8; color: var(--muted); }
 .dictionary-attribution p { margin-bottom: 5px; }
 .dictionary-attribution a { display: inline-block; color: var(--green); padding: 6px 0; margin-right: 15px; }
+.vocabulary-controls { margin: 14px 0; }
+.vocabulary-controls > p { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+.status-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.status-actions button, .backup-actions button, .vocabulary-deletion button, .vocabulary-pagination button {
+  min-height: 44px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 5px; background: transparent; font-size: 12px;
+}
+.status-actions button[aria-pressed='true'] { background: #eaf0e6; border-color: var(--green); color: var(--green); }
+.status-actions .clear-status { border-color: transparent; color: var(--muted); font-size: 11px; }
+.vocabulary-intro { padding: 48px 0 28px; }
+.vocabulary-intro h1 { font-size: 36px; font-weight: 450; margin-bottom: 16px; }
+.vocabulary-intro > p:last-child, .vocabulary-total { color: var(--muted); font-size: 13px; }
+.vocabulary-filters { display: flex; gap: 20px; padding: 10px 0 24px; }
+.vocabulary-filters label, .import-preview label { display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: var(--muted); }
+.vocabulary-filters input, .vocabulary-filters select, .import-preview select { min-height: 44px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 5px; background: #fffefa; color: var(--ink); max-width: 100%; }
+.vocabulary-list { border-top: 1px solid var(--line); }
+.vocabulary-list article { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px 0; border-bottom: 1px solid var(--line); }
+.vocabulary-list h2 { font-weight: 500; font-size: 24px; margin-bottom: 5px; overflow-wrap: anywhere; }
+.vocabulary-list article > div { min-width: 0; }
+.vocabulary-list article > div > p { color: var(--muted); font-size: 15px; margin-bottom: 8px; overflow-wrap: anywhere; }
+.vocabulary-list small { color: var(--muted); font-size: 10px; }
+.vocabulary-pagination { display: flex; gap: 12px; padding: 20px 0; }
+.backup-section { border-top: 1px solid var(--line); padding: 32px 0 40px; margin-top: 32px; }
+.backup-section h2 { font-size: 23px; font-weight: 500; }
+.backup-section p { font-size: 13px; color: var(--muted); line-height: 1.8; max-width: 720px; }
+.backup-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.import-preview { padding: 24px; margin: 24px 0; border: 1px solid var(--line); border-radius: 8px; background: #fffefa; }
+.import-preview h3 { font-size: 18px; font-weight: 500; }
+.import-preview label { max-width: 300px; margin-bottom: 20px; }
+.import-preview .text-button, .data-confirmation .text-button { margin-left: 18px; min-height: 44px; }
+.vocabulary-deletion { margin-top: 24px; }
+.data-confirmation { border: 1px solid var(--line); border-radius: 10px; padding: 28px; width: min(480px, calc(100% - 32px)); color: var(--ink); background: #fffefa; }
+.data-confirmation::backdrop { background: #1b2d2745; }
+.data-confirmation h3 { font-size: 21px; }
+.data-confirmation p { font-size: 13px; line-height: 1.8; color: var(--muted); }
 @media (max-width: 1000px) {
   .story-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .library-mark { margin-right: 0; width: 140px; height: 140px; }
@@ -167,6 +205,12 @@ progress::-webkit-progress-value { background: var(--green); }
 @media (max-width: 600px) {
   .app-header { height: 78px; padding: 0 22px; }
   .header-note { display: none; }
+  .header-navigation nav { gap: 14px; }
+  .header-navigation a { font-size: 11px; }
+  .vocabulary-filters { flex-wrap: wrap; }
+  .vocabulary-filters label { flex: 1; min-width: 140px; }
+  .vocabulary-list article { display: block; }
+  .vocabulary-list .vocabulary-controls { margin-bottom: 0; }
   .library { padding: 0 22px 30px; }
   .library-intro { padding: 42px 0 38px; }
   .library-intro h1 { font-size: 32px; letter-spacing: -1.3px; }

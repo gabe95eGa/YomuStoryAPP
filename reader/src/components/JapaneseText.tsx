@@ -1,5 +1,6 @@
 import { sentenceSegments } from '../lib/content';
 import type { Sentence, Token } from '../lib/types';
+import { tokenQueryKey, type VocabularyStatus } from '../lib/vocabulary';
 
 const hasKanji = (surface: string) => /\p{Script=Han}/u.test(surface);
 // Tokenizer readings stay intact; ruby uses hiragana, including voiced kana.
@@ -17,12 +18,14 @@ export function FuriganaText({ token, enabled }: { token: Token; enabled: boolea
   return <ruby>{token.surface}<rt>{hiraganaReading(token.reading)}</rt></ruby>;
 }
 
-export function JapaneseText({ sentence, furigana, onToken }: {
+export function JapaneseText({ sentence, furigana, onToken, vocabularyStatuses }: {
   sentence: Sentence; furigana: boolean; onToken: (token: Token) => void;
+  vocabularyStatuses?: Map<string, VocabularyStatus>;
 }) {
   return <span lang="ja" className="japanese-text" data-testid={`text-${sentence.id}`}>
     {sentenceSegments(sentence).map((segment, index) => segment.token && isInteractive(segment.token)
-      ? <button key={index} type="button" className={`word${segment.token.target ? ' word-target' : ''}`}
+      ? <button key={index} type="button" className={`word${segment.token.target ? ' word-target' : ''}${vocabularyStatuses?.get(tokenQueryKey(segment.token)) === 'learning' ? ' word-learning' : ''}`}
+          data-vocabulary-status={vocabularyStatuses?.get(tokenQueryKey(segment.token))}
           aria-label={`Ver palabra: ${segment.token.surface}`} onClick={() => onToken(segment.token!)}>
           <FuriganaText token={segment.token} enabled={furigana} />
         </button>
