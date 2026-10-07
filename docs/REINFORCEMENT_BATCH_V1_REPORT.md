@@ -135,8 +135,14 @@ Action setup follows the maintained [pnpm/setup](https://github.com/pnpm/setup),
 
 ## 14. Actual GitHub Actions status
 
-Local checks passed. Remote status will be recorded after the implementation
-push; a local pass alone is not evidence of a successful GitHub Actions run.
+Implementation commit `652dcf1238662fdae5b359cc798a1cd81b8b4c10` was pushed to
+main. [GitHub Actions run #1](https://github.com/gabe95eGa/YomuStoryAPP/actions/runs/37614820381)
+reported **completed / success** on 2026-10-07. Both Python validation/tests and
+Reader typecheck/tests/build jobs completed successfully, including clean-runner
+dependency installation and production build without full JMdict assets. This
+status was read from GitHub; it is not inferred from local checks. This report's
+follow-up documentation commit also triggers CI, whose live result is available
+on the repository's Actions page.
 
 ## 15–16. Files
 
