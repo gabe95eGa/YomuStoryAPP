@@ -1,15 +1,28 @@
 import { describe, expect, it, vi } from 'vitest';
 import manifestData from '../../../manifest.json';
 import storyData from '../../../stories/work/work_001.json';
+import dailyBatch from '../../../stories/daily/daily_002.json';
+import workBatch from '../../../stories/work/work_002.json';
+import travelBatch from '../../../stories/travel/travel_002.json';
+import japanBatch from '../../../stories/japan/japan_002.json';
+import cookingBatch from '../../../stories/cooking/cooking_002.json';
 import { contentService, parseManifest, parseStory, sentenceSegments } from './content';
 import type { Sentence } from './types';
 
 describe('content loading and validation', () => {
+  it.each([dailyBatch, workBatch, travelBatch, japanBatch, cookingBatch])('reads published reinforcement content $id', (data) => {
+    const story = parseStory(data, data.id);
+    const listing = parseManifest(manifestData).stories.find((item) => item.id === data.id);
+    expect(listing).toBeDefined();
+    expect(story.comprehension).toEqual(data.comprehension);
+    expect(data.comprehension.questions).toHaveLength(3);
+    expect(story.content.paragraphs.flatMap((p) => p.sentences).every((s) => s.translation_es && s.tokens.length)).toBe(true);
+  });
   it('loads the actual manifest through the content URL', async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: true, json: async () => manifestData });
     vi.stubGlobal('fetch', fetchMock);
     const manifest = await contentService.loadManifest();
-    expect(manifest.stories).toHaveLength(5);
+    expect(manifest.stories).toHaveLength(manifestData.stories.length);
     expect(fetchMock.mock.calls[0][0]).toMatch(/content\/manifest\.json$/);
   });
   it('loads a selected manifest path and retains grammar and comprehension', async () => {

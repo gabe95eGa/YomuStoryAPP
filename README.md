@@ -751,3 +751,22 @@ The complete 15-point report is
 [docs/ADAPTIVE_CONTEXT_V1_REPORT.md](docs/ADAPTIVE_CONTEXT_V1_REPORT.md);
 the request is preserved in
 [docs/YOMUSTORY_ADAPTIVE_CONTEXT_V1_PROMPT.md](docs/YOMUSTORY_ADAPTIVE_CONTEXT_V1_PROMPT.md).
+
+### Reinforcement batch V1 and CI
+
+The library now contains ten stories: the original five plus five short `_002`
+reinforcement pilots covering daily life, work, motorcycle travel, Japan life and
+cooking. This batch used the example profile because no valid learner context
+was present in the workspace. Each reinforces two Learning targets, with eight
+new reading/title content lemmas; no runtime learner state was changed.
+
+Audit a batch with `.venv\Scripts\python.exe -m tools.reinforcement_metrics`
+followed by story paths. The helper is read-only and reports context source,
+target repetition and distinct new lemmas; it does not infer mastery.
+See [the full report](docs/REINFORCEMENT_BATCH_V1_REPORT.md) for lexical rules,
+short-length/familiarity limitations, review and verification details.
+
+GitHub CI runs Python validation, manifest freshness and all backend tests,
+plus Node 24/pnpm typecheck, reader tests and build on main pushes and PRs.
+It uses local dictionary fixtures without downloading full JMdict. Local
+verification: **79 backend tests, 92 frontend tests**, typecheck/build passed.

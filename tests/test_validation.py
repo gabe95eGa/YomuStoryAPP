@@ -250,8 +250,12 @@ def test_demo_content_complete_and_valid():
     valid, failures = validate_files(paths)
     assert not failures
     for story in valid.values():
-        assert 300 <= story["metadata"]["character_count"] <= 700
-        assert 3 <= len(story["targets"]["vocabulary"]) <= 8
+        # The original demo brief required 300–700 characters and 3–8 targets.
+        # Reinforcement V1 expressly permits shorter pilots with fewer available
+        # learning words; its budget and coverage are tested separately.
+        if story["id"].endswith("_001"):
+            assert 300 <= story["metadata"]["character_count"] <= 700
+            assert 3 <= len(story["targets"]["vocabulary"]) <= 8
         assert 1 <= len(story["targets"]["grammar"]) <= 3
         assert len(story["comprehension"]["questions"]) == 3
         assert all(sentence["translation_es"] for sentence in sentences(story))

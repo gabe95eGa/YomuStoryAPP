@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-06",
+  "generated_at": "2026-10-07",
   "stories": [
     {
       "id": "cooking_001",
@@ -17,6 +17,19 @@
       "path": "stories/cooking/cooking_001.json"
     },
     {
+      "id": "cooking_002",
+      "title": "ゆっくり切っておこう",
+      "title_es": "Dejar las verduras cortadas",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 4,
+      "topics": [
+        "料理",
+        "友達"
+      ],
+      "path": "stories/cooking/cooking_002.json"
+    },
+    {
       "id": "daily_001",
       "title": "雨の日の約束",
       "title_es": "Un encuentro en un día de lluvia",
@@ -29,6 +42,19 @@
         "人間関係"
       ],
       "path": "stories/daily/daily_001.json"
+    },
+    {
+      "id": "daily_002",
+      "title": "朝の弁当",
+      "title_es": "La comida para el trabajo",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 4,
+      "topics": [
+        "日常生活",
+        "仕事"
+      ],
+      "path": "stories/daily/daily_002.json"
     },
     {
       "id": "japan_001",
@@ -45,6 +71,19 @@
       "path": "stories/japan/japan_001.json"
     },
     {
+      "id": "japan_002",
+      "title": "駅まで歩く生活",
+      "title_es": "Caminar hasta la estación",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 4,
+      "topics": [
+        "日本生活",
+        "日常生活"
+      ],
+      "path": "stories/japan/japan_002.json"
+    },
+    {
       "id": "travel_001",
       "title": "海までの小さな旅",
       "title_es": "Una pequeña excursión al mar",
@@ -59,6 +98,19 @@
       "path": "stories/travel/travel_001.json"
     },
     {
+      "id": "travel_002",
+      "title": "バイクと地図",
+      "title_es": "La moto y el mapa",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 4,
+      "topics": [
+        "旅行",
+        "バイク"
+      ],
+      "path": "stories/travel/travel_002.json"
+    },
+    {
       "id": "work_001",
       "title": "注文をもう一度",
       "title_es": "Confirmar el pedido",
@@ -70,6 +122,19 @@
         "レストラン"
       ],
       "path": "stories/work/work_001.json"
+    },
+    {
+      "id": "work_002",
+      "title": "水と皿の準備",
+      "title_es": "Preparar el agua y los platos",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 4,
+      "topics": [
+        "仕事",
+        "レストラン"
+      ],
+      "path": "stories/work/work_002.json"
     }
   ]
 }

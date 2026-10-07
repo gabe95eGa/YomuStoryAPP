@@ -99,10 +99,10 @@ describe('reader flows', () => {
   it('filters topics without duplicating metadata in the frontend', async () => {
     const user = userEvent.setup();
     render(<App content={service()} />);
-    expect(await screen.findByText('5 lecturas · 0 completadas')).toBeVisible();
-    expect(screen.getAllByRole('article')).toHaveLength(5);
+    expect(await screen.findByText(`${manifestData.stories.length} lecturas · 0 completadas`)).toBeVisible();
+    expect(screen.getAllByRole('article')).toHaveLength(manifestData.stories.length);
     await user.selectOptions(screen.getByRole('combobox', { name: 'Tema' }), 'レストラン');
-    expect(screen.getAllByRole('article')).toHaveLength(1);
+    expect(screen.getAllByRole('article')).toHaveLength(manifestData.stories.filter((story) => story.topics.includes('レストラン')).length);
     expect(screen.getByRole('heading', { name: '注文をもう一度' })).toBeVisible();
   });
   it('skip link focuses the reader without navigating to the library', async () => {

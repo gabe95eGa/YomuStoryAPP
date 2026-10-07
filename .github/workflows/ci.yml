@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  backend:
+    name: Python validation and tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            requirements-dev.lock.txt
+      - name: Install backend and pinned local tokenizer
+        run: python -m pip install -c requirements-dev.lock.txt -e ".[dev,tokenizer]"
+      - name: Validate all stories
+        run: python tools/validate_stories.py
+      - name: Validate example profile
+        run: python tools/validate_profile.py
+      - name: Reject stale manifest
+        run: python tools/build_manifest.py --check
+      - name: Run backend tests including tokenizer integration
+        run: python -m pytest
+
+  reader:
+    name: Reader typecheck, tests and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up repository pnpm and Node 24
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@24
+          cache: true
+          install: false
+      - name: Install exact lockfile dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Reader tests with local dictionary fixtures
+        run: pnpm test
+      - name: Production build without downloading JMdict
+        run: pnpm build
