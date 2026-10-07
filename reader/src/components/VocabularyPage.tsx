@@ -3,6 +3,7 @@ import { downloadJson, MAX_BACKUP_BYTES, parseBackupText, readBackupFile, type B
 import { normalizeJapanese } from '../lib/dictionaryModel';
 import type { ImportMode } from '../lib/vocabulary';
 import { LearnerContext, VocabularyControls } from './LearnerState';
+import type { LearnerContextService } from '../lib/learnerContext';
 
 function Confirmation({ title, description, action, onConfirm, onCancel, busy }: {
   title: string; description: string; action: string; onConfirm: () => void; onCancel: () => void;
@@ -21,7 +22,9 @@ function Confirmation({ title, description, action, onConfirm, onCancel, busy }:
     <button type="button" className="text-button" disabled={busy} onClick={onCancel}>Cancelar</button>
   </dialog>;
 }
-export function VocabularyPage({ backup }: { backup: BackupService }) {
+export function VocabularyPage({ backup, generationContext, usesExampleProfile }: {
+  backup: BackupService; generationContext: LearnerContextService; usesExampleProfile?: boolean;
+}) {
   const learner = useContext(LearnerContext)!;
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -88,9 +91,6 @@ export function VocabularyPage({ backup }: { backup: BackupService }) {
           const data = await backup.exportBackup(); downloadJson(data, `yomustory-backup-${data.exported_at.slice(0, 10)}.json`);
         }, 'Copia exportada. Guarda el archivo en un lugar seguro.')}>Exportar copia</button>
         <button type="button" disabled={busy || Boolean(learner.error)} onClick={() => fileInput.current?.click()}>Importar copia</button>
-        <button type="button" disabled={busy || Boolean(learner.error)} onClick={() => void run(async () => {
-          downloadJson(await backup.exportLearnerContext(), `yomustory-context-${new Date().toISOString().slice(0, 10)}.json`);
-        }, 'Contexto de vocabulario exportado para generar lecturas.')}>Exportar contexto</button>
       </div>
       <input ref={fileInput} type="file" accept=".json,application/json" aria-label="Archivo de copia de seguridad" hidden disabled={busy}
         onChange={(event) => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
@@ -107,7 +107,16 @@ export function VocabularyPage({ backup }: { backup: BackupService }) {
       <div className="vocabulary-deletion"><button type="button" disabled={busy || Boolean(learner.error) || learner.items.length === 0} onClick={() => setConfirmation('clear')}>Vaciar vocabulario</button></div>
       {confirmation === 'clear' && <Confirmation title="¿Vaciar tu vocabulario?" description="Se quitarán todas las clasificaciones. Tu progreso, preferencias, diccionario e historias se conservan."
         action="Confirmar vaciado" busy={busy} onConfirm={() => void run(() => learner.service.clear(), 'Vocabulario vaciado.')} onCancel={() => setConfirmation(undefined)} />}
-      {busy && <p role="status">Guardando tus datos…</p>}{message && <p role="status">{message}</p>}{error && <p role="alert">{error}</p>}
     </section>
+    <section className="backup-section context-section" aria-labelledby="context-title"><h2 id="context-title">Contexto para nuevas lecturas</h2>
+      <p>Comparte tu nivel y vocabulario con un generador de historias. Este archivo sirve para crear lecturas; para restaurar tus datos, utiliza una copia de seguridad.</p>
+      <p>Nivel: {generationContext.configuration.language.current_level} → {generationContext.configuration.language.target_level}
+        {usesExampleProfile && ' · Perfil de ejemplo'}<br />Conocidas: {learner.items.length - learning} · Aprendiendo: {learning}</p>
+      <div className="backup-actions"><button type="button" disabled={busy || Boolean(learner.error)} onClick={() => void run(async () => {
+        const data = await generationContext.buildContext();
+        downloadJson(data, `yomustory-learner-context-${data.generated_at.slice(0, 10)}.json`);
+      }, 'Contexto de aprendizaje exportado para generar lecturas.')}>Exportar contexto de aprendizaje</button></div>
+    </section>
+    {busy && <p role="status">Preparando tus datos…</p>}{message && <p role="status">{message}</p>}{error && <p role="alert">{error}</p>}
   </main>;
 }

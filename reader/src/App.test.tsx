@@ -35,10 +35,10 @@ describe('reader flows', () => {
     expect(container.querySelectorAll('ruby').length).toBeGreaterThan(0);
     const kana = screen.getByRole('button', { name: 'Ver palabra: レストラン' });
     expect(kana.querySelector('ruby')).toBeNull();
-    await user.click(screen.getByRole('button', { name: /Furigana/ }));
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'none');
     expect(container.querySelectorAll('ruby')).toHaveLength(0);
-    expect(screen.getByRole('button', { name: /Furigana/ })).toHaveAttribute('aria-pressed', 'false');
-    await user.click(screen.getByRole('button', { name: /Furigana/ }));
+    expect(screen.getByRole('combobox', { name: 'Furigana' })).toHaveValue('none');
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'all');
     expect(container.querySelectorAll('ruby').length).toBeGreaterThan(0);
   });
   it('uses supplied furigana segments for mixed words', () => {

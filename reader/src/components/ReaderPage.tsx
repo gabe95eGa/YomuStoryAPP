@@ -5,6 +5,7 @@ import { VocabularySheet } from './VocabularySheet';
 import type { DictionaryService } from '../lib/dictionaryModel';
 import type { ReaderPreferences } from '../lib/preferences';
 import { useTokenStatuses } from './LearnerState';
+import type { FuriganaMode } from '../lib/furigana';
 
 export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary, preferences, onPreferences }: {
   story: Story; progress?: StoryProgress; onBack: () => void;
@@ -15,7 +16,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   const allSentences = story.content.paragraphs.flatMap((paragraph) => paragraph.sentences);
   const [current, setCurrent] = useState(() => progress?.completed ? 0
     : Math.max(0, allSentences.findIndex((sentence) => sentence.id === progress?.last_sentence)));
-  const [sessionFurigana, setFurigana] = useState(true);
+  const [sessionFurigana, setFurigana] = useState<FuriganaMode>('adaptive');
   const [sessionLargeText, setLargeText] = useState(false);
   const furigana = preferences?.furigana ?? sessionFurigana;
   const largeText = preferences ? preferences.textSize === 'large' : sessionLargeText;
@@ -42,9 +43,12 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     <nav className="reader-toolbar" aria-label="Controles de lectura">
       <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span> Biblioteca</button>
       <div className="reader-options">
-        <button type="button" className={`toggle-button${furigana ? ' toggle-on' : ''}`} aria-pressed={furigana} onClick={() => onPreferences ? onPreferences({ furigana: !furigana }) : setFurigana(!furigana)}>
-          <span lang="ja" aria-hidden="true">あ</span> Furigana <span className="toggle-track" aria-hidden="true"><i /></span>
-        </button>
+        <label className="furigana-control">Furigana
+          <select value={furigana} onChange={(event) => {
+            const mode = event.target.value as FuriganaMode;
+            if (onPreferences) onPreferences({ furigana: mode }); else setFurigana(mode);
+          }}><option value="all">Todas</option><option value="adaptive">Adaptativa</option><option value="none">Ninguna</option></select>
+        </label>
         <button type="button" className="size-button" aria-label="Texto grande" aria-pressed={largeText} onClick={() => onPreferences ? onPreferences({ textSize: largeText ? 'normal' : 'large' }) : setLargeText(!largeText)}>A<span>A</span></button>
       </div>
     </nav>

@@ -36,6 +36,7 @@ async function openReader(state: ReturnType<typeof setup>) {
 describe('learner state in the reader and vocabulary library', () => {
   it('marks both states, updates every matching word immediately, and preserves global hiragana furigana', async () => {
     const state = setup(), user = await openReader(state);
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'all');
     await user.click(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0]);
     const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Aprendiendo' }));
@@ -48,18 +49,38 @@ describe('learner state in the reader and vocabulary library', () => {
     await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
     await waitFor(() => expect(within(dialog).queryByRole('button', { name: 'Quitar estado' })).toBeNull());
     await user.click(within(dialog).getByRole('button', { name: 'Cerrar vocabulario' }));
-    await user.click(screen.getByRole('button', { name: 'Furigana' }));
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'none');
     expect(document.querySelectorAll('rt')).toHaveLength(0);
+  });
+  it('reacts to all repeated words in adaptive mode, retains sheet readings, and performs no new lookups on status changes', async () => {
+    const state = setup(); await state.vocabulary.applyRecords(backup.vocabulary, 'replace');
+    const getStatus = vi.spyOn(state.vocabulary, 'getStatus');
+    const user = await openReader(state);
+    expect(screen.getByRole('combobox', { name: 'Furigana' })).toHaveValue('adaptive');
+    const words = () => screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' });
+    await waitFor(() => expect(words().every((word) => word.dataset.vocabularyStatus === 'learning')).toBe(true));
+    expect(words().every((word) => word.querySelector('rt')?.textContent === 'なれ')).toBe(true);
+    await user.click(words()[0]); const dialog = await screen.findByRole('dialog');
+    await within(dialog).findByRole('button', { name: 'Conocida' });
+    const calls = vi.mocked(state.dictionary.lookup).mock.calls.length;
+    await user.click(within(dialog).getByRole('button', { name: 'Conocida' }));
+    await waitFor(() => expect(words().every((word) => word.dataset.vocabularyStatus === 'known' && !word.querySelector('rt'))).toBe(true));
+    expect(dialog.querySelector('.dictionary-reading')?.textContent).toContain('なれる');
+    await user.click(within(dialog).getByRole('button', { name: 'Aprendiendo' }));
+    await waitFor(() => expect(words().every((word) => word.classList.contains('word-learning') && word.querySelector('rt')?.textContent === 'なれ')).toBe(true));
+    await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
+    await waitFor(() => expect(words().every((word) => !word.dataset.vocabularyStatus && word.querySelector('rt'))).toBe(true));
+    expect(state.dictionary.lookup).toHaveBeenCalledTimes(calls); expect(getStatus).not.toHaveBeenCalled();
   });
   it('persists vocabulary and reader preferences after a remount', async () => {
     const state = setup(); await state.vocabulary.applyRecords(backup.vocabulary, 'replace');
     const user = userEvent.setup(), mounted = state.mount();
     await user.click(await screen.findByRole('button', { name: 'Leer: Confirmar el pedido' }));
     await user.click(await screen.findByRole('button', { name: 'Texto grande' }));
-    await user.click(screen.getByRole('button', { name: 'Furigana' }));
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'none');
     mounted.unmount(); state.mount();
     expect(await screen.findByRole('button', { name: 'Texto grande' })).toHaveAttribute('aria-pressed', 'true');
-    expect(screen.getByRole('button', { name: 'Furigana' })).toHaveAttribute('aria-pressed', 'false');
+    expect(screen.getByRole('combobox', { name: 'Furigana' })).toHaveValue('none');
     await user.click(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0]);
     await waitFor(() => expect(within(screen.getByRole('dialog')).getByRole('button', { name: 'Aprendiendo' })).toHaveAttribute('aria-pressed', 'true'));
   });
@@ -139,8 +160,8 @@ describe('backup controls and confirmations', () => {
     await screen.findByText('Copia exportada. Guarda el archivo en un lugar seguro.');
     expect(click).toHaveBeenCalledOnce(); const exported = parseBackup(JSON.parse(await readBackupFile(blobs[0] as File)));
     expect(exported.vocabulary).toHaveLength(2); expect(exported.preferences).toBeDefined();
-    await user.click(screen.getByRole('button', { name: 'Exportar contexto' }));
-    await screen.findByText('Contexto de vocabulario exportado para generar lecturas.');
+    await user.click(screen.getByRole('button', { name: 'Exportar contexto de aprendizaje' }));
+    await screen.findByText('Contexto de aprendizaje exportado para generar lecturas.');
     expect(JSON.parse(await readBackupFile(blobs[1] as File)).learning_vocabulary[0].lemma).toBe('慣れる');
   });
   it('rolls back vocabulary/progress if preferences cannot be saved during import', async () => {

@@ -1,6 +1,7 @@
 import type { ProgressMap, StoryProgress } from './types';
 import type { ReaderPreferences } from './preferences';
-import { exportLearnerContext, vocabularyId, type ImportMode, type LearnerVocabularyItem, type VocabularyStateService } from './vocabulary';
+import { vocabularyId, type ImportMode, type LearnerVocabularyItem, type VocabularyStateService } from './vocabulary';
+import { migrateFurigana } from './furigana';
 import { normalizeJapanese } from './dictionaryModel';
 
 export interface LearnerBackup {
@@ -37,12 +38,13 @@ export function parseBackup(value: unknown): LearnerBackup {
       || (progress.last_sentence !== undefined && !text(progress.last_sentence))) throw invalid();
   }
   const preferences = value.preferences;
-  if (!only(preferences, ['furigana', 'textSize', 'updatedAt']) || typeof preferences.furigana !== 'boolean'
+  const furigana = migrateFurigana(preferences.furigana);
+  if (!only(preferences, ['furigana', 'textSize', 'updatedAt']) || !furigana
     || typeof preferences.textSize !== 'string' || !['normal', 'large'].includes(preferences.textSize) || !timestamp(preferences.updatedAt)
     || new Set(value.vocabulary.map((item) => item.id)).size !== value.vocabulary.length
     || new Set(value.reading_progress.map((item) => item.story_id)).size !== value.reading_progress.length) throw invalid();
   // Drop object prototypes and give callers their own validated portable data.
-  return structuredClone(value) as unknown as LearnerBackup;
+  return structuredClone({ ...value, preferences: { ...preferences, furigana } }) as unknown as LearnerBackup;
 }
 export function parseBackupText(raw: string): LearnerBackup {
   if (new TextEncoder().encode(raw).byteLength > MAX_BACKUP_BYTES) throw new Error('La copia supera el límite de 25 MiB.');
@@ -82,7 +84,6 @@ export function createBackupService(vocabulary: VocabularyStateService, reader: 
       });
       reader.committed(next!);
     },
-    async exportLearnerContext() { return exportLearnerContext(await vocabulary.getAll()); },
   };
 }
 export type BackupService = ReturnType<typeof createBackupService>;

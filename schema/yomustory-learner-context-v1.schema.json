@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "YomuStory learner generation context 1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "context_version",
+    "generated_at",
+    "language",
+    "known_vocabulary",
+    "learning_vocabulary",
+    "known_grammar",
+    "learning_grammar",
+    "preferences"
+  ],
+  "properties": {
+    "context_version": {
+      "const": "1.0"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "native_language",
+        "target_language",
+        "current_level",
+        "target_level"
+      ],
+      "properties": {
+        "native_language": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "target_language": {
+          "const": "ja"
+        },
+        "current_level": {
+          "enum": [
+            "N5",
+            "N5-N4",
+            "N4",
+            "N4-N3",
+            "N3",
+            "N3-N2",
+            "N2",
+            "N2-N1",
+            "N1"
+          ]
+        },
+        "target_level": {
+          "enum": [
+            "N5",
+            "N5-N4",
+            "N4",
+            "N4-N3",
+            "N3",
+            "N3-N2",
+            "N2",
+            "N2-N1",
+            "N1"
+          ]
+        }
+      }
+    },
+    "known_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lemma",
+          "reading"
+        ],
+        "properties": {
+          "lemma": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reading": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "dictionary_entry_id": {
+            "type": "string",
+            "pattern": "^\\d{1,12}$"
+          }
+        }
+      }
+    },
+    "learning_vocabulary": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "lemma",
+          "reading"
+        ],
+        "properties": {
+          "lemma": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "reading": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "dictionary_entry_id": {
+            "type": "string",
+            "pattern": "^\\d{1,12}$"
+          }
+        }
+      }
+    },
+    "known_grammar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "learning_grammar": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pattern"
+        ],
+        "properties": {
+          "pattern": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "notes": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interests",
+        "preferred_topics",
+        "avoid_topics",
+        "generation_preferences"
+      ],
+      "properties": {
+        "interests": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "preferred_topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "avoid_topics": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "minItems": 0,
+          "uniqueItems": true
+        },
+        "generation_preferences": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "default_story_length": {
+              "enum": [
+                "short",
+                "standard",
+                "long"
+              ]
+            },
+            "desired_difficulty": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "maximum_new_vocabulary": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "desired_grammar_target_count": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "preferred_familiar_vocabulary_proportion": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}

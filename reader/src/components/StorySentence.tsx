@@ -2,9 +2,10 @@ import { useState } from 'react';
 import type { Sentence, Token } from '../lib/types';
 import { JapaneseText } from './JapaneseText';
 import type { VocabularyStatus } from '../lib/vocabulary';
+import type { FuriganaMode } from '../lib/furigana';
 
 export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses }: {
-  sentence: Sentence; number: number; active: boolean; furigana: boolean;
+  sentence: Sentence; number: number; active: boolean; furigana: FuriganaMode;
   onToken: (token: Token) => void; onSelect: () => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
 }) {

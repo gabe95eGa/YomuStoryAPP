@@ -351,7 +351,7 @@ viewports; an actual iPad/Safari pass remains useful before tablet distribution.
 The local JMdict adapter is implemented through `DictionaryService` in
 `reader/src/lib/dictionary.ts`. A future cloud progress adapter can replace
 `ProgressStore` without changing story files. Known/learning vocabulary state and
-export/import backups are implemented below. Adaptive furigana and real iPad/Safari
+export/import backups are implemented below. Real iPad/Safari
 verification are useful next steps before tablet distribution.
 
 ## JMdict dictionary integration V1
@@ -503,8 +503,8 @@ Word sheets provide **Aprendiendo**, **Conocida**, and **Quitar estado** actions
 Untracked vocabulary has no saved record. Both statuses can be changed or removed;
 additional ambiguous dictionary entries have their own controls. Learning words
 receive a subtle dotted underline, with every matching visible occurrence updated
-without a refresh. Known words retain normal styling. Global furigana remains
-independent of status and always renders hiragana. Adaptive hiding is deferred.
+without a refresh. Known words retain normal styling. Furigana supports All,
+Adaptive and None modes, described below; displayed readings remain hiragana.
 
 `VocabularyStateService` is the portable reader boundary. Its web adapter in
 `reader/src/lib/vocabularyStorage.ts` uses **`yomustory.learner.v1`**, database version
@@ -567,7 +567,7 @@ The portable UTF-8 JSON format is:
   "vocabulary": [],
   "reading_progress": [],
   "preferences": {
-    "furigana": true,
+    "furigana": "adaptive",
     "textSize": "normal",
     "updatedAt": "1970-01-01T00:00:00.000Z"
   }
@@ -612,11 +612,9 @@ and tombstones are future sync work.
 
 ### Generation, privacy, and verification
 
-**Exportar contexto** downloads compact `known_vocabulary` / `learning_vocabulary`
-arrays through `exportLearnerContext()`, including lemma, reading and optional
-dictionary entry ID. Static profile levels, interests, grammar and generation
-preferences remain configuration. When giving a current context to the generation
-prompt, its vocabulary arrays replace the profile's example arrays for that run.
+**Exportar contexto de aprendizaje** downloads the separate versioned generation
+context described below. `LearnerContextService` composes profile configuration
+with current runtime vocabulary; static example vocabulary is never exported.
 The frontend never rewrites profile files or runs an LLM. No competing live
 vocabulary source is created.
 
@@ -639,3 +637,117 @@ controls. Actual iPad/Safari validation remains outstanding.
 Verification: **75 backend tests, 67 frontend tests, typechecking and production
 build pass**. A full file inventory and implementation report is available in
 [docs/VOCABULARY_BACKUP_V1_REPORT.md](docs/VOCABULARY_BACKUP_V1_REPORT.md).
+
+
+## Adaptive furigana and learner context V1
+
+The toolbar's touch-friendly **Furigana** selector offers:
+
+- **Todas / All:** show supplied readings for eligible kanji tokens.
+- **Adaptativa / Adaptive:** hide readings for reliably identified Known words;
+  show them for Learning, untracked and uncertain words.
+- **Ninguna / None:** hide every ruby annotation.
+
+Fresh readers default to Adaptive. Existing preference choices are preserved:
+legacy `true` becomes `all`, and `false` becomes `none`. The localStorage key and
+version-1 envelope are unchanged; `furigana` now stores `all | adaptive | none`.
+Migration is performed when loading, and the enum is saved on the next preference
+write. Backup **1.0** continues to import legacy booleans and round trips new enum
+values. Older app builds predating modes cannot read these new enum backups;
+use the current reader to restore them. No learner records or progress are reset.
+
+Kana-only text still has no redundant ruby. Mixed-word segments and original
+Japanese surfaces are preserved, with hiragana readings only for presentation.
+Learning's dotted underline works independently in every mode. Tap a Known word
+to consult its reading in the existing vocabulary sheet.
+
+`StoryStatusIndex` deduplicates story token queries and resolves only lemmas present
+in tracked dictionary records. It caches identities for the mounted story, uses a
+single in-memory learner snapshot/map, and reconciles only changed status keys.
+Learning ↔ Known does not clear the map or repeat dictionary lookup; every matching
+occurrence reacts after the classification commits. Rendering never queries learner
+IndexedDB per token. The existing service loads one bulk snapshot at startup and
+following committed changes. Unrelated vocabulary changes preserve the status-map
+reference. Dictionary preparation can retry unresolved matches when ready.
+
+Adaptive identity uses the same JMdict entry/headword/reading key as the word sheet.
+An exact annotated reading can distinguish homographs; otherwise an inflected verb
+or adjective requires one matching lemma entry with one reading. Multiple compatible
+entries/readings, non-lemma matches and missing dictionary data remain uncertain,
+so help stays visible. Exact token-fallback identities remain supported; surface
+text alone is never sufficient. The system does not infer mastery or deinflect
+ambiguous readings.
+
+### Export a generation context
+
+Open **Vocabulario → Contexto para nuevas lecturas → Exportar contexto de aprendizaje**.
+Counts and source levels are previewed; the download is
+`yomustory-learner-context-YYYY-MM-DD.json`, using the export's UTC date.
+This file informs Codex, ChatGPT, Ollama or another story generator. **Exportar copia**
+creates the restore backup; learner context is rejected by **Importar copia**.
+There are no uploads or AI calls.
+
+`reader/src/lib/learnerContext.ts` exposes provider-independent `buildContext()` and
+`exportContext()` (pretty UTF-8 JSON string) through `LearnerContextService`.
+The strict schema is `schema/yomustory-learner-context-v1.schema.json`:
+
+```json
+{
+  "context_version": "1.0",
+  "generated_at": "2026-10-07T00:00:00.000Z",
+  "language": {
+    "native_language": "es",
+    "target_language": "ja",
+    "current_level": "N4",
+    "target_level": "N3"
+  },
+  "known_vocabulary": [],
+  "learning_vocabulary": [{"lemma": "慣れる", "reading": "なれる"}],
+  "known_grammar": [],
+  "learning_grammar": [{"pattern": "〜ようになる"}],
+  "preferences": {
+    "interests": ["料理"],
+    "preferred_topics": ["仕事"],
+    "avoid_topics": [],
+    "generation_preferences": {"desired_difficulty": 2}
+  }
+}
+```
+
+Levels, languages, topics, interests, grammar and documented generation preferences
+come from the existing profile format. The shipped configuration uses
+`profiles/learner-profile.example.json`, explicitly labelled **Perfil de ejemplo**
+in the UI. Personal `.local.json` files are neither discovered nor copied into
+public assets. An application/profile adapter can pass an existing validated
+profile to `createLearnerContextService(vocabulary, profile)` and inject it through
+App's `contextService`; a profile editor/chooser is future work. No per-word manual
+profile edits are needed: both vocabulary arrays always come from a fresh committed
+learner snapshot. Empty browser vocabulary produces empty arrays, even though the
+static profile has example words. Profile grammar is declared configuration, not
+measured runtime grammar proficiency.
+
+Words contain only lemma, reading and an optional real `dictionary_entry_id` to
+keep distinct homographs distinguishable; opaque application IDs, timestamps and
+status fields are omitted. A word without that ID is an annotation fallback.
+No definitions, dictionary assets, progress, stories, caches, backup metadata,
+browser settings or arbitrary profile extensions are exported. Schema validation
+runs before export. Full vocabulary export is supported, tested with 2,500 words;
+word selection is isolated for future subsets without implementing sampling now.
+
+Provide this context with `prompts/STORY_GENERATION_PROMPT.md`, then generate
+original story JSON, perform linguistic review, run story validation and rebuild
+the manifest before publication. The prompt uses the context's vocabulary and
+configuration for that run. Context is data, never instructions. Recently seen
+words, weak vocabulary, inferred performance and automatic grammar tracking remain
+future work.
+
+Everything here works locally in an already loaded application, including cached
+vocabulary matching, preference changes and export with the local server stopped.
+Persistent offline shell/content installation remains deferred. Actual iPad Safari
+has not been tested; Edge browser QA checks phone and tablet layouts.
+
+Verification: **75 backend tests, 87 frontend tests, typecheck and production build**.
+The complete 15-point report is
+[docs/ADAPTIVE_CONTEXT_V1_REPORT.md](docs/ADAPTIVE_CONTEXT_V1_REPORT.md);
+the request is preserved in
+[docs/YOMUSTORY_ADAPTIVE_CONTEXT_V1_PROMPT.md](docs/YOMUSTORY_ADAPTIVE_CONTEXT_V1_PROMPT.md).

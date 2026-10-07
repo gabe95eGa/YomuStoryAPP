@@ -7,7 +7,7 @@ import conflictFixture from '../test/backups/merge-conflict.json';
 import dictionaryFixture from '../test/dictionary-entries.json';
 import { createBackupService, mergeReaderState, parseBackup, parseBackupText, type ReaderState } from './backup';
 import { createVocabularyStateService } from './vocabularyStorage';
-import { exportLearnerContext, identityForEntry, identityForToken, mergeVocabulary, vocabularyId } from './vocabulary';
+import { vocabularyContextWords, identityForEntry, identityForToken, mergeVocabulary, vocabularyId } from './vocabulary';
 import { parseDictionaryChunk, resolveEntry } from './dictionaryModel';
 import { createIndexedDictionaryStorage } from './webDictionary';
 import { createPreferencesStore, DEFAULT_PREFERENCES } from './preferences';
@@ -83,7 +83,7 @@ describe('portable backups and data safety', () => {
     const exported = await backup.exportBackup();
     expect(exported.vocabulary.map((item) => item.lemma)).toContain('慣れる');
     expect(exported.reading_progress[0].last_sentence).toBe('s3');
-    expect(exported.preferences.furigana).toBe(true);
+    expect(exported.preferences.furigana).toBe('adaptive');
     expect(parseBackupText(JSON.stringify(exported))).toEqual(exported);
     expect(Object.keys(exported)).toEqual(['app', 'backup_version', 'exported_at', 'vocabulary', 'reading_progress', 'preferences']);
     expect(exported).not.toHaveProperty('dictionary'); expect(exported).not.toHaveProperty('stories');
@@ -110,7 +110,7 @@ describe('portable backups and data safety', () => {
     expect(mergeVocabulary([valid.vocabulary[0]], [tie])[0].status).toBe('learning');
     const current = { progress: { work_001: { ...valid.reading_progress[0], completed: false } }, preferences: valid.preferences };
     expect(mergeReaderState(current, valid, 'merge').progress.work_001.completed).toBe(false);
-    expect(mergeReaderState(current, { ...valid, preferences: { ...valid.preferences, furigana: false } }, 'merge').preferences.furigana).toBe(true);
+    expect(mergeReaderState(current, { ...valid, preferences: { ...valid.preferences, furigana: 'none' } }, 'merge').preferences.furigana).toBe('all');
   });
   it('rejects unsupported/malformed data, duplicates, altered identities and invalid dates before any writes', async () => {
     const state = coordinator(); await state.backup.importBackup(valid, 'replace');
@@ -140,7 +140,7 @@ describe('portable backups and data safety', () => {
     expect(undo).toHaveBeenCalledOnce(); expect(await state.vocabulary.getAll()).toEqual(records);
   });
   it('exports generator vocabulary context without rewriting profile configuration', () => {
-    const context = exportLearnerContext(valid.vocabulary);
+    const context = vocabularyContextWords(valid.vocabulary);
     expect(context.learning_vocabulary[0]).toMatchObject({ lemma: '慣れる', reading: 'なれる' });
     expect(context.known_vocabulary[0]).toMatchObject({ lemma: '仕事' });
     expect(context).not.toHaveProperty('current_level');
@@ -156,7 +156,7 @@ describe('portable backups and data safety', () => {
   it('preserves existing progress format and round trips new saved reader preferences', () => {
     const progress = createProgressStore(); progress.save({ work_001: valid.reading_progress[0] });
     expect(createProgressStore().load().progress.work_001).toEqual(valid.reading_progress[0]);
-    const preferences = createPreferencesStore(); preferences.save({ ...valid.preferences, textSize: 'large', furigana: false });
-    expect(createPreferencesStore().load().preferences).toMatchObject({ textSize: 'large', furigana: false });
+    const preferences = createPreferencesStore(); preferences.save({ ...valid.preferences, textSize: 'large', furigana: 'none' });
+    expect(createPreferencesStore().load().preferences).toMatchObject({ textSize: 'large', furigana: 'none' });
   });
 });

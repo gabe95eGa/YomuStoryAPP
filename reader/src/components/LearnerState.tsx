@@ -1,9 +1,11 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { dictionaryService } from '../lib/dictionary';
-import { normalizeJapanese, type DictionaryService } from '../lib/dictionaryModel';
-import type { Story, Token } from '../lib/types';
-import { identityForEntry, identityForToken, tokenQueryKey, type LearnerVocabularyItem,
+import { type DictionaryService } from '../lib/dictionaryModel';
+import type { Story } from '../lib/types';
+import { type LearnerVocabularyItem,
   type VocabularyIdentity, type VocabularyStateService, type VocabularyStatus } from '../lib/vocabulary';
+
+import { StoryStatusIndex } from '../lib/tokenStatuses';
 
 const EMPTY: LearnerVocabularyItem[] = [];
 export const LearnerContext = createContext<{ service: VocabularyStateService; items: LearnerVocabularyItem[]; error?: string } | undefined>(undefined);
@@ -46,25 +48,20 @@ export function VocabularyControls({ identity }: { identity: VocabularyIdentity 
   </section>;
 }
 export function useTokenStatuses(story: Story, dictionary: DictionaryService = dictionaryService) {
-  const items = useContext(LearnerContext)?.items ?? EMPTY;
-  const [statuses, setStatuses] = useState<Map<string, VocabularyStatus>>(new Map());
+  const learner = useContext(LearnerContext);
+  const items = learner?.error ? EMPTY : learner?.items ?? EMPTY;
+  const index = useMemo(() => new StoryStatusIndex(story, dictionary), [story, dictionary]);
+  const [revision, setRevision] = useState(0);
   useEffect(() => {
     let active = true;
-    const byId = new Map(items.map((item) => [item.id, item.status]));
-    const trackedLemmas = new Set(items.filter((item) => item.dictionaryEntryId).map((item) => normalizeJapanese(item.lemma)));
-    const tokens = story.content.paragraphs.flatMap((p) => p.sentences.flatMap((s) => s.tokens));
-    const unique = new Map(tokens.filter((token) => !token.ignore_lookup).map((token) => [tokenQueryKey(token), token]));
-    const next = new Map<string, VocabularyStatus>();
-    unique.forEach((token, key) => { const status = byId.get(identityForToken(token).id); if (status) next.set(key, status); });
-    setStatuses(new Map(next));
-    const queries = [...unique].filter(([, token]) => trackedLemmas.has(normalizeJapanese(token.lemma)));
-    void Promise.all(queries.map(async ([key, token]: [string, Token]) => {
-      try {
-        const result = (await dictionary.lookup({ lemma: token.lemma, surface: token.surface, reading: token.reading, type: token.type }))[0];
-        if (result) { const status = byId.get(identityForEntry(result).id); if (status) next.set(key, status); else next.delete(key); }
-      } catch { /* Original annotations remain usable when dictionary assets are absent. */ }
-    })).then(() => { if (active) setStatuses(new Map(next)); });
-    return () => { active = false; };
-  }, [story, dictionary, items]);
-  return statuses;
+    const resolve = () => void index.resolve(items).then((changed) => {
+      if (active && changed) setRevision((value) => value + 1);
+    });
+    resolve();
+    const unsubscribe = dictionary.subscribe?.(() => {
+      if (dictionary.getStatus?.().phase === 'ready') { index.retryUnresolved(); resolve(); }
+    });
+    return () => { active = false; unsubscribe?.(); };
+  }, [index, dictionary, items]);
+  return useMemo(() => index.statuses(items), [index, items, revision]);
 }

@@ -246,3 +246,8 @@ progress::-webkit-progress-value { background: var(--green); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+.furigana-control { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+.furigana-control select { min-height: 44px; max-width: 130px; padding: 8px; border: 1px solid var(--line); border-radius: 5px; background: #fffefa; color: var(--ink); font: inherit; }
+.context-section { margin-top: 0; }
+@media (max-width: 400px) { .furigana-control { flex-direction: column; gap: 3px; align-items: flex-start; } .reader-options { gap: 8px; } }

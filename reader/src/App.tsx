@@ -11,6 +11,7 @@ import type { VocabularyStateService } from './lib/vocabulary';
 import { vocabularyStateService } from './lib/vocabularyStorage';
 import { LearnerContext, useVocabularyItems } from './components/LearnerState';
 import { VocabularyPage } from './components/VocabularyPage';
+import { createLearnerContextService, type LearnerContextService } from './lib/learnerContext';
 
 type LoadState<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error'; message: string };
 const getStoryId = () => window.location.hash.match(/^#\/story\/([a-z0-9_]+)$/)?.[1] ?? null;
@@ -27,8 +28,9 @@ function LoadMessage({ error, onRetry, onBack }: { error?: string; onRetry?: () 
 }
 
 export default function App({ content = contentService, store = localProgressStore, dictionary, vocabulary = vocabularyStateService,
-  preferenceStore = localPreferencesStore }: {
+  preferenceStore = localPreferencesStore, contextService }: {
   content?: ContentService; store?: ProgressStore; dictionary?: DictionaryService; vocabulary?: VocabularyStateService; preferenceStore?: PreferencesStore;
+  contextService?: LearnerContextService;
 }) {
   const [initial] = useState(() => store.load());
   const [initialPreferences] = useState(() => preferenceStore.load());
@@ -40,6 +42,7 @@ export default function App({ content = contentService, store = localProgressSto
   const [preferences, setPreferences] = useState(initialPreferences.preferences);
   const preferencesRef = useRef(preferences);
   const learner = useVocabularyItems(vocabulary);
+  const generationContext = useMemo(() => contextService ?? createLearnerContextService(vocabulary), [contextService, vocabulary]);
   const [library, setLibrary] = useState<LoadState<Manifest>>({ status: 'loading' });
   const [story, setStory] = useState<LoadState<Story>>({ status: 'loading' });
   const [retry, setRetry] = useState(0);
@@ -121,7 +124,7 @@ export default function App({ content = contentService, store = localProgressSto
       <nav aria-label="Navegación principal"><a href="#/" aria-current={!storyId && !isVocabulary ? 'page' : undefined}>Biblioteca</a>
         <a href="#/vocabulary" aria-current={isVocabulary ? 'page' : undefined}>Vocabulario</a></nav></div></header>
     {notice && <p className="storage-notice" role="status">{notice}</p>}
-    {isVocabulary ? <VocabularyPage backup={backup} /> : library.status === 'loading' ? <LoadMessage />
+    {isVocabulary ? <VocabularyPage backup={backup} generationContext={generationContext} usesExampleProfile={!contextService} /> : library.status === 'loading' ? <LoadMessage />
       : library.status === 'error' ? <LoadMessage error={library.message} onRetry={retryLoad} />
       : !storyId ? <StoryLibrary stories={library.data.stories} progress={progress} onOpen={(id) => { window.location.hash = `/story/${id}`; }} />
       : story.status === 'error' ? <LoadMessage error={story.message} onRetry={retryLoad} onBack={goLibrary} />

@@ -41,7 +41,7 @@ export function mergeVocabulary(current: LearnerVocabularyItem[], incoming: Lear
   }
   return [...merged.values()].sort((a, b) => a.id.localeCompare(b.id));
 }
-export function exportLearnerContext(items: LearnerVocabularyItem[]) {
+export function vocabularyContextWords(items: LearnerVocabularyItem[]) {
   const words = (status: VocabularyStatus) => items.filter((item) => item.status === status)
     .sort((a, b) => a.id.localeCompare(b.id)).map(({ lemma, reading, dictionaryEntryId }) => ({ lemma, reading,
       ...(dictionaryEntryId ? { dictionary_entry_id: dictionaryEntryId } : {}) }));

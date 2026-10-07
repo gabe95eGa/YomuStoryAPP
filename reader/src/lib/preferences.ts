@@ -1,5 +1,6 @@
-export interface ReaderPreferences { furigana: boolean; textSize: 'normal' | 'large'; updatedAt: string }
-export const DEFAULT_PREFERENCES: ReaderPreferences = { furigana: true, textSize: 'normal', updatedAt: '1970-01-01T00:00:00.000Z' };
+import { migrateFurigana, type FuriganaMode } from './furigana';
+export interface ReaderPreferences { furigana: FuriganaMode; textSize: 'normal' | 'large'; updatedAt: string }
+export const DEFAULT_PREFERENCES: ReaderPreferences = { furigana: 'adaptive', textSize: 'normal', updatedAt: '1970-01-01T00:00:00.000Z' };
 export const PREFERENCES_KEY = 'yomustory.reader.preferences.v1';
 export interface PreferencesStore {
   load(): { preferences: ReaderPreferences; notice?: string };
@@ -13,9 +14,10 @@ export function createPreferencesStore(access: () => Pick<Storage, 'getItem' | '
         if (!raw) return { preferences: { ...DEFAULT_PREFERENCES } };
         const data = JSON.parse(raw);
         const prefs = data?.preferences;
-        if (data.version !== 1 || typeof prefs?.furigana !== 'boolean' || !['normal', 'large'].includes(prefs.textSize)
+        const furigana = migrateFurigana(prefs?.furigana);
+        if (data.version !== 1 || !furigana || !['normal', 'large'].includes(prefs.textSize)
           || typeof prefs.updatedAt !== 'string' || !Number.isFinite(Date.parse(prefs.updatedAt))) throw new Error('Invalid preferences');
-        return { preferences: prefs };
+        return { preferences: { furigana, textSize: prefs.textSize, updatedAt: prefs.updatedAt } };
       } catch { return { preferences: { ...DEFAULT_PREFERENCES }, notice: 'No se pudieron recuperar las preferencias guardadas.' }; }
     },
     save(preferences) {
