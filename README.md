@@ -15,6 +15,31 @@ The dictionary implementation brief is preserved in
 Vocabulary state and backup requirements are preserved in
 [docs/YOMUSTORY_VOCABULARY_BACKUP_V1_PROMPT.md](docs/YOMUSTORY_VOCABULARY_BACKUP_V1_PROMPT.md).
 
+## Open the reader
+
+**[Read YomuStory online](https://gabe95ega.github.io/YomuStoryAPP/)** on a computer,
+phone or tablet. Choose a story and select **Leer**, tap Japanese words for
+dictionary entries, and reveal sentence translations. **Vocabulario** contains
+saved words, backup export/import and learner-context export. No local server is
+needed for the published website.
+
+Progress stays in each device/browser. To move it between devices or from the
+localhost version, use **Vocabulario → Copias de seguridad → Exportar copia**,
+then **Importar copia** on the destination reader. There is no automatic sync.
+
+### Publishing
+
+Repository **Settings → Pages → Source** must be **GitHub Actions**. Publishing
+the main branch's root renders this README instead of the interactive reader.
+`.github/workflows/pages.yml` publishes `reader/dist` after successful **CI** on
+main pushes; PR checks do not deploy. **Publish reader → Run workflow** on main
+also provides a manual redeploy. Ordinary CI still uses dictionary fixtures;
+the publishing workflow downloads the checksum-pinned source, prepares the full
+dictionary and includes its attribution before building the public website.
+Only built static assets are uploaded; browser progress, private profiles and
+backups are not part of the website. The HTTPS project URL supports dictionary
+installation on other devices; the reader uses relative assets and hash routes.
+
 ## Setup
 
 Use Python 3.11 or newer from a source checkout:

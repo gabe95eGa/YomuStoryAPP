@@ -1,0 +1,72 @@
+name: Publish reader
+
+on:
+  workflow_run:
+    workflows: [CI]
+    branches: [main]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Publish only tested main pushes; PR checks cannot publish the website.
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push' &&
+       github.event.workflow_run.head_branch == 'main')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Install content validation dependencies
+        run: python -m pip install -c requirements-dev.lock.txt -e .
+      - name: Validate published content
+        run: |
+          python tools/validate_stories.py
+          python tools/validate_profile.py
+          python tools/build_manifest.py --check
+      - name: Prepare checksum-pinned dictionary for the public reader
+        run: python tools/build_dictionary.py --download
+      - name: Set up repository pnpm and Node 24
+        uses: pnpm/setup@v3
+        with:
+          runtime: node@24
+          cache: true
+          install: false
+      - name: Install exact lockfile dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build reader with stories, dictionary and attribution
+        run: pnpm build
+      - name: Upload only the built website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: reader/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy reader to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
