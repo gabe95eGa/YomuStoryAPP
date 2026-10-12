@@ -54,9 +54,13 @@ Los tests de CI usan contenido público y fixtures, nunca el export privado.
 Antes del commit se revisó el diff, la identidad de los diez relatos anteriores
 y la exclusión de los archivos privados del staging.
 
-CI y publicación: consultar las ejecuciones asociadas al commit de este lote en
-[GitHub Actions](https://github.com/gabe95eGa/YomuStoryAPP/actions).
-El resultado remoto se comunica después del push; este informe no lo presume.
+Commit del contenido: `a9b9a7977a51c74c5ba5c9d87d697cfff61ec401`, enviado a `main`.
+La [CI 38224356643](https://github.com/gabe95eGa/YomuStoryAPP/actions/runs/38224356643)
+terminó correctamente después del push. La [publicación 38224427328](https://github.com/gabe95eGa/YomuStoryAPP/actions/runs/38224427328)
+completó build y despliegue a GitHub Pages correctamente.
+En una prueba aislada en `127.0.0.1:5174` se verificaron las tres coincidencias
+de una palabra: las tres pasaron a puntos con Learning y a línea continua con
+Known. Enter seleccionó la frase 3. No se usó el origen habitual del alumno.
 
 También se aclara el lector: fondo suave para objetivos del relato; puntos para
 Learning; línea continua para Known, propagados a las coincidencias identificadas.
