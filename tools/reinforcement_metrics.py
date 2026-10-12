@@ -1,8 +1,9 @@
 """Read-only reinforcement audit; no generation API or learner-state writes.
 
 Counts distinct content lemmas in the reading body and title, not quiz distractors.
-This is an explicit editorial vocabulary budget, not a measured mastery/frequency
-model. Closed-class grammar words are omitted; basic unlisted content words count.
+Unlisted means absent from the snapshot, not unknown. An optional editorial
+review separates assumed-familiar language from introductions and uncertainty;
+none of these assumptions updates confirmed learner state.
 """
 from __future__ import annotations
 
@@ -80,7 +81,8 @@ def lexical_counts(tokens: list[dict]) -> Counter:
     return result
 
 
-def batch_metrics(stories: list[dict], context: dict, title_tokens: dict[str, list[dict]] | None = None) -> dict:
+def batch_metrics(stories: list[dict], context: dict, title_tokens: dict[str, list[dict]] | None = None,
+                  lexical_review: dict | None = None) -> dict:
     known = {normalized(word["lemma"]) for word in context["known_vocabulary"]}
     learning = {normalized(word["lemma"]) for word in context["learning_vocabulary"]}
     grammar = {point["pattern"] for point in context["learning_grammar"]}
@@ -100,14 +102,26 @@ def batch_metrics(stories: list[dict], context: dict, title_tokens: dict[str, li
         used.update(used_here); reused.update(used_here); new.update(new_words)
         annotated = Counter(g["pattern"] for s in ss for g in s.get("grammar_points", []) if g.get("target"))
         grammar_counts.update({g: count for g, count in annotated.items() if g in grammar})
+        editorial = {}
+        if lexical_review is not None:
+            review = lexical_review[story["id"]]
+            groups = {key: review[key] for key in ("assumed_familiar", "introduced", "uncertain")}
+            combined = [lemma for group in groups.values() for lemma in group]
+            if len(combined) != len(set(combined)) or set(combined) != set(new_words):
+                raise ValueError(story["id"] + ": review must partition unlisted lemmas exactly once")
+            budget = len(groups["introduced"]) + len(groups["uncertain"])
+            maximum = context["preferences"]["generation_preferences"].get("maximum_new_vocabulary")
+            if maximum is not None and budget > maximum:
+                raise ValueError(story["id"] + ": reviewed introduction/uncertainty budget exceeded")
+            editorial = {**groups, "introduction_budget_count": budget}
         reports.append({"id": story["id"], "title": story["metadata"]["title"], "characters": sum(len(s["text"]) for s in ss),
                         "learning_targets": learning_targets, "target_occurrences": target_counts,
                         "learning_grammar_occurrences": {g: annotated[g] for g in sorted(grammar) if annotated[g]},
-                        "known_words_used": sorted(counts.keys() & known), "new_lexical_items": new_words,
-                        "new_lexical_count": len(new_words)})
+                        "known_words_used": sorted(counts.keys() & known), "unlisted_lexical_items": new_words,
+                        "unlisted_lexical_count": len(new_words), **editorial})
     return {"learning_vocabulary_available": len(learning), "learning_vocabulary_used": len(used),
             "learning_vocabulary_in_multiple_stories": sum(count > 1 for count in reused.values()),
-            "new_lexical_items_in_batch": len(new), "learning_grammar_occurrences": dict(sorted(grammar_counts.items())), "stories": reports}
+            "unlisted_lexical_items_in_batch": len(new), "learning_grammar_occurrences": dict(sorted(grammar_counts.items())), "stories": reports}
 
 
 def main() -> int:
@@ -116,6 +130,7 @@ def main() -> int:
     parser.add_argument("stories", type=Path, nargs="+", help="published stories or reviewed drafts")
     parser.add_argument("--root", type=Path, default=ROOT, help="workspace searched for exported context")
     parser.add_argument("--profile", type=Path, help="existing-format fallback profile")
+    parser.add_argument("--review", type=Path, help="editorial assumed_familiar/introduced/uncertain partition by story ID")
     args = parser.parse_args()
     try:
         context, source = generation_input(args.root, args.profile)
@@ -124,7 +139,8 @@ def main() -> int:
         from tools.tokenize_story import make_tokenizer, tokenize_text
         tokenizer = make_tokenizer()
         titles = {s["id"]: tokenize_text(s["metadata"]["title"], tokenizer) for s in stories}
-        print(json_text({"source": source, "language": context["language"], **batch_metrics(stories, context, titles)}), end="")
+        review = load_json(args.review) if args.review else None
+        print(json_text({"source": source, "language": context["language"], **batch_metrics(stories, context, titles, review)}), end="")
     except (OSError, ValueError, TypeError, KeyError) as exc:
         print(f"FAIL {exc}")
         return 1

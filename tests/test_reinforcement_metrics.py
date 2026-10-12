@@ -1,4 +1,5 @@
 import copy
+import pytest
 
 from tools.reinforcement_metrics import generation_input, lexical_counts, batch_metrics
 from tools.story_utils import ROOT, json_text, load_json
@@ -56,8 +57,28 @@ def test_published_batch_budget_coverage_and_nonmutation():
     result = batch_metrics(stories, context, titles)
     assert result['learning_vocabulary_used'] == result['learning_vocabulary_available'] == 3
     assert result['learning_vocabulary_in_multiple_stories'] == 3
-    assert all(s['new_lexical_count'] <= 8 for s in result['stories'])
+    # Historical V1 applied the strict confirmed-list-only budget. These are
+    # unlisted lemmas, not proof that the learner does not know the words.
+    assert all(s['unlisted_lexical_count'] <= 8 for s in result['stories'])
     assert all(2 <= n <= 4 for s in result['stories'] for n in s['target_occurrences'].values())
     assert all(len(s['comprehension']['questions']) == 3 and s['generation']['validated'] for s in stories)
     assert stories == before
     assert result == batch_metrics(list(reversed(stories)), context, titles)
+
+
+def test_editorial_review_partitions_unlisted_words_without_claiming_mastery():
+    context = context_fixture('2026-10-12T00:00:00Z')
+    story = load_json(ROOT / 'stories/daily/daily_002.json')
+    original = copy.deepcopy(context)
+    words = batch_metrics([story], context)['stories'][0]['unlisted_lexical_items']
+    review = {story['id']: {'assumed_familiar': words[1:], 'introduced': words[:1], 'uncertain': []}}
+    result = batch_metrics([story], context, lexical_review=review)
+    assert result['stories'][0]['introduction_budget_count'] == 1
+    assert context == original
+    review[story['id']]['uncertain'] = words[:1]
+    with pytest.raises(ValueError, match='exactly once'):
+        batch_metrics([story], context, lexical_review=review)
+    review[story['id']] = {'assumed_familiar': [], 'introduced': words[:1], 'uncertain': words[1:]}
+    context['preferences']['generation_preferences']['maximum_new_vocabulary'] = 1
+    with pytest.raises(ValueError, match='budget exceeded'):
+        batch_metrics([story], context, lexical_review=review)

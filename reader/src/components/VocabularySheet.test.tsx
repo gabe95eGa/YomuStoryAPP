@@ -37,7 +37,7 @@ describe('dictionary vocabulary sheet', () => {
     expect(screen.getAllByText(/Verbo ichidan/).some((element) => element.closest('details') === null)).toBe(true);
     expect(screen.getByRole('link', { name: 'Licencia CC BY-SA 4.0' })).toHaveAttribute('href', 'https://www.edrdg.org/edrdg/licence.html');
     await user.click(screen.getByText('Información de la lectura', { exact: true }));
-    expect(screen.getByText('ナレテ')).toBeVisible();
+    expect(screen.getByText('なれて')).toBeVisible();
   });
   it('labels English fallback and exposes additional valid dictionary matches', async () => {
     const dictionary = await realFixtureDictionary();
@@ -55,7 +55,7 @@ describe('dictionary vocabulary sheet', () => {
     render(<VocabularySheet token={token} dictionary={dictionary} onClose={vi.fn()} />);
     expect(await screen.findByText('Preparando el diccionario japonés…')).toBeVisible();
     expect(screen.getByRole('progressbar', { name: 'Preparación del diccionario' })).toHaveAttribute('value', '42');
-    expect(screen.getByText('ナレテ')).toBeVisible();
+    expect(screen.getByText('なれて')).toBeVisible();
   });
   it('shows unavailable state, retains token data, and retries successfully', async () => {
     const fixtureDictionary = await realFixtureDictionary();
@@ -64,7 +64,7 @@ describe('dictionary vocabulary sheet', () => {
     const user = userEvent.setup();
     render(<VocabularySheet token={token} dictionary={dictionary} onClose={vi.fn()} />);
     expect(await screen.findByText('Diccionario no disponible.')).toBeVisible();
-    expect(screen.getByText('ナレテ')).toBeVisible();
+    expect(screen.getByText('なれて')).toBeVisible();
     await user.click(screen.getByRole('button', { name: 'Reintentar diccionario' }));
     expect(await screen.findByText('acostumbrarse')).toBeVisible();
   });

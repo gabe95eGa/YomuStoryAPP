@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-07",
+  "generated_at": "2026-10-12",
   "stories": [
     {
       "id": "cooking_001",
@@ -30,6 +30,19 @@
       "path": "stories/cooking/cooking_002.json"
     },
     {
+      "id": "cooking_003",
+      "title": "借りた包丁と朝の料理",
+      "title_es": "El cuchillo prestado y la clase de cocina",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 7,
+      "topics": [
+        "料理",
+        "日常生活"
+      ],
+      "path": "stories/cooking/cooking_003.json"
+    },
+    {
       "id": "daily_001",
       "title": "雨の日の約束",
       "title_es": "Un encuentro en un día de lluvia",
@@ -55,6 +68,19 @@
         "仕事"
       ],
       "path": "stories/daily/daily_002.json"
+    },
+    {
+      "id": "daily_003",
+      "title": "朝の散歩と小さな約束",
+      "title_es": "Un pequeño compromiso durante el paseo",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 7,
+      "topics": [
+        "日常生活",
+        "友達"
+      ],
+      "path": "stories/daily/daily_003.json"
     },
     {
       "id": "japan_001",
@@ -84,6 +110,20 @@
       "path": "stories/japan/japan_002.json"
     },
     {
+      "id": "japan_003",
+      "title": "公園で聞いた店の話",
+      "title_es": "La tienda de la que oí hablar en el parque",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 7,
+      "topics": [
+        "日本生活",
+        "買い物",
+        "日常生活"
+      ],
+      "path": "stories/japan/japan_003.json"
+    },
+    {
       "id": "travel_001",
       "title": "海までの小さな旅",
       "title_es": "Una pequeña excursión al mar",
@@ -111,6 +151,20 @@
       "path": "stories/travel/travel_002.json"
     },
     {
+      "id": "travel_003",
+      "title": "遠くへ行かない休日",
+      "title_es": "Un día libre sin ir lejos",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 7,
+      "topics": [
+        "旅行",
+        "バイク",
+        "日常生活"
+      ],
+      "path": "stories/travel/travel_003.json"
+    },
+    {
       "id": "work_001",
       "title": "注文をもう一度",
       "title_es": "Confirmar el pedido",
@@ -135,6 +189,19 @@
         "レストラン"
       ],
       "path": "stories/work/work_002.json"
+    },
+    {
+      "id": "work_003",
+      "title": "帰る前に確かめること",
+      "title_es": "Lo que revisamos antes de irnos",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 7,
+      "topics": [
+        "仕事",
+        "料理"
+      ],
+      "path": "stories/work/work_003.json"
     }
   ]
 }

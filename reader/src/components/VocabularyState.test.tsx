@@ -34,6 +34,18 @@ async function openReader(state: ReturnType<typeof setup>) {
 }
 
 describe('learner state in the reader and vocabulary library', () => {
+  it('classifies unmarked words and marks their repeated occurrences in both states', async () => {
+    const state = setup(), user = await openReader(state);
+    const words = () => screen.getAllByRole('button', { name: 'Ver palabra: 仕事' });
+    expect(words().every((word) => !word.classList.contains('word-target') && !word.dataset.vocabularyStatus)).toBe(true);
+    await user.click(words()[0]); const dialog = await screen.findByRole('dialog');
+    await user.click(await within(dialog).findByRole('button', { name: 'Aprendiendo' }));
+    await waitFor(() => expect(words().every((word) => word.classList.contains('word-learning'))).toBe(true));
+    await user.click(within(dialog).getByRole('button', { name: 'Conocida' }));
+    await waitFor(() => expect(words().every((word) => word.classList.contains('word-known') && !word.classList.contains('word-learning'))).toBe(true));
+    await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
+    await waitFor(() => expect(words().every((word) => !word.classList.contains('word-known') && !word.dataset.vocabularyStatus)).toBe(true));
+  });
   it('marks both states, updates every matching word immediately, and preserves global hiragana furigana', async () => {
     const state = setup(), user = await openReader(state);
     await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'all');
@@ -45,6 +57,7 @@ describe('learner state in the reader and vocabulary library', () => {
     await user.click(within(dialog).getByRole('button', { name: 'Conocida' }));
     await waitFor(() => expect(within(dialog).getByRole('button', { name: 'Conocida' })).toHaveAttribute('aria-pressed', 'true'));
     await waitFor(() => expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' }).every((word) => word.dataset.vocabularyStatus === 'known')).toBe(true));
+    expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' }).every((word) => word.classList.contains('word-known') && !word.classList.contains('word-learning'))).toBe(true);
     expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0].querySelector('rt')?.textContent).toBe('なれ');
     await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
     await waitFor(() => expect(within(dialog).queryByRole('button', { name: 'Quitar estado' })).toBeNull());

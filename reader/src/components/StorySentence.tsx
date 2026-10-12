@@ -12,7 +12,17 @@ export function StorySentence({ sentence, number, active, furigana, onToken, onS
   const [translated, setTranslated] = useState(false);
   const translationId = `translation-${sentence.id}`;
   return <section id={`sentence-${sentence.id}`} className={`sentence${active ? ' sentence-active' : ''}`}
-    tabIndex={-1} aria-label={`Frase ${number}`}>
+    tabIndex={0} aria-label={`Frase ${number}`} aria-describedby="reader-help"
+    onClick={(event) => {
+      if ((event.target as Element).closest('button, a, summary, details, input, select, textarea')) return;
+      if (window.getSelection()?.isCollapsed === false) return;
+      onSelect();
+    }}
+    onKeyDown={(event) => {
+      if (event.target === event.currentTarget && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault(); onSelect();
+      }
+    }}>
     <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} vocabularyStatuses={vocabularyStatuses} />
     <div className="sentence-tools">
       <button type="button" className="text-button" aria-expanded={translated}

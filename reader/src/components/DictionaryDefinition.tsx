@@ -25,6 +25,10 @@ export function DictionaryDefinition({ entry }: { entry: DictionaryResult }) {
     {entry.formLabels.length > 0 && <p className="sense-notes">{entry.formLabels.join(' · ')}</p>}
     <Sense sense={senses[0]} language={language} />
     <VocabularyControls identity={identityForEntry(entry)} />
+    {Boolean(entry.otherReadings?.length) && <details className="dictionary-details"><summary>Otras lecturas de esta escritura</summary>
+      <p lang="ja" className="dictionary-reading">{entry.otherReadings!.join(' · ')}</p>
+      <p className="dictionary-note">Lecturas registradas en JMdict. Pueden corresponder a otros sentidos; no sustituyen la lectura de esta frase.</p>
+    </details>}
     {senses.length > 1 && <details className="dictionary-details"><summary>Otros sentidos ({senses.length - 1})</summary>
       {senses.slice(1).map((sense, index) => <Sense key={index} sense={sense} language={language} />)}</details>}
     {english.length > 0 && <details className="dictionary-details"><summary>Consultar también en inglés</summary>

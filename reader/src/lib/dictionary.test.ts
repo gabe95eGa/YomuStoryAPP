@@ -4,7 +4,7 @@ import { gzipSync, gunzipSync } from 'node:zlib';
 import { describe, expect, it, vi } from 'vitest';
 import fixture from '../test/dictionary-entries.json';
 import {
-  entryKeys, formatPartOfSpeech, normalizeJapanese, parseDictionaryChunk, parseDictionaryManifest, preferredSenses,
+  entryKeys, formatPartOfSpeech, normalizeJapanese, parseDictionaryChunk, parseDictionaryManifest, preferredSenses, resolveEntry,
   type DictionaryEntry, type DictionaryManifest,
 } from './dictionaryModel';
 import { createIndexedDictionaryStorage, createWebDictionaryService } from './webDictionary';
@@ -88,12 +88,26 @@ describe('real JMdict lookup', () => {
     const service = createWebDictionaryService({ storage: createIndexedDictionaryStorage('test-dictionary', () => factory), fetcher });
     const result = (await service.lookup({ lemma: '慣れる', reading: 'ナレル' })).find((entry) => entry.id === restricted.id)!;
     expect(result.readings).toEqual(['なれる']);
+    expect(result.otherReadings).toEqual([]); // The other spelling's reading must stay excluded.
     expect(result.senses).toHaveLength(1);
     expect(preferredSenses(result).language).toBe('en');
   });
 });
 
 describe('persistent import and graceful failure', () => {
+  it('exposes alternative word readings without mixing their restricted senses into the selected reading', () => {
+    const entry = structuredClone(entries.find((item) => item.id === '1212670')!);
+    entry.readings = [
+      { text: 'なれる', common: true, labels: [], appliesToSpellings: ['慣れる'] },
+      { text: 'fixture-alternative', common: false, labels: [], appliesToSpellings: ['慣れる'] },
+    ];
+    entry.senses = [{ ...entry.senses[0], appliesToReadings: ['なれる'] },
+      { ...entry.senses[0], appliesToReadings: ['fixture-alternative'] }];
+    const result = resolveEntry(entry, { lemma: '慣れる', reading: 'なれる' }, 'lemma')!;
+    expect(result.readings).toEqual(['なれる']);
+    expect(result.otherReadings).toEqual(['fixture-alternative']);
+    expect(result.senses).toHaveLength(1);
+  });
   it('imports and validates chunks once, then queries without network requests, including after reload', async () => {
     const factory = new IDBFactory();
     const storage = createIndexedDictionaryStorage('import-test', () => factory);

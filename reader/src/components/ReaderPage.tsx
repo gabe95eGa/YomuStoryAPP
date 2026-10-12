@@ -59,8 +59,9 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     </header>
     <div className="reader-layout">
       <aside className="reading-aside"><p className="eyebrow">A tu ritmo</p><p>Lee primero.<br />La ayuda está a un toque.</p>
-        <div className="target-key"><span aria-hidden="true">·</span> Vocabulario objetivo</div></aside>
+        <div className="target-key">Fondo suave: objetivo del relato.<br />Subrayado de puntos: aprendiendo.<br />Subrayado continuo: conocida.</div></aside>
       <article className={`reading-surface${largeText ? ' large-text' : ''}`} aria-label="Texto de la historia">
+        <p className="reader-help" id="reader-help">Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.</p>
         {story.content.paragraphs.map((paragraph, paragraphIndex) => <div className="story-paragraph" key={paragraph.id}>
           <div className="paragraph-label">{String(paragraphIndex + 1).padStart(2, '0')}</div>
           {paragraph.sentences.map((sentence) => {

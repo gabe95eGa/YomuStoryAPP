@@ -99,8 +99,12 @@ main:focus, .reader-header h1:focus { outline: none; }
 .large-text .japanese-text { font-size: 30px; }
 .word { font: inherit; letter-spacing: inherit; line-height: inherit; border: 0; background: transparent; padding: 0 1px; color: inherit; border-radius: 3px; }
 .word:hover, .word:focus-visible { background: #dce7d6; }
-.word-target { text-decoration: underline; text-decoration-color: #9bad96; text-decoration-thickness: 1px; text-underline-offset: 7px; }
+.word-target { background: #edf2e6; }
+.word-known { text-decoration: underline; text-decoration-style: solid; text-decoration-color: #73977d; text-underline-offset: 7px; text-decoration-thickness: 2px; }
 .word-learning { text-decoration: underline; text-decoration-style: dotted; text-decoration-color: #73977d; text-underline-offset: 7px; text-decoration-thickness: 2px; }
+.sentence { cursor: pointer; }
+.sentence:hover { border-left-color: #b8c7ac; }
+.reader-help { color: var(--muted); font-size: 12px; line-height: 1.8; max-width: 64ch; }
 rt { font-size: .42em; color: #657769; letter-spacing: .1px; font-weight: 400; }
 ruby { ruby-align: center; }
 .sentence-tools { display: flex; gap: 22px; align-items: baseline; padding-top: 2px; }

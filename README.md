@@ -528,7 +528,7 @@ Word sheets provide **Aprendiendo**, **Conocida**, and **Quitar estado** actions
 Untracked vocabulary has no saved record. Both statuses can be changed or removed;
 additional ambiguous dictionary entries have their own controls. Learning words
 receive a subtle dotted underline, with every matching visible occurrence updated
-without a refresh. Known words retain normal styling. Furigana supports All,
+without a refresh. Known words receive a continuous underline. Static story targets use a soft background. All identified matching occurrences update together. Furigana supports All,
 Adaptive and None modes, described below; displayed readings remain hiragana.
 
 `VocabularyStateService` is the portable reader boundary. Its web adapter in
@@ -787,7 +787,7 @@ new reading/title content lemmas; no runtime learner state was changed.
 
 Audit a batch with `.venv\Scripts\python.exe -m tools.reinforcement_metrics`
 followed by story paths. The helper is read-only and reports context source,
-target repetition and distinct new lemmas; it does not infer mastery.
+target repetition and distinct unlisted lemmas; unlisted does not mean unknown. Pass --review docs/REINFORCEMENT_BATCH_V2_LEXICAL_REVIEW.json for the V2 editorial introduction budget. It does not infer mastery.
 See [the full report](docs/REINFORCEMENT_BATCH_V1_REPORT.md) for lexical rules,
 short-length/familiarity limitations, review and verification details.
 
@@ -795,3 +795,5 @@ GitHub CI runs Python validation, manifest freshness and all backend tests,
 plus Node 24/pnpm typecheck, reader tests and build on main pushes and PRs.
 It uses local dictionary fixtures without downloading full JMdict. Local
 verification: **79 backend tests, 92 frontend tests**, typecheck/build passed.
+
+See [Reinforcement Batch V2](docs/REINFORCEMENT_BATCH_V2_REPORT.md) and [vocabulary/reading notes](docs/READER_VOCABULARY_NOTES.md). Select a sentence by clicking its empty space or focusing it and pressing Enter/Space. Dictionary entries expose compatible alternative word readings when available.

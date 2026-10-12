@@ -20,6 +20,13 @@ async function openStory(content = service()) {
 }
 
 describe('reader flows', () => {
+  it('saves a sentence selected through its blank area and resumes it after remount', async () => {
+    const { user, unmount, content } = await openStory();
+    await user.click(screen.getByRole('region',{name:/^Frase 3$/}));
+    expect(screen.getByText('Frase 3 de 15')).toBeVisible();
+    unmount(); render(<App content={content} />);
+    expect(await screen.findByText('Frase 3 de 15')).toBeVisible();
+  });
   it('renders the manifest library, metadata, topic filter, and opens a structured story', async () => {
     const { content } = await openStory();
     expect(content.loadManifest).toHaveBeenCalled();
@@ -63,7 +70,7 @@ describe('reader flows', () => {
     await user.click(target);
     const dialog = await screen.findByRole('dialog');
     expect(within(dialog).getByText('慣れる')).toBeVisible();
-    expect(within(dialog).getByText('ナレ')).toBeVisible();
+    expect(within(dialog).getByText('なれ')).toBeVisible();
     expect(within(dialog).getByText('Vocabulario objetivo')).toBeVisible();
     expect(await within(dialog).findByText('Diccionario no disponible.')).toBeVisible();
     await user.click(within(dialog).getByRole('button', { name: 'Cerrar vocabulario' }));

@@ -4,6 +4,7 @@ import type { Token } from '../lib/types';
 import { DictionaryDefinition } from './DictionaryDefinition';
 import { VocabularyControls } from './LearnerState';
 import { identityForToken } from '../lib/vocabulary';
+import { hiraganaReading } from './JapaneseText';
 
 export function VocabularySheet({ token, onClose, dictionary = dictionaryService }: {
   token: Token; onClose: () => void; dictionary?: DictionaryService;
@@ -33,7 +34,7 @@ export function VocabularySheet({ token, onClose, dictionary = dictionaryService
   }, [token, dictionary, retry]);
   const tokenFacts = <dl className="word-facts">
     <div><dt>Forma de diccionario en la historia</dt><dd lang="ja">{token.lemma}</dd></div>
-    <div><dt>Lectura de la forma seleccionada</dt><dd lang="ja">{token.reading}</dd></div>
+    <div><dt>Lectura de la forma seleccionada</dt><dd lang="ja">{hiraganaReading(token.reading)}</dd></div>
     {token.type && <div><dt>Tipo en la historia</dt><dd>{({ noun: 'Sustantivo', verb: 'Verbo', adjective: 'Adjetivo', adverb: 'Adverbio' } as Record<string, string>)[token.type] ?? token.type}</dd></div>}
   </dl>;
   return <dialog ref={dialog} className="vocabulary-sheet" aria-labelledby="word-title"

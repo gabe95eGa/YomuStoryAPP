@@ -6,11 +6,17 @@ import workBatch from '../../../stories/work/work_002.json';
 import travelBatch from '../../../stories/travel/travel_002.json';
 import japanBatch from '../../../stories/japan/japan_002.json';
 import cookingBatch from '../../../stories/cooking/cooking_002.json';
+import dailyPersonalized from '../../../stories/daily/daily_003.json';
+import workPersonalized from '../../../stories/work/work_003.json';
+import travelPersonalized from '../../../stories/travel/travel_003.json';
+import japanPersonalized from '../../../stories/japan/japan_003.json';
+import cookingPersonalized from '../../../stories/cooking/cooking_003.json';
 import { contentService, parseManifest, parseStory, sentenceSegments } from './content';
 import type { Sentence } from './types';
 
 describe('content loading and validation', () => {
-  it.each([dailyBatch, workBatch, travelBatch, japanBatch, cookingBatch])('reads published reinforcement content $id', (data) => {
+  it.each([dailyBatch, workBatch, travelBatch, japanBatch, cookingBatch,
+    dailyPersonalized, workPersonalized, travelPersonalized, japanPersonalized, cookingPersonalized])('reads published reinforcement content $id', (data) => {
     const story = parseStory(data, data.id);
     const listing = parseManifest(manifestData).stories.find((item) => item.id === data.id);
     expect(listing).toBeDefined();

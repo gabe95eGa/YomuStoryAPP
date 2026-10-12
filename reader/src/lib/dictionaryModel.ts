@@ -13,6 +13,7 @@ export interface DictionaryResult {
   id: string; provider: 'jmdict'; headword: string; readings: string[]; senses: DictionarySense[];
   partsOfSpeech: string[]; common: boolean; formLabels: string[];
   matchedBy: 'lemma' | 'surface' | 'reading';
+  otherReadings?: string[];
 }
 export interface DictionaryStatus {
   phase: 'idle' | 'preparing' | 'ready' | 'unavailable'; progress?: number; message?: string;
@@ -57,6 +58,7 @@ export function resolveEntry(entry: DictionaryEntry, query: DictionaryQuery, mat
   const primarySenses = senses.filter((sense) => sense.glosses.some((gloss) => gloss.language === primaryLanguage));
   return { id: entry.id, provider: entry.provider, headword,
     readings: selectedReadings.map((reading) => reading.text), senses,
+    otherReadings: readings.filter((reading) => !selectedReadings.includes(reading)).map((reading) => reading.text),
     partsOfSpeech: [...new Set(primarySenses.flatMap((sense) => sense.partsOfSpeech))],
     common: Boolean(spelling?.common || selectedReadings.some((reading) => reading.common)),
     formLabels: [...new Set([...(spelling?.labels ?? []), ...selectedReadings.flatMap((reading) => reading.labels)])], matchedBy };
