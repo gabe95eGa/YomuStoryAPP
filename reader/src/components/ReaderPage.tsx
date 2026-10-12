@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useEffect, useRef, useState } from 'react';
 import type { Story, StoryProgress, Token } from '../lib/types';
 import { StorySentence } from './StorySentence';
@@ -13,6 +14,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   dictionary?: DictionaryService;
   preferences?: ReaderPreferences; onPreferences?: (patch: Partial<ReaderPreferences>) => void;
 }) {
+  const { t, language } = useI18n();
   const allSentences = story.content.paragraphs.flatMap((paragraph) => paragraph.sentences);
   const [current, setCurrent] = useState(() => progress?.completed ? 0
     : Math.max(0, allSentences.findIndex((sentence) => sentence.id === progress?.last_sentence)));
@@ -40,28 +42,28 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   }
   let index = 0;
   return <main className="reader-page" id="main-content" tabIndex={-1}>
-    <nav className="reader-toolbar" aria-label="Controles de lectura">
-      <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span> Biblioteca</button>
+    <nav className="reader-toolbar" aria-label={t("Controles de lectura")}>
+      <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span>{t(" Biblioteca")}</button>
       <div className="reader-options">
         <label className="furigana-control">Furigana
           <select value={furigana} onChange={(event) => {
             const mode = event.target.value as FuriganaMode;
             if (onPreferences) onPreferences({ furigana: mode }); else setFurigana(mode);
-          }}><option value="all">Todas</option><option value="adaptive">Adaptativa</option><option value="none">Ninguna</option></select>
+          }}><option value="all">{t("Todas")}</option><option value="adaptive">{t("Adaptativa")}</option><option value="none">{t("Ninguna")}</option></select>
         </label>
-        <button type="button" className="size-button" aria-label="Texto grande" aria-pressed={largeText} onClick={() => onPreferences ? onPreferences({ textSize: largeText ? 'normal' : 'large' }) : setLargeText(!largeText)}>A<span>A</span></button>
+        <button type="button" className="size-button" aria-label={t("Texto grande")} aria-pressed={largeText} onClick={() => onPreferences ? onPreferences({ textSize: largeText ? 'normal' : 'large' }) : setLargeText(!largeText)}>A<span>A</span></button>
       </div>
     </nav>
-    <header className="reader-header"><p className="eyebrow">Una lectura de YomuStory</p>
-      <h1 lang="ja" tabIndex={-1} ref={title}>{story.metadata.title}</h1><p className="reader-subtitle">{story.metadata.title_es}</p>
-      <div className="reader-meta"><span className="badge">{story.metadata.level}</span><span>{story.metadata.estimated_minutes} min de lectura</span>
-        <span lang="ja">{story.metadata.topics.join(' · ')}</span></div>
+    <header className="reader-header"><p className="eyebrow">{t("Una lectura de YomuStory")}</p>
+      <h1 lang="ja" tabIndex={-1} ref={title}>{story.metadata.title}</h1><p className="reader-subtitle">{t(story.metadata.title_es)}</p>
+      <div className="reader-meta"><span className="badge">{story.metadata.level}</span><span>{story.metadata.estimated_minutes}{t(" min de lectura")}</span>
+        <span lang={language === 'en' ? 'en' : 'ja'}>{story.metadata.topics.map(t).join(' · ')}</span></div>
     </header>
     <div className="reader-layout">
-      <aside className="reading-aside"><p className="eyebrow">A tu ritmo</p><p>Lee primero.<br />La ayuda está a un toque.</p>
-        <div className="target-key">Fondo suave: objetivo del relato.<br />Subrayado de puntos: aprendiendo.<br />Subrayado continuo: conocida.</div></aside>
-      <article className={`reading-surface${largeText ? ' large-text' : ''}`} aria-label="Texto de la historia">
-        <p className="reader-help" id="reader-help">Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.</p>
+      <aside className="reading-aside"><p className="eyebrow">{t("A tu ritmo")}</p><p>{t("Lee primero.")}<br />{t("La ayuda está a un toque.")}</p>
+        <div className="target-key">{t("Fondo suave: objetivo del relato.")}<br />{t("Subrayado de puntos: aprendiendo.")}<br />{t("Subrayado continuo: conocida.")}</div></aside>
+      <article className={`reading-surface${largeText ? ' large-text' : ''}`} aria-label={t("Texto de la historia")}>
+        <p className="reader-help" id="reader-help">{t("Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.")}</p>
         {story.content.paragraphs.map((paragraph, paragraphIndex) => <div className="story-paragraph" key={paragraph.id}>
           <div className="paragraph-label">{String(paragraphIndex + 1).padStart(2, '0')}</div>
           {paragraph.sentences.map((sentence) => {
@@ -72,18 +74,18 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
           })}
         </div>)}
         <section className="reading-end" aria-labelledby="end-title"><span className="end-mark" aria-hidden="true">終</span>
-          <h2 id="end-title">{progress?.completed ? 'Una historia más, un paso más.' : 'Has llegado al final.'}</h2>
-          <p>{progress?.completed ? 'Esta lectura está marcada como completada.' : 'Tómate un momento. ¿Qué te ha quedado de esta historia?'}</p>
-          {progress?.completed ? <button type="button" className="primary-button" onClick={onBack}>Volver a la biblioteca <span aria-hidden="true">→</span></button>
-            : <button type="button" className="primary-button" onClick={onComplete}>Completar lectura <span aria-hidden="true">✓</span></button>}
+          <h2 id="end-title">{progress?.completed ? t('Una historia más, un paso más.') : t('Has llegado al final.')}</h2>
+          <p>{progress?.completed ? t('Esta lectura está marcada como completada.') : t('Tómate un momento. ¿Qué te ha quedado de esta historia?')}</p>
+          {progress?.completed ? <button type="button" className="primary-button" onClick={onBack}>{t("Volver a la biblioteca ")}<span aria-hidden="true">→</span></button>
+            : <button type="button" className="primary-button" onClick={onComplete}>{t("Completar lectura ")}<span aria-hidden="true">✓</span></button>}
         </section>
       </article>
     </div>
-    <nav className="position-bar" aria-label="Navegar por las frases">
-      <button type="button" className="icon-button" aria-label="Frase anterior" disabled={current === 0} onClick={() => selectSentence(current - 1, true)}>←</button>
-      <div className="position-info"><span aria-live="polite">Frase {current + 1} de {allSentences.length}{progress?.completed ? ' · Completada' : ''}</span>
-        <progress aria-label="Posición en la lectura" max={allSentences.length} value={current + 1} /></div>
-      <button type="button" className="icon-button" aria-label="Frase siguiente" disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
+    <nav className="position-bar" aria-label={t("Navegar por las frases")}>
+      <button type="button" className="icon-button" aria-label={t("Frase anterior")} disabled={current === 0} onClick={() => selectSentence(current - 1, true)}>←</button>
+      <div className="position-info"><span aria-live="polite">{t("Frase ")}{current + 1}{t(' de ')}{allSentences.length}{progress?.completed ? t(' · Completada') : ''}</span>
+        <progress aria-label={t("Posición en la lectura")} max={allSentences.length} value={current + 1} /></div>
+      <button type="button" className="icon-button" aria-label={t("Frase siguiente")} disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
     </nav>
     {selected && <VocabularySheet token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}
   </main>;

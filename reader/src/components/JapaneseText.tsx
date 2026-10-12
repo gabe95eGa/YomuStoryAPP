@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { sentenceSegments } from '../lib/content';
 import type { Sentence, Token } from '../lib/types';
 import { tokenQueryKey, type VocabularyStatus } from '../lib/vocabulary';
@@ -23,11 +24,12 @@ export function JapaneseText({ sentence, furigana, onToken, vocabularyStatuses }
   sentence: Sentence; furigana: FuriganaMode; onToken: (token: Token) => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
 }) {
+  const { t } = useI18n();
   return <span lang="ja" className="japanese-text" data-testid={`text-${sentence.id}`}>
     {sentenceSegments(sentence).map((segment, index) => segment.token && isInteractive(segment.token)
       ? <button key={index} type="button" className={`word${segment.token.target ? ' word-target' : ''}${vocabularyStatuses?.get(tokenQueryKey(segment.token)) === 'learning' ? ' word-learning' : ''}${vocabularyStatuses?.get(tokenQueryKey(segment.token)) === 'known' ? ' word-known' : ''}`}
           data-vocabulary-status={vocabularyStatuses?.get(tokenQueryKey(segment.token))}
-          aria-label={`Ver palabra: ${segment.token.surface}`} onClick={() => onToken(segment.token!)}>
+          aria-label={t(`Ver palabra: ${segment.token.surface}`)} onClick={() => onToken(segment.token!)}>
           <FuriganaText token={segment.token} enabled={shouldShowFurigana(segment.token, vocabularyStatuses?.get(tokenQueryKey(segment.token)), furigana)} />
         </button>
       : <span key={index}>{segment.token ? <FuriganaText token={segment.token} enabled={shouldShowFurigana(segment.token, vocabularyStatuses?.get(tokenQueryKey(segment.token)), furigana)} /> : segment.text}</span>)}

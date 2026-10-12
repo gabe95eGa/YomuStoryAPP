@@ -1,3 +1,4 @@
+import { useI18n, LanguageProvider, LANGUAGE_KEY, loadLanguage, type Language } from './lib/i18n';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { contentService, type ContentService } from './lib/content';
 import { localProgressStore, type ProgressStore } from './lib/progress';
@@ -18,20 +19,40 @@ const getStoryId = () => window.location.hash.match(/^#\/story\/([a-z0-9_]+)$/)?
 const message = (error: unknown) => error instanceof Error ? error.message : 'No se pudo cargar la lectura. Inténtalo de nuevo.';
 
 function LoadMessage({ error, onRetry, onBack }: { error?: string; onRetry?: () => void; onBack?: () => void }) {
+  const { t, language } = useI18n();
   return <main className="load-message" id="main-content" tabIndex={-1} aria-live="polite">
     <span className="load-mark" lang="ja" aria-hidden="true">読</span>
-    <h1>{error ? 'No pudimos abrir esta página.' : 'Preparando tu lectura…'}</h1>
-    {error && <p role="alert">{error}</p>}
-    {onRetry && <button type="button" className="primary-button" onClick={onRetry}>Intentar de nuevo</button>}
-    {onBack && <button type="button" className="text-button" onClick={onBack}>Volver a la biblioteca</button>}
+    <h1>{error ? t('No pudimos abrir esta página.') : t('Preparando tu lectura…')}</h1>
+    {error && <p role="alert">{t(error)}</p>}
+    {onRetry && <button type="button" className="primary-button" onClick={onRetry}>{t("Intentar de nuevo")}</button>}
+    {onBack && <button type="button" className="text-button" onClick={onBack}>{t("Volver a la biblioteca")}</button>}
+    {error && <p><a href="https://gabe95ega.github.io/YomuStoryAPP/">{language === 'en' ? 'Open the published website' : 'Abrir la web publicada'}</a></p>}
   </main>;
 }
 
-export default function App({ content = contentService, store = localProgressStore, dictionary, vocabulary = vocabularyStateService,
-  preferenceStore = localPreferencesStore, contextService }: {
+export default function App(props: Parameters<typeof AppContent>[0]) {
+  const [language, setLanguage] = useState(loadLanguage);
+  const [languageNotice, setLanguageNotice] = useState('');
+  useEffect(() => {
+    document.documentElement.lang = language;
+    document.title = language === 'en' ? 'YomuStory · Japanese reading' : 'YomuStory · Lecturas en japonés';
+  }, [language]);
+  function changeLanguage(next: Language) {
+    setLanguage(next);
+    try { localStorage.setItem(LANGUAGE_KEY, next); setLanguageNotice(''); }
+    catch { setLanguageNotice(next === 'en' ? 'Language changed for this session; browser storage is unavailable.' : 'Idioma cambiado para esta sesión; el almacenamiento no está disponible.'); }
+  }
+  return <LanguageProvider language={language}><AppContent {...props} interfaceLanguage={language} onLanguage={changeLanguage} />
+    {languageNotice && <p role="status">{languageNotice}</p>}</LanguageProvider>;
+}
+
+function AppContent({ content = contentService, store = localProgressStore, dictionary, vocabulary = vocabularyStateService,
+  preferenceStore = localPreferencesStore, contextService, interfaceLanguage, onLanguage }: {
   content?: ContentService; store?: ProgressStore; dictionary?: DictionaryService; vocabulary?: VocabularyStateService; preferenceStore?: PreferencesStore;
   contextService?: LearnerContextService;
+  interfaceLanguage?: Language; onLanguage?: (language: Language) => void;
 }) {
+  const { t, language } = useI18n();
   const [initial] = useState(() => store.load());
   const [initialPreferences] = useState(() => preferenceStore.load());
   const [progress, setProgress] = useState(initial.progress);
@@ -46,6 +67,11 @@ export default function App({ content = contentService, store = localProgressSto
   const [library, setLibrary] = useState<LoadState<Manifest>>({ status: 'loading' });
   const [story, setStory] = useState<LoadState<Story>>({ status: 'loading' });
   const [retry, setRetry] = useState(0);
+  useEffect(() => {
+    const reconnect = () => setRetry((count) => count + 1);
+    window.addEventListener('online', reconnect);
+    return () => window.removeEventListener('online', reconnect);
+  }, []);
 
   const updateProgress = useCallback((id: string, patch: Partial<StoryProgress>) => {
     const previous = Object.hasOwn(progressRef.current, id) ? progressRef.current[id] : undefined;
@@ -117,13 +143,17 @@ export default function App({ content = contentService, store = localProgressSto
   return <LearnerContext.Provider value={learner}><div className="app-shell">
     <a className="skip-link" href="#main-content" onClick={(event) => {
       event.preventDefault(); document.getElementById('main-content')?.focus();
-    }}>Saltar al contenido</a>
-    <header className="app-header"><button type="button" className="brand" onClick={goLibrary} aria-label="YomuStory, biblioteca">
+    }}>{t("Saltar al contenido")}</a>
+    <header className="app-header"><button type="button" className="brand" onClick={goLibrary} aria-label={t("YomuStory, biblioteca")}>
       <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 6h8c2 0 3 1 3 3v18c0-2-1-3-3-3H5zM27 6h-8c-2 0-3 1-3 3v18c0-2 1-3 3-3h8z" /></svg>
-      <span>Yomu<span>Story</span></span></button><div className="header-navigation"><span className="header-note">Tu japonés, a tu ritmo.</span>
-      <nav aria-label="Navegación principal"><a href="#/" aria-current={!storyId && !isVocabulary ? 'page' : undefined}>Biblioteca</a>
-        <a href="#/vocabulary" aria-current={isVocabulary ? 'page' : undefined}>Vocabulario</a></nav></div></header>
-    {notice && <p className="storage-notice" role="status">{notice}</p>}
+      <span>Yomu<span>Story</span></span></button><div className="header-navigation"><span className="header-note">{t("Tu japonés, a tu ritmo.")}</span>
+      <nav aria-label={t("Navegación principal")}><a href="#/" aria-current={!storyId && !isVocabulary ? 'page' : undefined}>{t("Biblioteca")}</a>
+        <a href="#/vocabulary" aria-current={isVocabulary ? 'page' : undefined}>{t("Vocabulario")}</a></nav>
+      <label className="language-control"><span>{language === 'en' ? 'Language' : 'Idioma'}</span>
+        <select value={interfaceLanguage} onChange={(event) => onLanguage?.(event.target.value as Language)}>
+          <option value="es">Español</option><option value="en">English</option>
+        </select></label></div></header>
+    {notice && <p className="storage-notice" role="status">{t(notice)}</p>}
     {isVocabulary ? <VocabularyPage backup={backup} generationContext={generationContext} usesExampleProfile={!contextService} /> : library.status === 'loading' ? <LoadMessage />
       : library.status === 'error' ? <LoadMessage error={library.message} onRetry={retryLoad} />
       : !storyId ? <StoryLibrary stories={library.data.stories} progress={progress} onOpen={(id) => { window.location.hash = `/story/${id}`; }} />

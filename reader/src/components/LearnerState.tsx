@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { dictionaryService } from '../lib/dictionary';
 import { type DictionaryService } from '../lib/dictionaryModel';
@@ -25,6 +26,7 @@ export function useVocabularyItems(service: VocabularyStateService) {
   return { service, items, error };
 }
 export function VocabularyControls({ identity }: { identity: VocabularyIdentity }) {
+  const { t } = useI18n();
   const learner = useContext(LearnerContext);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string>();
@@ -36,15 +38,15 @@ export function VocabularyControls({ identity }: { identity: VocabularyIdentity 
     catch { setError('No se pudo guardar el estado. Inténtalo de nuevo.'); }
     finally { setBusy(false); }
   }
-  return <section className="vocabulary-controls" aria-label={`Estado de ${identity.lemma} / ${identity.reading}`}>
-    <p>{status === 'learning' ? 'Aprendiendo' : status === 'known' ? 'Conocida' : 'Sin clasificar'}</p>
+  return <section className="vocabulary-controls" aria-label={t(`Estado de ${identity.lemma} / ${identity.reading}`)}>
+    <p>{status === 'learning' ? t('Aprendiendo') : status === 'known' ? t('Conocida') : t('Sin clasificar')}</p>
     <div className="status-actions">
-      <button type="button" aria-pressed={status === 'learning'} disabled={busy || Boolean(learner.error)} onClick={() => void update('learning')}>Aprendiendo</button>
-      <button type="button" aria-pressed={status === 'known'} disabled={busy || Boolean(learner.error)} onClick={() => void update('known')}>Conocida</button>
-      {status && <button type="button" className="clear-status" disabled={busy || Boolean(learner.error)} onClick={() => void update()}>Quitar estado</button>}
+      <button type="button" aria-pressed={status === 'learning'} disabled={busy || Boolean(learner.error)} onClick={() => void update('learning')}>{t("Aprendiendo")}</button>
+      <button type="button" aria-pressed={status === 'known'} disabled={busy || Boolean(learner.error)} onClick={() => void update('known')}>{t("Conocida")}</button>
+      {status && <button type="button" className="clear-status" disabled={busy || Boolean(learner.error)} onClick={() => void update()}>{t("Quitar estado")}</button>}
     </div>
-    {error && <p className="dictionary-note" role="alert">{error}</p>}
-    {learner.error && <p className="dictionary-note">{learner.error}</p>}
+    {error && <p className="dictionary-note" role="alert">{t(error)}</p>}
+    {learner.error && <p className="dictionary-note">{t(learner.error)}</p>}
   </section>;
 }
 export function useTokenStatuses(story: Story, dictionary: DictionaryService = dictionaryService) {

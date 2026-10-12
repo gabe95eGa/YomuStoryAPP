@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { downloadJson, MAX_BACKUP_BYTES, parseBackupText, readBackupFile, type BackupService, type LearnerBackup } from '../lib/backup';
 import { normalizeJapanese } from '../lib/dictionaryModel';
@@ -9,22 +10,24 @@ function Confirmation({ title, description, action, onConfirm, onCancel, busy }:
   title: string; description: string; action: string; onConfirm: () => void; onCancel: () => void;
   busy: boolean;
 }) {
+  const { t } = useI18n();
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => {
     const previous = document.activeElement as HTMLElement | null;
     const element = dialog.current!; element.showModal();
     return () => { element.close(); previous?.focus(); };
   }, []);
-  return <dialog ref={dialog} className="data-confirmation" role="alertdialog" aria-label={title}
+  return <dialog ref={dialog} className="data-confirmation" role="alertdialog" aria-label={t(title)}
     onCancel={(event) => { event.preventDefault(); if (!busy) onCancel(); }}>
-    <h3>{title}</h3><p>{description}</p>
-    <button type="button" className="primary-button" disabled={busy} onClick={onConfirm}>{busy ? 'Guardando…' : action}</button>
-    <button type="button" className="text-button" disabled={busy} onClick={onCancel}>Cancelar</button>
+    <h3>{t(title)}</h3><p>{t(description)}</p>
+    <button type="button" className="primary-button" disabled={busy} onClick={onConfirm}>{busy ? t('Guardando…') : action}</button>
+    <button type="button" className="text-button" disabled={busy} onClick={onCancel}>{t("Cancelar")}</button>
   </dialog>;
 }
 export function VocabularyPage({ backup, generationContext, usesExampleProfile }: {
   backup: BackupService; generationContext: LearnerContextService; usesExampleProfile?: boolean;
 }) {
+  const { t, language } = useI18n();
   const learner = useContext(LearnerContext)!;
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
@@ -64,59 +67,59 @@ export function VocabularyPage({ backup, generationContext, usesExampleProfile }
   }
   const importPending = () => void run(async () => { await backup.importBackup(pending!, mode); setPending(undefined); }, 'Copia importada. Tus datos ya están disponibles.');
   return <main className="vocabulary-page library" id="main-content" tabIndex={-1}>
-    <header className="vocabulary-intro"><p className="eyebrow">Tu aprendizaje</p><h1>Vocabulario</h1>
-      <p>Aprendiendo: {learning} · Conocidas: {learner.items.length - learning}</p></header>
-    {learner.error && <p role="alert">{learner.error}</p>}
+    <header className="vocabulary-intro"><p className="eyebrow">{t("Tu aprendizaje")}</p><h1>{t("Vocabulario")}</h1>
+      <p>{t("Aprendiendo: ")}{learning}{t(' · Conocidas: ')}{learner.items.length - learning}</p></header>
+    {learner.error && <p role="alert">{t(learner.error)}</p>}
     <div className="vocabulary-filters">
-      <label>Estado<select value={filter} onChange={(event) => { setFilter(event.target.value); setPage(0); }}>
-        <option value="all">Todas</option><option value="learning">Aprendiendo</option><option value="known">Conocidas</option></select></label>
-      <label>Buscar vocabulario<input type="search" value={search} onChange={(event) => { setSearch(event.target.value); setPage(0); }} placeholder="Palabra o lectura" /></label>
+      <label>{t("Estado")}<select value={filter} onChange={(event) => { setFilter(event.target.value); setPage(0); }}>
+        <option value="all">{t("Todas")}</option><option value="learning">{t("Aprendiendo")}</option><option value="known">{t("Conocidas")}</option></select></label>
+      <label>{t("Buscar vocabulario")}<input type="search" value={search} onChange={(event) => { setSearch(event.target.value); setPage(0); }} placeholder={t("Palabra o lectura")} /></label>
     </div>
-    <p className="vocabulary-total">{filtered.length} {filtered.length === 1 ? 'palabra' : 'palabras'} · Página {currentPage + 1} de {totalPages}</p>
+    <p className="vocabulary-total">{filtered.length} {filtered.length === 1 ? t('palabra') : t('palabras')}{t(' · Página ')}{currentPage + 1}{t(' de ')}{totalPages}</p>
     <div className="vocabulary-list">{filtered.slice(currentPage * 50, currentPage * 50 + 50).map((item) => <article key={item.id}>
       <div><h2 lang="ja">{item.lemma}</h2><p lang="ja">{item.reading}</p>
-        <small>Actualizada: {new Date(item.updatedAt).toLocaleDateString('es')}</small>
-        {!item.dictionaryEntryId && <small> · Identidad de la lectura</small>}</div>
+        <small>{t("Actualizada: ")}{new Date(item.updatedAt).toLocaleDateString(language)}</small>
+        {!item.dictionaryEntryId && <small>{t(" · Identidad de la lectura")}</small>}</div>
       <VocabularyControls identity={item} />
     </article>)}</div>
-    {!filtered.length && <p className="empty-state">{learner.items.length ? 'No hay palabras para este filtro.' : 'Marca palabras desde una lectura para empezar tu vocabulario.'}</p>}
-    {totalPages > 1 && <nav className="vocabulary-pagination" aria-label="Páginas de vocabulario">
-      <button type="button" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>Anterior</button>
-      <button type="button" disabled={currentPage + 1 === totalPages} onClick={() => setPage(currentPage + 1)}>Siguiente</button>
+    {!filtered.length && <p className="empty-state">{learner.items.length ? t('No hay palabras para este filtro.') : t('Marca palabras desde una lectura para empezar tu vocabulario.')}</p>}
+    {totalPages > 1 && <nav className="vocabulary-pagination" aria-label={t("Páginas de vocabulario")}>
+      <button type="button" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t("Anterior")}</button>
+      <button type="button" disabled={currentPage + 1 === totalPages} onClick={() => setPage(currentPage + 1)}>{t("Siguiente")}</button>
     </nav>}
-    <section className="backup-section" aria-labelledby="backup-title"><h2 id="backup-title">Copias de seguridad</h2>
-      <p>Guarda tu vocabulario, progreso y preferencias en un archivo. Tus datos se quedan en este navegador hasta que tú exportes una copia.</p>
+    <section className="backup-section" aria-labelledby="backup-title"><h2 id="backup-title">{t("Copias de seguridad")}</h2>
+      <p>{t("Guarda tu vocabulario, progreso y preferencias en un archivo. Tus datos se quedan en este navegador hasta que tú exportes una copia.")}</p>
       <div className="backup-actions">
         <button type="button" disabled={busy || Boolean(learner.error)} onClick={() => void run(async () => {
           const data = await backup.exportBackup(); downloadJson(data, `yomustory-backup-${data.exported_at.slice(0, 10)}.json`);
-        }, 'Copia exportada. Guarda el archivo en un lugar seguro.')}>Exportar copia</button>
-        <button type="button" disabled={busy || Boolean(learner.error)} onClick={() => fileInput.current?.click()}>Importar copia</button>
+        }, 'Copia exportada. Guarda el archivo en un lugar seguro.')}>{t("Exportar copia")}</button>
+        <button type="button" disabled={busy || Boolean(learner.error)} onClick={() => fileInput.current?.click()}>{t("Importar copia")}</button>
       </div>
-      <input ref={fileInput} type="file" accept=".json,application/json" aria-label="Archivo de copia de seguridad" hidden disabled={busy}
+      <input ref={fileInput} type="file" accept=".json,application/json" aria-label={t("Archivo de copia de seguridad")} hidden disabled={busy}
         onChange={(event) => { void chooseFile(event.target.files?.[0]); event.target.value = ''; }} />
-      {pending && <div className="import-preview"><h3>Copia validada</h3>
-        <p>{pending.vocabulary.length} {pending.vocabulary.length === 1 ? 'palabra' : 'palabras'} · {pending.reading_progress.length} {pending.reading_progress.length === 1 ? 'lectura' : 'lecturas'} · Exportada: {new Date(pending.exported_at).toLocaleString('es')}</p>
-        <label>Cómo importar<select value={mode} disabled={busy} onChange={(event) => { setMode(event.target.value as ImportMode); setConfirmation(undefined); }}>
-          <option value="merge">Combinar con mis datos</option><option value="replace">Reemplazar mis datos</option></select></label>
-        <p>{mode === 'merge' ? 'Se conserva el registro más reciente. En un empate, se conservan tus datos actuales.' : 'Reemplaza vocabulario, progreso y preferencias. El diccionario y las historias se conservan.'}</p>
-        <button type="button" className="primary-button" disabled={busy} onClick={() => mode === 'replace' ? setConfirmation('replace') : importPending()}>Aplicar importación</button>
-        <button type="button" className="text-button" disabled={busy} onClick={() => { setPending(undefined); setConfirmation(undefined); }}>Cancelar importación</button>
+      {pending && <div className="import-preview"><h3>{t("Copia validada")}</h3>
+        <p>{pending.vocabulary.length} {pending.vocabulary.length === 1 ? t('palabra') : t('palabras')} · {pending.reading_progress.length} {pending.reading_progress.length === 1 ? t('lectura') : t('lecturas')}{t(' · Exportada: ')}{new Date(pending.exported_at).toLocaleString(language)}</p>
+        <label>{t("Cómo importar")}<select value={mode} disabled={busy} onChange={(event) => { setMode(event.target.value as ImportMode); setConfirmation(undefined); }}>
+          <option value="merge">{t("Combinar con mis datos")}</option><option value="replace">{t("Reemplazar mis datos")}</option></select></label>
+        <p>{mode === 'merge' ? t('Se conserva el registro más reciente. En un empate, se conservan tus datos actuales.') : t('Reemplaza vocabulario, progreso y preferencias. El diccionario y las historias se conservan.')}</p>
+        <button type="button" className="primary-button" disabled={busy} onClick={() => mode === 'replace' ? setConfirmation('replace') : importPending()}>{t("Aplicar importación")}</button>
+        <button type="button" className="text-button" disabled={busy} onClick={() => { setPending(undefined); setConfirmation(undefined); }}>{t("Cancelar importación")}</button>
       </div>}
-      {confirmation === 'replace' && <Confirmation title="¿Reemplazar tus datos?" description="Se sustituirán tu vocabulario, progreso y preferencias por los de esta copia. Exporta primero si quieres conservar tus datos actuales."
-        action="Confirmar reemplazo" busy={busy} onConfirm={importPending} onCancel={() => setConfirmation(undefined)} />}
-      <div className="vocabulary-deletion"><button type="button" disabled={busy || Boolean(learner.error) || learner.items.length === 0} onClick={() => setConfirmation('clear')}>Vaciar vocabulario</button></div>
-      {confirmation === 'clear' && <Confirmation title="¿Vaciar tu vocabulario?" description="Se quitarán todas las clasificaciones. Tu progreso, preferencias, diccionario e historias se conservan."
-        action="Confirmar vaciado" busy={busy} onConfirm={() => void run(() => learner.service.clear(), 'Vocabulario vaciado.')} onCancel={() => setConfirmation(undefined)} />}
+      {confirmation === 'replace' && <Confirmation title={t("¿Reemplazar tus datos?")} description={t("Se sustituirán tu vocabulario, progreso y preferencias por los de esta copia. Exporta primero si quieres conservar tus datos actuales.")}
+        action={t("Confirmar reemplazo")} busy={busy} onConfirm={importPending} onCancel={() => setConfirmation(undefined)} />}
+      <div className="vocabulary-deletion"><button type="button" disabled={busy || Boolean(learner.error) || learner.items.length === 0} onClick={() => setConfirmation('clear')}>{t("Vaciar vocabulario")}</button></div>
+      {confirmation === 'clear' && <Confirmation title={t("¿Vaciar tu vocabulario?")} description={t("Se quitarán todas las clasificaciones. Tu progreso, preferencias, diccionario e historias se conservan.")}
+        action={t("Confirmar vaciado")} busy={busy} onConfirm={() => void run(() => learner.service.clear(), 'Vocabulario vaciado.')} onCancel={() => setConfirmation(undefined)} />}
     </section>
-    <section className="backup-section context-section" aria-labelledby="context-title"><h2 id="context-title">Contexto para nuevas lecturas</h2>
-      <p>Comparte tu nivel y vocabulario con un generador de historias. Este archivo sirve para crear lecturas; para restaurar tus datos, utiliza una copia de seguridad.</p>
-      <p>Nivel: {generationContext.configuration.language.current_level} → {generationContext.configuration.language.target_level}
-        {usesExampleProfile && ' · Perfil de ejemplo'}<br />Conocidas: {learner.items.length - learning} · Aprendiendo: {learning}</p>
+    <section className="backup-section context-section" aria-labelledby="context-title"><h2 id="context-title">{t("Contexto para nuevas lecturas")}</h2>
+      <p>{t("Comparte tu nivel y vocabulario con un generador de historias. Este archivo sirve para crear lecturas; para restaurar tus datos, utiliza una copia de seguridad.")}</p>
+      <p>{t("Nivel: ")}{generationContext.configuration.language.current_level} → {generationContext.configuration.language.target_level}
+        {usesExampleProfile && t(' · Perfil de ejemplo')}<br />{t("Conocidas: ")}{learner.items.length - learning}{t(' · Aprendiendo: ')}{learning}</p>
       <div className="backup-actions"><button type="button" disabled={busy || Boolean(learner.error)} onClick={() => void run(async () => {
         const data = await generationContext.buildContext();
         downloadJson(data, `yomustory-learner-context-${data.generated_at.slice(0, 10)}.json`);
-      }, 'Contexto de aprendizaje exportado para generar lecturas.')}>Exportar contexto de aprendizaje</button></div>
+      }, 'Contexto de aprendizaje exportado para generar lecturas.')}>{t("Exportar contexto de aprendizaje")}</button></div>
     </section>
-    {busy && <p role="status">Preparando tus datos…</p>}{message && <p role="status">{message}</p>}{error && <p role="alert">{error}</p>}
+    {busy && <p role="status">{t("Preparando tus datos…")}</p>}{message && <p role="status">{t(message)}</p>}{error && <p role="alert">{t(error)}</p>}
   </main>;
 }

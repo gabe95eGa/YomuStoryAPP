@@ -1,3 +1,4 @@
+import { useI18n } from '../lib/i18n';
 import { useState } from 'react';
 import type { Sentence, Token } from '../lib/types';
 import { JapaneseText } from './JapaneseText';
@@ -9,10 +10,11 @@ export function StorySentence({ sentence, number, active, furigana, onToken, onS
   onToken: (token: Token) => void; onSelect: () => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
 }) {
+  const { t, language } = useI18n();
   const [translated, setTranslated] = useState(false);
   const translationId = `translation-${sentence.id}`;
   return <section id={`sentence-${sentence.id}`} className={`sentence${active ? ' sentence-active' : ''}`}
-    tabIndex={0} aria-label={`Frase ${number}`} aria-describedby="reader-help"
+    tabIndex={0} aria-label={t(`Frase ${number}`)} aria-describedby="reader-help"
     onClick={(event) => {
       if ((event.target as Element).closest('button, a, summary, details, input, select, textarea')) return;
       if (window.getSelection()?.isCollapsed === false) return;
@@ -26,20 +28,20 @@ export function StorySentence({ sentence, number, active, furigana, onToken, onS
     <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} vocabularyStatuses={vocabularyStatuses} />
     <div className="sentence-tools">
       <button type="button" className="text-button" aria-expanded={translated}
-        aria-controls={translationId} aria-label={`${translated ? 'Ocultar' : 'Mostrar'} traducción de la frase ${number}`}
+        aria-controls={translationId} aria-label={t(`${translated ? 'Ocultar' : 'Mostrar'} traducción de la frase ${number}`)}
         onClick={() => { setTranslated(!translated); onSelect(); }}>
-        {translated ? 'Ocultar traducción' : 'Traducción'} <span aria-hidden="true">{translated ? '−' : '+'}</span>
+        {translated ? t('Ocultar traducción') : t('Traducción')} <span aria-hidden="true">{translated ? '−' : '+'}</span>
       </button>
       {sentence.grammar_points?.length ? <details className="grammar-info">
-        <summary>Gramática <span aria-hidden="true">{sentence.grammar_points.length}</span></summary>
+        <summary>{t("Gramática ")}<span aria-hidden="true">{sentence.grammar_points.length}</span></summary>
         <div className="grammar-list">{sentence.grammar_points.map((point, index) => <div key={index}>
           <strong lang="ja">{point.pattern}</strong>
           {point.level && <span className="badge">{point.level}</span>}
-          {point.target && <span className="small-label">Objetivo</span>}
-          {point.meaning_es && <p>{point.meaning_es}</p>}
+          {point.target && <span className="small-label">{t("Objetivo")}</span>}
+          {point.meaning_es && <p>{t(point.meaning_es)}</p>}
         </div>)}</div>
       </details> : null}
     </div>
-    <p id={translationId} className="translation" lang="es" hidden={!translated}>{sentence.translation_es}</p>
+    <p id={translationId} className="translation" lang={language} hidden={!translated}>{t(sentence.translation_es ?? '')}</p>
   </section>;
 }

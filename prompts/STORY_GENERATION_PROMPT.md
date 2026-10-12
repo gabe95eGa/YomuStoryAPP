@@ -37,6 +37,12 @@ or JLPT vocabulary grade without verified linguistic resources.
    sentences, direct Spanish/English syntax, and unnecessary rare kanji.
 4. Segment into paragraphs and sentences with story-wide unique paragraph and
    sentence IDs. Supply a faithful, natural Spanish translation for every sentence.
+   For publication in the bilingual reader, also add natural English translations
+   of every `_es` editorial field to `reader/src/locales/content.en.json`, keyed by
+   the exact Spanish source string. Include titles, summaries, sentence translations,
+   vocabulary/grammar explanations and comprehension questions/explanations.
+   Do not duplicate or regenerate Japanese text, tokens, IDs or learner state for
+   English. Review the English against the Japanese; run frontend coverage tests.
 5. Supply lexical tokens with exact `surface`, dictionary-form `lemma`, and kana
    `reading` for that surface. Prefer the optional local Sudachi tool when available;
    manually supplied tokens are acceptable after careful review and validation.

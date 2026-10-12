@@ -797,3 +797,26 @@ It uses local dictionary fixtures without downloading full JMdict. Local
 verification: **79 backend tests, 92 frontend tests**, typecheck/build passed.
 
 See [Reinforcement Batch V2](docs/REINFORCEMENT_BATCH_V2_REPORT.md) and [vocabulary/reading notes](docs/READER_VOCABULARY_NOTES.md). Select a sentence by clicking its empty space or focusing it and pressing Enter/Space. Dictionary entries expose compatible alternative word readings when available.
+
+### Spanish and English
+
+Use **Idioma / Language** in the header to select Español or English. The choice
+persists in this browser. All 15 published stories have English sentence translations,
+titles, grammar explanations, target glosses and comprehension text in
+`reader/src/locales/content.en.json`. Interface strings live in `reader/src/locales/en.json`.
+One React reader, Japanese corpus, tokenizer, dictionary and learner database serve
+both languages. JMdict prefers the selected gloss language with an explicit fallback.
+The interface language is stored separately from learner level/native language and
+the existing portable backup format; changing it does not reclassify words or reset progress.
+Comprehension text is translated for the existing content assets; a quiz interface
+is still a separate future feature.
+
+For new stories, add English translations to the catalog alongside the Spanish
+editorial text. Coverage tests reject any published `_es` field without an English
+counterpart. No duplicate Japanese story or runtime translation API is needed.
+See [bilingual reader implementation notes](docs/BILINGUAL_READER_V1.md).
+
+If localhost shows a fetch/connection error, keep `pnpm dev` running in the repository
+and use the URL it prints (normally `http://127.0.0.1:5173/`), then reload or retry.
+Localhost requires the local server to stay running. For access without that server,
+use [the published reader](https://gabe95ega.github.io/YomuStoryAPP/).

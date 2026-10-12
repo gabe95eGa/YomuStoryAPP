@@ -82,7 +82,12 @@ export function parseStory(value: unknown, expectedId: string): Story {
 }
 
 async function fetchJson(path: string, signal?: AbortSignal): Promise<unknown> {
-  const response = await fetch(`${import.meta.env.BASE_URL}content/${path}`, { signal });
+  let response: Response;
+  try { response = await fetch(`${import.meta.env.BASE_URL}content/${path}`, { signal }); }
+  catch (error) {
+    if (signal?.aborted || (error instanceof Error && error.name === 'AbortError')) throw error;
+    throw new Error('No se pudo conectar con el servidor. Si usas localhost, inicia pnpm dev y vuelve a intentarlo; también puedes usar la web publicada.');
+  }
   if (!response.ok) throw new Error(response.status === 404
     ? 'No se encontró el archivo de la lectura. Comprueba que el contenido esté preparado.'
     : 'No se pudo cargar el contenido. Comprueba la conexión con el servidor local.');

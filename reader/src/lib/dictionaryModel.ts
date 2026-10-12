@@ -78,8 +78,8 @@ export function rankResults(results: DictionaryResult[], query: DictionaryQuery)
   return [...results].sort((a, b) => score(b) - score(a) || a.id.localeCompare(b.id));
 }
 
-export function preferredSenses(entry: DictionaryResult): { language: 'es' | 'en'; senses: DictionarySense[] } {
-  const language = entry.senses.some((sense) => sense.glosses.some((gloss) => gloss.language === 'es')) ? 'es' : 'en';
+export function preferredSenses(entry: DictionaryResult, preferred: 'es' | 'en' = 'es'): { language: 'es' | 'en'; senses: DictionarySense[] } {
+  const language = entry.senses.some((sense) => sense.glosses.some((gloss) => gloss.language === preferred)) ? preferred : preferred === 'es' ? 'en' : 'es';
   return { language, senses: entry.senses.filter((sense) => sense.glosses.some((gloss) => gloss.language === language)) };
 }
 
