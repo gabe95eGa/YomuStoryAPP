@@ -155,7 +155,7 @@ describe('recoverable reader errors', () => {
     render(<App content={service()} store={store} />);
     await user.click(await screen.findByRole('button', { name: 'Leer: Confirmar el pedido' }));
     await screen.findByRole('heading', { name: '注文をもう一度', level: 1 });
-    expect(screen.getByRole('status')).toHaveTextContent('no se puede guardar');
+    expect(screen.getByText(/El progreso de esta sesión no se puede guardar/)).toHaveAttribute('role', 'status');
     await user.click(screen.getByRole('button', { name: /Completar lectura/ }));
     expect(screen.getByText('Esta lectura está marcada como completada.')).toBeVisible();
   });
