@@ -37,8 +37,6 @@ jobs:
         run: python tools/validate_profile.py
       - name: Reject stale manifest
         run: python tools/build_manifest.py --check
-      - name: Validate published audio and source checksums
-        run: python tools/story_audio.py check
       - name: Run backend tests including tokenizer integration
         run: python -m pytest
 

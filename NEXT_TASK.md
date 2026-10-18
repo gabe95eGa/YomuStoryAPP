@@ -27,8 +27,40 @@ No importar relatos, traducciones, portadas ni audio de Yomu Yomu sin una licenc
 o permiso verificable de redistribución. JmdictFurigana, series y repaso dentro
 de la app quedan para fases posteriores; no ampliarlos automáticamente.
 
-Piloto de audio Azure autorizado: reproductor por párrafos y herramienta de
-generación implementados, F0 y límite de gasto verificados, y cuatro secciones
-publicadas para cooking_001. Falta que el usuario valore la pronunciación antes
-de ampliar el audio al resto de historias nuevas.
-Ver [piloto de narración Azure](docs/AZURE_NARRATION_PILOT_V1.md).
+## Próxima fase propuesta — pulir la experiencia
+
+Actualizado el 18 de octubre de 2026: el usuario ha descartado el piloto Azure
+tras comprobar que la voz del navegador funciona bien en su móvil. Se retiran
+el reproductor de MP3, los cuatro audios y la herramienta Azure; se conserva
+la narración local y los textos de ayuda simplificados en español e inglés.
+No añadir audio externo a las historias nuevas. No modificar el estado del
+alumno ni sus backups al realizar esta retirada. Los commits anteriores
+conservan el piloto por si se quisiera recuperar en el futuro.
+
+Orden propuesto, pendiente de que el usuario elija la siguiente fase:
+
+1. Entrada para amigos nuevos: elegir el idioma del navegador en la primera
+   visita, respetar siempre la elección guardada y añadir una bienvenida breve
+   que explique leer, tocar palabras y escuchar. El comportamiento actual usa
+   español cuando no existe preferencia guardada.
+2. Escucha cómoda: recordar voz y velocidad por dispositivo, conservar una voz
+   disponible al cambiar de historia y revisar pausa/reanudación al cambiar de
+   app o bloquear la pantalla. Actualmente voz y velocidad se reinician al
+   montar el narrador; no prometer segundo plano sin probar móviles reales.
+3. Repaso ligero: una sesión de 5–10 palabras Learning con lectura, significado
+   y una frase de contexto. Mantener Known/Learning bajo control del usuario;
+   no inferir dominio a partir de un clic ni añadir SRS completo de golpe.
+4. Prueba con amigos: Safari/iPhone y Chrome/Android, recorrido biblioteca →
+   lectura → consulta → escucha → backup/Anki. Anotar bloqueos reales, tiempo
+   hasta empezar a leer y puntos de confusión; priorizarlos antes de más
+   historias o cambios de estilo amplios.
+
+El recurso remoto yomustory-speech-pilot F0 se ha retirado mediante borrado
+recuperable; se ha verificado que el grupo del piloto queda vacío y que el
+recurso figura en la lista de eliminados. Azure permite recuperarlo durante
+48 horas. No se ha purgado ni se ha modificado la cuenta o la suscripción.
+Referencia: https://learn.microsoft.com/en-us/azure/ai-services/recover-purge-resources
+
+Referencias para la fase propuesta:
+- https://developer.mozilla.org/en-US/docs/Web/API/Navigator/languages
+- https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesis/getVoices

@@ -367,9 +367,8 @@ pnpm build
 ```
 
 The reader includes comprehension quizzes and Japanese narration using installed
-local voices. Pre-generated paragraph recordings are being piloted with Azure
-Speech F0; see [the authoring workflow and cost boundary](docs/AZURE_NARRATION_PILOT_V1.md).
-Audio playback never calls the Speech API or exposes a key in the frontend.
+local voices. The reader uses the device's Japanese voices; no external speech
+service, API key or pre-generated audio files are required.
 SRS scheduling, automatic mastery assessment, accounts and service-worker offline
 caching remain future features. Mixed kanji/kana readings use conservative kana
 anchors; ambiguous readings keep a whole-word ruby. Mobile/tablet verification uses representative browser

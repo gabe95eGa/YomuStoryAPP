@@ -408,10 +408,6 @@ progress::-webkit-progress-value { background: var(--green); }
 .library-intro { padding: 32px 0; }.library-intro h1 { font-weight: 500; }
 
 .narration-panel { margin: 0 0 24px 206px; border: 1px solid var(--line); border-radius: 9px; background: var(--reader-panel); font-size: 13px; }
-.recorded-heading { padding: 17px 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; justify-content: space-between; border-bottom: 1px solid var(--line); }
-.recorded-narration audio { display: block; width: 100%; margin: 18px 0; }
-.recorded-narration select { min-height: 44px; border: 1px solid var(--line); border-radius: 5px; background: var(--reader-paper); color: var(--ink); padding: 8px; }
-.story-paragraph.audio-section-active { border-left: 3px solid var(--green); padding-left: 14px; }
 .narration-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; cursor: pointer; padding: 17px 20px; min-height: 52px; list-style: none; }
 .narration-panel > summary > span:first-child::before { content: '▷'; display: inline-block; margin-right: 10px; color: var(--green); }
 .narration-panel[open] > summary { border-bottom: 1px solid var(--line); }

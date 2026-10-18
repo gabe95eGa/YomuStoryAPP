@@ -11,8 +11,6 @@ import { loadAppearance, saveAppearance, type ReadingAppearance } from '../lib/a
 import { ComprehensionQuiz } from './ComprehensionQuiz';
 import { createLocalNarrator } from '../lib/narration';
 import { NarrationPanel } from './NarrationPanel';
-import { recordingFor } from '../lib/recordedAudio';
-import { RecordedNarration, type RecordedControls } from './RecordedNarration';
 
 export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary, preferences, onPreferences }: {
   story: Story; progress?: StoryProgress; onBack: () => void;
@@ -24,12 +22,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   const allSentences = useMemo(() => story.content.paragraphs.flatMap((paragraph) => paragraph.sentences), [story]);
   const narrator = useMemo(() => createLocalNarrator(allSentences.map((sentence) => sentence.text)), [allSentences]);
   const narration = useSyncExternalStore(narrator.subscribe, narrator.getSnapshot);
-  const recording = useMemo(() => recordingFor(story), [story]);
-  const recordedController = useRef<RecordedControls | null>(null);
-  const [recordedState, setRecordedState] = useState<'idle' | 'playing' | 'paused'>('idle');
-  const [recordedSection, setRecordedSection] = useState<string | null>(null);
-  const narrating = narration.phase === 'playing' || narration.phase === 'paused' || recordedState !== 'idle';
-  useEffect(() => { if (narration.phase === 'playing') { recordedController.current?.stop(); setRecordedSection(null); } }, [narration.phase]);
+  const narrating = narration.phase === 'playing' || narration.phase === 'paused';
   const [current, setCurrent] = useState(() => progress?.completed ? 0
     : Math.max(0, allSentences.findIndex((sentence) => sentence.id === progress?.last_sentence)));
   const [sessionFurigana, setFurigana] = useState<FuriganaMode>('adaptive');
@@ -78,7 +71,6 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   }, []);
   function selectSentence(index: number, focus = false) {
     if (index !== current) narrator.stop();
-    recordedController.current?.pause();
     setSelected(null);
     setCurrent(index);
     onPosition(allSentences[index].id);
@@ -116,14 +108,6 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
       <div className="reader-meta"><span className="badge">{story.metadata.level}</span><span>{story.metadata.estimated_minutes}{t(" min de lectura")}</span>
         <span lang={language === 'en' ? 'en' : 'ja'}>{story.metadata.topics.map(t).join(' · ')}</span></div>
     </header>
-    {recording && <RecordedNarration recording={recording} controller={recordedController}
-      onPlay={narrator.stop} onState={setRecordedState} onSection={(id) => {
-        setRecordedSection(id); setSelected(null);
-        const paragraph = story.content.paragraphs.find((item) => item.id === id)!;
-        const next = allSentences.findIndex((sentence) => sentence.id === paragraph.sentences[0].id);
-        setCurrent(next); onPosition(allSentences[next].id);
-        document.getElementById(`paragraph-${id}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      }} />}
     <NarrationPanel narrator={narrator} current={current} onSentence={(next) => {
       setSelected(null); setCurrent(next);
       if (next !== current) onPosition(allSentences[next].id);
@@ -134,7 +118,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
         <div className="target-key">{t("Fondo suave: objetivo del relato.")}<br />{t("Subrayado de puntos: aprendiendo.")}<br />{t("Subrayado continuo: conocida.")}</div></aside>
       <article className={`reading-surface${largeText ? ' large-text' : ''}${appearance.continuous ? ' continuous-reading' : ''}`} aria-label={t("Texto de la historia")}>
         <details className="reader-instructions"><summary>{t('Cómo usar el lector')}</summary><p className="reader-help" id="reader-help">{t("Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.")}</p></details>
-        {story.content.paragraphs.map((paragraph, paragraphIndex) => <div id={`paragraph-${paragraph.id}`} className={`story-paragraph${recordedState !== 'idle' && recordedSection === paragraph.id ? ' audio-section-active' : ''}`} key={paragraph.id}>
+        {story.content.paragraphs.map((paragraph, paragraphIndex) => <div className="story-paragraph" key={paragraph.id}>
           <div className="paragraph-label">{String(paragraphIndex + 1).padStart(2, '0')}</div>
           {paragraph.sentences.map((sentence) => {
             const sentenceIndex = index++;
@@ -149,7 +133,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
           <h2 id="end-title">{progress?.completed ? t('Una historia más, un paso más.') : t('Has llegado al final.')}</h2>
           <p>{progress?.completed ? t('Esta lectura está marcada como completada.') : t('Tómate un momento. ¿Qué te ha quedado de esta historia?')}</p>
           {progress?.completed ? <button type="button" className="primary-button" onClick={onBack}>{t("Volver a la biblioteca ")}<span aria-hidden="true">→</span></button>
-            : <button type="button" className="primary-button" onClick={() => { narrator.stop(); recordedController.current?.stop(); onComplete(); }}>{t("Completar lectura ")}<span aria-hidden="true">✓</span></button>}
+            : <button type="button" className="primary-button" onClick={() => { narrator.stop(); onComplete(); }}>{t("Completar lectura ")}<span aria-hidden="true">✓</span></button>}
         </section>
       </article>
     </div>
@@ -161,12 +145,9 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
         aria-expanded={translations.has(allSentences[current].id)} aria-controls={`translation-${allSentences[current].id}`}
         onClick={() => { toggleTranslation(allSentences[current].id); document.getElementById(`sentence-${allSentences[current].id}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' }); }}>{t('Traducción')}</button>
       <button type="button" className="icon-button" aria-label={t("Frase siguiente")} disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
-      {(narration.phase === 'playing' || narration.phase === 'paused') && <div className="narration-transport"><span>{t('Voz local')}</span>
+      {narrating && <div className="narration-transport"><span>{t('Voz local')}</span>
         <button type="button" onClick={narration.phase === 'playing' ? narrator.pause : narrator.resume}>{narration.phase === 'playing' ? t('Pausar audio') : t('Reanudar audio')}</button>
         <button type="button" onClick={narrator.stop}>{t('Detener audio')}</button></div>}
-      {recordedState !== 'idle' && <div className="narration-transport"><span>{t('Audio por secciones')}</span>
-        <button type="button" onClick={() => recordedState === 'playing' ? recordedController.current?.pause() : recordedController.current?.resume()}>{recordedState === 'playing' ? t('Pausar audio') : t('Reanudar audio')}</button>
-        <button type="button" onClick={() => recordedController.current?.stop()}>{t('Detener audio')}</button></div>}
     </nav>
     {selected && <VocabularySheet key={`${current}:${selected.start}:${selected.surface}`} quick token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}
   </main>;
