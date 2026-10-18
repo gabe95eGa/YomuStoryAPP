@@ -53,9 +53,12 @@ Only standard Japanese NanamiNeural or KeitaNeural voices are supported. SSML
 text is XML-escaped; paragraph recordings are cached to avoid resynthesizing
 unchanged drafts. HTTP failures stop immediately, with no retries, paid fallback
 or batch synthesis. Partial drafts remain unpublished. Moving a draft aside is
-required before changing its text or voice. Credentials stay in memory, obtained
-through Azure CLI, and are never written to the repository or passed to the
-reader. This does not install Azure CLI or create any resource automatically.
+required before changing its text or voice. Speech keys stay in memory, obtained
+through Azure CLI, and are never written to files or passed to the reader.
+Azure CLI maintains a separate local authentication cache. For this run both
+the temporary CLI installation and its login cache are under ignored `.tmp/`
+directories; neither is committed. The authoring script itself does not install
+Azure CLI or create any resource automatically.
 
 Publication requires an explicit playback check; that is a technical review, not
 a claim that a teacher has approved pronunciation. MP3 signature/checksum checks

@@ -1,7 +1,8 @@
 """Prepare paragraph narration locally; synthesize only on a protected Azure F0 trial.
 
-No credentials are accepted in arguments or written to files. Azure CLI login is
-used only in the authoring environment. Playback uses committed static MP3 files.
+Speech keys are never accepted in arguments or written to files. Azure CLI
+manages its own local login cache in the authoring environment. Playback uses
+committed static MP3 files.
 """
 from __future__ import annotations
 
