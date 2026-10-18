@@ -4,24 +4,44 @@ import { dictionaryService, type DictionaryResult, type DictionaryService, type 
 import type { Token } from '../lib/types';
 import { DictionaryDefinition } from './DictionaryDefinition';
 import { VocabularyControls } from './LearnerState';
-import { identityForToken } from '../lib/vocabulary';
+import { identityForToken, identityForEntry } from '../lib/vocabulary';
 import { hiraganaReading } from './JapaneseText';
+import { preferredSenses } from '../lib/dictionaryModel';
 
-export function VocabularySheet({ token, onClose, dictionary = dictionaryService }: {
-  token: Token; onClose: () => void; dictionary?: DictionaryService;
+export function VocabularySheet({ token, onClose, dictionary = dictionaryService, quick = false }: {
+  token: Token; onClose: () => void; dictionary?: DictionaryService; quick?: boolean;
 }) {
-  const { t } = useI18n();
+  const { t, language } = useI18n();
   const dialog = useRef<HTMLDialogElement>(null);
+  const trigger = useRef<HTMLElement | null>(null);
+  const detailsTrigger = useRef<HTMLButtonElement>(null);
+  const [expanded, setExpanded] = useState(false);
+  const wasExpanded = useRef(false);
   const [entries, setEntries] = useState<DictionaryResult[]>([]);
   const [state, setState] = useState<'loading' | 'ready' | 'error'>('loading');
   const [status, setStatus] = useState<DictionaryStatus>({ phase: 'idle' });
   const [retry, setRetry] = useState(0);
+  const modal = !quick || expanded;
+  useEffect(() => { trigger.current = document.activeElement as HTMLElement | null; }, [token]);
+  function closeQuick() { onClose(); trigger.current?.focus({ preventScroll: true }); }
+  function closeDetails() { if (quick) setExpanded(false); else onClose(); }
   useEffect(() => {
+    if (!modal) return;
     const element = dialog.current!;
     const previous = document.activeElement as HTMLElement | null;
     element.showModal(); // Native dialog supplies focus trapping and inert background.
-    return () => { element.close(); previous?.focus(); };
-  }, []);
+    return () => { element.close(); if (previous?.isConnected) previous.focus({ preventScroll: true }); else trigger.current?.focus({ preventScroll: true }); };
+  }, [modal]);
+  useEffect(() => {
+    if (modal) return;
+    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') { event.preventDefault(); onClose(); trigger.current?.focus({ preventScroll: true }); } };
+    document.addEventListener('keydown', escape);
+    return () => document.removeEventListener('keydown', escape);
+  }, [modal, onClose]);
+  useEffect(() => {
+    if (quick && wasExpanded.current && !expanded) detailsTrigger.current?.focus({ preventScroll: true });
+    wasExpanded.current = expanded;
+  }, [expanded, quick]);
   useEffect(() => {
     const controller = new AbortController();
     setEntries([]);
@@ -39,14 +59,32 @@ export function VocabularySheet({ token, onClose, dictionary = dictionaryService
     <div><dt>{t("Lectura de la forma seleccionada")}</dt><dd lang="ja">{hiraganaReading(token.reading)}</dd></div>
     {token.type && <div><dt>{t("Tipo en la historia")}</dt><dd>{({ noun: t('Sustantivo'), verb: t('Verbo'), adjective: t('Adjetivo'), adverb: t('Adverbio') } as Record<string, string>)[token.type] ?? token.type}</dd></div>}
   </dl>;
+  if (!modal) {
+    const entry = state === 'ready' ? entries[0] : undefined;
+    const preferred = entry ? preferredSenses(entry, language) : undefined;
+    const gloss = preferred?.senses[0]?.glosses.filter((item) => item.language === preferred.language).map((item) => item.text).join('; ');
+    return <aside className="quick-lookup" aria-label={t('Consulta rápida')}>
+      <div className="quick-heading"><p className="eyebrow">{t('La palabra en esta lectura')}</p><button type="button" className="icon-button" onClick={closeQuick} aria-label={t('Cerrar consulta rápida')}>×</button></div>
+      <div className="quick-word"><h2 lang="ja">{token.surface}</h2><span lang="ja">{hiraganaReading(token.reading)}</span>{token.target && <span className="badge">{t('Objetivo')}</span>}</div>
+      <div className="quick-definition" aria-live="polite">
+        {state === 'loading' ? <><p>{status.phase === 'preparing' ? t('Preparando el diccionario japonés…') : t('Buscando en el diccionario…')}</p>{status.phase === 'preparing' && <progress aria-label={t('Preparación del diccionario')} max={100} value={status.progress ?? 0} />}</>
+          : state === 'error' ? <><p>{t('Diccionario no disponible.')}</p><button type="button" className="text-button" onClick={() => setRetry((count) => count + 1)}>{t('Reintentar diccionario')}</button></>
+          : gloss ? <><p lang={preferred!.language}>{gloss}</p>{preferred!.language !== language && <small>{t(preferred!.language === 'en' ? 'Inglés · sin definición en español' : 'Español · sin definición en inglés')}</small>}
+            {(entries.length > 1 || preferred!.senses.length > 1) && <small>{t('Hay otros sentidos o entradas. Consulta los detalles.')}</small>}</>
+            : <p>{t('No se encontró una entrada. Información de la lectura:')} <span lang="ja">{token.lemma}</span></p>}
+      </div>
+      {state !== 'loading' && <VocabularyControls key={entry?.id ?? token.lemma} identity={entry ? identityForEntry(entry) : identityForToken(token)} />}
+      <div className="quick-footer"><a href={`${import.meta.env.BASE_URL}dictionary-notice.md`} target="_blank" rel="noreferrer" aria-label={t('Créditos del diccionario')}>JMdict · EDRDG</a><button type="button" ref={detailsTrigger} onClick={() => setExpanded(true)}>{t('Ver todos los detalles')} <span aria-hidden="true">↗</span></button></div>
+    </aside>;
+  }
   return <dialog ref={dialog} className="vocabulary-sheet" aria-labelledby="word-title"
-    onCancel={(event) => { event.preventDefault(); onClose(); }}
+    onCancel={(event) => { event.preventDefault(); closeDetails(); }}
     onClick={(event) => { if (event.target === dialog.current) {
       const bounds = dialog.current.getBoundingClientRect();
-      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeDetails();
     } }}>
     <div className="sheet-top"><p className="eyebrow">{t("La palabra en esta lectura")}</p>
-      <button type="button" className="icon-button" aria-label={t("Cerrar vocabulario")} onClick={onClose} autoFocus>×</button></div>
+      <button type="button" className="icon-button" aria-label={t("Cerrar vocabulario")} onClick={closeDetails} autoFocus>×</button></div>
     <h2 id="word-title" lang="ja">{token.surface}</h2>
     {token.target && <p className="target-label">{t("Vocabulario objetivo")}</p>}
     {state === 'loading' && <div className="dictionary-status" role="status">

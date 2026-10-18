@@ -87,7 +87,7 @@ describe('dictionary vocabulary sheet', () => {
     await user.click(word);
     expect(await screen.findByText('acostumbrarse')).toBeVisible();
     expect(lookup).toHaveBeenCalledWith(expect.objectContaining({ lemma: '慣れる', surface: '慣れ', reading: 'ナレ' }), expect.any(AbortSignal));
-    await user.click(screen.getByRole('button', { name: 'Cerrar vocabulario' }));
+    await user.click(screen.getByRole('button', { name: 'Cerrar consulta rápida' }));
     expect(word).toHaveFocus();
     await user.click(screen.getByRole('button', { name: 'Mostrar traducción de la frase 2' }));
     expect(screen.getByText(work.content.paragraphs[0].sentences[1].translation_es)).toBeVisible();

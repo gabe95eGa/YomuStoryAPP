@@ -38,7 +38,7 @@ describe('learner state in the reader and vocabulary library', () => {
     const state = setup(), user = await openReader(state);
     const words = () => screen.getAllByRole('button', { name: 'Ver palabra: 仕事' });
     expect(words().every((word) => !word.classList.contains('word-target') && !word.dataset.vocabularyStatus)).toBe(true);
-    await user.click(words()[0]); const dialog = await screen.findByRole('dialog');
+    await user.click(words()[0]); await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' })); const dialog = await screen.findByRole('dialog');
     await user.click(await within(dialog).findByRole('button', { name: 'Aprendiendo' }));
     await waitFor(() => expect(words().every((word) => word.classList.contains('word-learning'))).toBe(true));
     await user.click(within(dialog).getByRole('button', { name: 'Conocida' }));
@@ -50,7 +50,7 @@ describe('learner state in the reader and vocabulary library', () => {
     const state = setup(), user = await openReader(state);
     await user.selectOptions(screen.getByRole('combobox', { name: 'Furigana' }), 'all');
     await user.click(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0]);
-    const dialog = await screen.findByRole('dialog');
+    await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' })); const dialog = await screen.findByRole('dialog');
     await user.click(within(dialog).getByRole('button', { name: 'Aprendiendo' }));
     await waitFor(() => expect(within(dialog).getByRole('button', { name: 'Aprendiendo' })).toHaveAttribute('aria-pressed', 'true'));
     await waitFor(() => expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' }).every((word) => word.dataset.vocabularyStatus === 'learning')).toBe(true));
@@ -73,7 +73,7 @@ describe('learner state in the reader and vocabulary library', () => {
     const words = () => screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' });
     await waitFor(() => expect(words().every((word) => word.dataset.vocabularyStatus === 'learning')).toBe(true));
     expect(words().every((word) => word.querySelector('rt')?.textContent === 'なれ')).toBe(true);
-    await user.click(words()[0]); const dialog = await screen.findByRole('dialog');
+    await user.click(words()[0]); await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' })); const dialog = await screen.findByRole('dialog');
     await within(dialog).findByRole('button', { name: 'Conocida' });
     const calls = vi.mocked(state.dictionary.lookup).mock.calls.length;
     await user.click(within(dialog).getByRole('button', { name: 'Conocida' }));
@@ -95,6 +95,7 @@ describe('learner state in the reader and vocabulary library', () => {
     expect(await screen.findByRole('button', { name: 'Texto grande' })).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('combobox', { name: 'Furigana' })).toHaveValue('none');
     await user.click(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0]);
+    await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' }));
     await waitFor(() => expect(within(screen.getByRole('dialog')).getByRole('button', { name: 'Aprendiendo' })).toHaveAttribute('aria-pressed', 'true'));
   });
   it('filters/searches vocabulary, derives counts, and changes status from the list', async () => {
@@ -113,7 +114,7 @@ describe('learner state in the reader and vocabulary library', () => {
     const state = setup(); state.dictionary.lookup = vi.fn(async () => []);
     const user = await openReader(state);
     await user.click(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0]);
-    const dialog = await screen.findByRole('dialog');
+    await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' })); const dialog = await screen.findByRole('dialog');
     await user.click(await within(dialog).findByRole('button', { name: 'Aprendiendo' }));
     await waitFor(async () => expect(await state.vocabulary.getAll()).toHaveLength(1));
     const item = (await state.vocabulary.getAll())[0]; expect(item.id.startsWith('token:')).toBe(true); expect(item.dictionaryEntryId).toBeUndefined();

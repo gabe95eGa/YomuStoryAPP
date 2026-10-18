@@ -20,15 +20,16 @@ export function FuriganaText({ token, enabled }: { token: Token; enabled: boolea
   return <ruby>{token.surface}<rt>{hiraganaReading(token.reading)}</rt></ruby>;
 }
 
-export function JapaneseText({ sentence, furigana, onToken, vocabularyStatuses }: {
+export function JapaneseText({ sentence, furigana, onToken, vocabularyStatuses, selectedToken }: {
   sentence: Sentence; furigana: FuriganaMode; onToken: (token: Token) => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
+  selectedToken?: Token;
 }) {
   const { t } = useI18n();
   return <span lang="ja" className="japanese-text" data-testid={`text-${sentence.id}`}>
     {sentenceSegments(sentence).map((segment, index) => segment.token && isInteractive(segment.token)
       ? <button key={index} type="button" className={`word${segment.token.target ? ' word-target' : ''}${vocabularyStatuses?.get(tokenQueryKey(segment.token)) === 'learning' ? ' word-learning' : ''}${vocabularyStatuses?.get(tokenQueryKey(segment.token)) === 'known' ? ' word-known' : ''}`}
-          data-vocabulary-status={vocabularyStatuses?.get(tokenQueryKey(segment.token))}
+          data-vocabulary-status={vocabularyStatuses?.get(tokenQueryKey(segment.token))} aria-pressed={selectedToken ? segment.token === selectedToken : undefined}
           aria-label={t(`Ver palabra: ${segment.token.surface}`)} onClick={() => onToken(segment.token!)}>
           <FuriganaText token={segment.token} enabled={shouldShowFurigana(segment.token, vocabularyStatuses?.get(tokenQueryKey(segment.token)), furigana)} />
         </button>

@@ -7,6 +7,8 @@ import type { DictionaryService } from '../lib/dictionaryModel';
 import type { ReaderPreferences } from '../lib/preferences';
 import { useTokenStatuses } from './LearnerState';
 import type { FuriganaMode } from '../lib/furigana';
+import { loadAppearance, saveAppearance, type ReadingAppearance } from '../lib/appearance';
+import { ComprehensionQuiz } from './ComprehensionQuiz';
 
 export function ReaderPage({ story, progress, onBack, onPosition, onComplete, dictionary, preferences, onPreferences }: {
   story: Story; progress?: StoryProgress; onBack: () => void;
@@ -24,6 +26,31 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   const largeText = preferences ? preferences.textSize === 'large' : sessionLargeText;
   const vocabularyStatuses = useTokenStatuses(story, dictionary);
   const [selected, setSelected] = useState<Token | null>(null);
+  const [appearance, setAppearance] = useState(loadAppearance);
+  const [appearanceNotice, setAppearanceNotice] = useState(false);
+  function changeAppearance(patch: Partial<ReadingAppearance>) {
+    const next = { ...appearance, ...patch }; setAppearance(next); setAppearanceNotice(!saveAppearance(next));
+  }
+  useEffect(() => {
+    if (!selected) return;
+    let frame = 0;
+    const adjust = () => {
+      const sentence = document.getElementById(`sentence-${allSentences[current].id}`);
+      const panel = document.querySelector('.quick-lookup');
+      if (!sentence || !panel) return;
+      const bounds = sentence.getBoundingClientRect();
+      const limit = window.innerWidth < 1100 ? panel.getBoundingClientRect().top - 18 : window.innerHeight - 100;
+      const top = (document.querySelector('.reader-toolbar')?.getBoundingClientRect().bottom ?? 80) + 14;
+      const offset = bounds.height > limit - top ? bounds.top - top : bounds.bottom > limit ? bounds.bottom - limit : bounds.top < top ? bounds.top - top : 0;
+      if (Math.abs(offset) > 2) window.scrollBy({ top: offset, behavior: 'smooth' });
+    };
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(adjust); };
+    schedule(); window.addEventListener('resize', schedule);
+    const panel = document.querySelector('.quick-lookup');
+    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : undefined;
+    if (panel) observer?.observe(panel);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('resize', schedule); observer?.disconnect(); };
+  }, [selected, current]);
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
     title.current?.focus();
@@ -32,6 +59,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   function selectSentence(index: number, focus = false) {
+    setSelected(null);
     setCurrent(index);
     onPosition(allSentences[index].id);
     if (focus) {
@@ -41,7 +69,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     }
   }
   let index = 0;
-  return <main className="reader-page" id="main-content" tabIndex={-1}>
+  return <main className={`reader-page${selected ? ' has-quick' : ''}`} data-paper={appearance.paper} data-spacing={appearance.spacing} id="main-content" tabIndex={-1}>
     <nav className="reader-toolbar" aria-label={t("Controles de lectura")}>
       <button type="button" className="back-button" onClick={onBack}><span aria-hidden="true">←</span>{t(" Biblioteca")}</button>
       <div className="reader-options">
@@ -52,6 +80,15 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
           }}><option value="all">{t("Todas")}</option><option value="adaptive">{t("Adaptativa")}</option><option value="none">{t("Ninguna")}</option></select>
         </label>
         <button type="button" className="size-button" aria-label={t("Texto grande")} aria-pressed={largeText} onClick={() => onPreferences ? onPreferences({ textSize: largeText ? 'normal' : 'large' }) : setLargeText(!largeText)}>A<span>A</span></button>
+        <details className="reader-settings"><summary>{t('Lectura')} <span aria-hidden="true">☷</span></summary>
+          <div className="reader-settings-panel">
+            <h2>{t('A tu manera')}</h2>
+            <label><input type="checkbox" checked={appearance.continuous} onChange={(event) => changeAppearance({ continuous: event.target.checked })} />{t('Párrafos continuos')}</label>
+            <label>{t('Espaciado')}<select value={appearance.spacing} onChange={(event) => changeAppearance({ spacing: event.target.value as ReadingAppearance['spacing'] })}><option value="comfortable">{t('Amplio')}</option><option value="compact">{t('Compacto')}</option></select></label>
+            <label>{t('Color del papel')}<select value={appearance.paper} onChange={(event) => changeAppearance({ paper: event.target.value as ReadingAppearance['paper'] })}><option value="light">{t('Claro')}</option><option value="sepia">{t('Sepia')}</option><option value="night">{t('Noche')}</option></select></label>
+            {appearanceNotice && <p role="status">{t('El aspecto se ha cambiado solo para esta sesión.')}</p>}
+          </div>
+        </details>
       </div>
     </nav>
     <header className="reader-header"><p className="eyebrow">{t("Una lectura de YomuStory")}</p>
@@ -62,17 +99,18 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     <div className="reader-layout">
       <aside className="reading-aside"><p className="eyebrow">{t("A tu ritmo")}</p><p>{t("Lee primero.")}<br />{t("La ayuda está a un toque.")}</p>
         <div className="target-key">{t("Fondo suave: objetivo del relato.")}<br />{t("Subrayado de puntos: aprendiendo.")}<br />{t("Subrayado continuo: conocida.")}</div></aside>
-      <article className={`reading-surface${largeText ? ' large-text' : ''}`} aria-label={t("Texto de la historia")}>
-        <p className="reader-help" id="reader-help">{t("Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.")}</p>
+      <article className={`reading-surface${largeText ? ' large-text' : ''}${appearance.continuous ? ' continuous-reading' : ''}`} aria-label={t("Texto de la historia")}>
+        <details className="reader-instructions"><summary>{t('Cómo usar el lector')}</summary><p className="reader-help" id="reader-help">{t("Puedes tocar cualquier palabra para consultarla y guardarla, tenga marcas o no. Las marcas de estado se repiten en todas sus coincidencias identificadas. Pulsa el espacio vacío de una frase para seleccionarla; con el teclado, enfócala y pulsa Intro o Espacio.")}</p></details>
         {story.content.paragraphs.map((paragraph, paragraphIndex) => <div className="story-paragraph" key={paragraph.id}>
           <div className="paragraph-label">{String(paragraphIndex + 1).padStart(2, '0')}</div>
           {paragraph.sentences.map((sentence) => {
             const sentenceIndex = index++;
             return <StorySentence key={sentence.id} sentence={sentence} number={sentenceIndex + 1} active={sentenceIndex === current}
-              furigana={furigana} vocabularyStatuses={vocabularyStatuses} onSelect={() => selectSentence(sentenceIndex)}
+              furigana={furigana} selectedToken={selected ?? undefined} vocabularyStatuses={vocabularyStatuses} onSelect={() => selectSentence(sentenceIndex)}
               onToken={(token) => { selectSentence(sentenceIndex); setSelected(token); }} />;
           })}
         </div>)}
+        {story.comprehension && <ComprehensionQuiz questions={story.comprehension.questions} />}
         <section className="reading-end" aria-labelledby="end-title"><span className="end-mark" aria-hidden="true">終</span>
           <h2 id="end-title">{progress?.completed ? t('Una historia más, un paso más.') : t('Has llegado al final.')}</h2>
           <p>{progress?.completed ? t('Esta lectura está marcada como completada.') : t('Tómate un momento. ¿Qué te ha quedado de esta historia?')}</p>
@@ -87,6 +125,6 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
         <progress aria-label={t("Posición en la lectura")} max={allSentences.length} value={current + 1} /></div>
       <button type="button" className="icon-button" aria-label={t("Frase siguiente")} disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
     </nav>
-    {selected && <VocabularySheet token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}
+    {selected && <VocabularySheet key={`${current}:${selected.start}:${selected.surface}`} quick token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}
   </main>;
 }

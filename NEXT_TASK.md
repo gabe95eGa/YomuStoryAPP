@@ -1,10 +1,10 @@
 # Próxima tarea: biblioteca mejorada y consulta rápida
 
-Estado: pendiente. Registrada el 18 de octubre de 2026.
-No iniciar automáticamente, programar recordatorios ni ejecutar en segundo plano.
-Retomar cuando el usuario lo pida para evitar solapar el uso de tokens.
+Estado: implementada el 18 de octubre de 2026 por petición expresa del usuario.
+Se añadieron biblioteca mejorada, consulta rápida, presentación y comprensión.
+Detalles y verificaciones: [entrega UX V1](docs/READER_UX_V1.md).
 
-Implementar la primera fase del análisis de Yomu Yomu descrito en
+Alcance de la primera fase del análisis de Yomu Yomu descrito en
 [la revisión de UX](docs/YOMUYOMU_UX_REVIEW.md).
 
 1. Biblioteca: tarjeta «Continuar» para la lectura incompleta más reciente,

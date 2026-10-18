@@ -27,7 +27,12 @@ export interface Story {
   content: { paragraphs: Paragraph[] };
   targets: { vocabulary: { lemma: string; reading: string; meaning_es?: string }[]; grammar: GrammarPoint[] };
   generation: { generator: string; prompt_version: string; created_at: string; validated?: boolean };
-  comprehension?: unknown;
+  comprehension?: { questions: ComprehensionQuestion[] };
+}
+export interface ComprehensionQuestion {
+  id: string; type: 'multiple_choice' | 'true_false' | 'short_answer'; question_ja: string;
+  question_es?: string; explanation_es?: string; options?: { id: string; text: string }[];
+  answer: string | string[] | boolean;
 }
 export interface StoryProgress {
   story_id: string;

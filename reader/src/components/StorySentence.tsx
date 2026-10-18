@@ -5,10 +5,11 @@ import { JapaneseText } from './JapaneseText';
 import type { VocabularyStatus } from '../lib/vocabulary';
 import type { FuriganaMode } from '../lib/furigana';
 
-export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses }: {
+export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses, selectedToken }: {
   sentence: Sentence; number: number; active: boolean; furigana: FuriganaMode;
   onToken: (token: Token) => void; onSelect: () => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
+  selectedToken?: Token;
 }) {
   const { t, language } = useI18n();
   const [translated, setTranslated] = useState(false);
@@ -25,7 +26,7 @@ export function StorySentence({ sentence, number, active, furigana, onToken, onS
         event.preventDefault(); onSelect();
       }
     }}>
-    <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} vocabularyStatuses={vocabularyStatuses} />
+    <JapaneseText sentence={sentence} furigana={furigana} onToken={onToken} selectedToken={selectedToken} vocabularyStatuses={vocabularyStatuses} />
     <div className="sentence-tools">
       <button type="button" className="text-button" aria-expanded={translated}
         aria-controls={translationId} aria-label={t(`${translated ? 'Ocultar' : 'Mostrar'} traducción de la frase ${number}`)}

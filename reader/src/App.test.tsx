@@ -68,6 +68,7 @@ describe('reader flows', () => {
     const { user } = await openStory();
     const target = screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0];
     await user.click(target);
+    await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' }));
     const dialog = await screen.findByRole('dialog');
     expect(within(dialog).getByText('慣れる')).toBeVisible();
     expect(within(dialog).getByText('なれ')).toBeVisible();
@@ -75,6 +76,7 @@ describe('reader flows', () => {
     expect(await within(dialog).findByText('Diccionario no disponible.')).toBeVisible();
     await user.click(within(dialog).getByRole('button', { name: 'Cerrar vocabulario' }));
     expect(screen.queryByRole('dialog')).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'Cerrar consulta rápida' }));
     expect(target).toHaveFocus();
     expect(screen.queryByRole('button', { name: 'Ver palabra: 。' })).toBeNull();
     expect(screen.queryByRole('button', { name: 'Ver palabra: は' })).toBeNull();
