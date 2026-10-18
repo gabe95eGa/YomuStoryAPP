@@ -314,5 +314,15 @@
   "Pausar audio": "Pause audio",
   "Reanudar audio": "Resume audio",
   "Detener audio": "Stop audio",
-  "Ayuda para instalar voces en Windows": "Help installing voices on Windows"
+  "Ayuda para instalar voces en Windows": "Help installing voices on Windows",
+  "Audio por secciones": "Audio by section",
+  "Escuchar la historia": "Listen to the story",
+  "Audio japonés · Azure": "Japanese audio · Azure",
+  "Audio generado previamente. Reproducirlo no utiliza la API de Azure. La voz es automática y puede cometer errores de pronunciación.": "Pre-generated audio. Playback does not use the Azure API. This is an automated voice and may mispronounce some words.",
+  "Sección": "Section",
+  "Sección anterior": "Previous section",
+  "Repetir sección": "Repeat section",
+  "Sección siguiente": "Next section",
+  "Continuar con la siguiente sección": "Continue to the next section",
+  "No se pudo reproducir el audio. Comprueba la conexión o utiliza la voz del dispositivo.": "Audio could not be played. Check your connection or use the device voice."
 }

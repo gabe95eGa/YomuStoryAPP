@@ -3,6 +3,7 @@ import { mkdir, readFile, realpath, rename, rm, writeFile } from 'node:fs/promis
 import { setTimeout as delay } from 'node:timers/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import Ajv2020 from 'ajv/dist/2020.js';
 import addFormats from 'ajv-formats';
 
@@ -26,6 +27,7 @@ async function syncContent() {
   }
   const ids = new Set();
   const copies = [];
+  const stories = new Map();
   for (const item of manifest.stories) {
     if (!/^stories\/[a-z0-9_/-]+\.json$/.test(item.path) || item.path.split('/').includes('..')) {
       throw new Error(`Unsafe story path: ${item.path}`);
@@ -46,6 +48,29 @@ async function syncContent() {
       }
     }
     copies.push({ relative: item.path, bytes });
+    stories.set(story.id, story);
+  }
+  const audio = JSON.parse(await readFile(path.join(root, 'audio/catalog.json'), 'utf8'));
+  if (audio.version !== 1 || !audio.stories || Array.isArray(audio.stories)) throw new Error('Invalid audio catalog.');
+  for (const [id, entry] of Object.entries(audio.stories)) {
+    const story = stories.get(id);
+    const paragraphs = story?.content.paragraphs.map(({ id, sentences }) => ({ id, sentences: sentences.map(({ id, text }) => ({ id, text })) }));
+    const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
+    if (!/^[a-z0-9_]+$/.test(id) || entry.story_id !== id || entry.provider !== 'azure-speech-f0'
+      || entry.review !== 'playback-checked' || !/^ja-JP-(Nanami|Keita)Neural$/.test(entry.voice)
+      || !paragraphs || JSON.stringify(entry.paragraphs) !== JSON.stringify(paragraphs)
+      || entry.source_sha256 !== hash(JSON.stringify(paragraphs))
+      || !Array.isArray(entry.files) || entry.files.length !== paragraphs.length) throw new Error(`Invalid or stale narration: ${id}`);
+    for (const [i, file] of entry.files.entries()) {
+      if (file.path !== `audio/${id}/${String(i + 1).padStart(2, '0')}.mp3`) throw new Error('Unsafe audio path.');
+      const source = await realpath(path.join(root, file.path));
+      const relative = path.relative(path.join(root, 'audio'), source);
+      if (relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('Audio is outside repository.');
+      const bytes = await readFile(source);
+      const mp3 = bytes.subarray(0, 3).toString() === 'ID3' || (bytes[0] === 255 && (bytes[1] & 224) === 224);
+      if (!mp3 || bytes.length < 256 || hash(bytes) !== file.sha256 || bytes.length !== file.bytes) throw new Error(`Corrupt recording: ${file.path}`);
+      copies.push({ relative: file.path, bytes });
+    }
   }
   // These fixed generated directories are confined to reader/public.
   await rm(staging, { recursive: true, force: true });
@@ -66,7 +91,7 @@ async function syncContent() {
       await delay(100 * 2 ** attempt);
     }
   }
-  console.log(`Prepared ${copies.length} stories from manifest.json.`);
+  console.log(`Prepared ${stories.size} stories and ${Object.keys(audio.stories).length} narrations.`);
 }
 
 syncContent().catch((error) => { console.error(error.message); process.exitCode = 1; });

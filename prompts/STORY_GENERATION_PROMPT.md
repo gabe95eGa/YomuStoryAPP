@@ -107,3 +107,13 @@ and leave `validated: false` for the receiving pipeline. If you cannot confident
 produce valid data, return a generation error such as
 `{"success": false, "errors": ["Unable to produce reliable token readings."]}`.
 A generation error is not a story and must never enter the manifest.
+
+## Pre-generated narration (pilot awaiting owner feedback)
+
+The owner has authorized a one-story Azure F0 narration pilot. Follow
+`docs/AZURE_NARRATION_PILOT_V1.md`. Once the owner accepts its quality, new stories
+must also receive paragraph narration through `tools/story_audio.py`: prepare,
+generate on a protected F0 subscription, listen to all sections, publish, and
+run the audio check before the normal tests/build/commit. Never upgrade billing,
+commit credentials, or mark an unplayed draft as reviewed. While the pilot or
+free resource is unavailable, report that audio is pending; do not invent files.

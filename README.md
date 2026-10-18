@@ -366,11 +366,13 @@ pnpm test
 pnpm build
 ```
 
-The reader does not yet include SRS, audio, comprehension quiz
-UI, automatic mastery assessment, profile editing, accounts, or service-worker
-offline caching. Story comprehension data is retained for later use. Mixed
-kanji/kana readings use the simplest available ruby representation; no inferred
-alignment engine is added. Mobile/tablet verification uses representative browser
+The reader includes comprehension quizzes and Japanese narration using installed
+local voices. Pre-generated paragraph recordings are being piloted with Azure
+Speech F0; see [the authoring workflow and cost boundary](docs/AZURE_NARRATION_PILOT_V1.md).
+Audio playback never calls the Speech API or exposes a key in the frontend.
+SRS scheduling, automatic mastery assessment, accounts and service-worker offline
+caching remain future features. Mixed kanji/kana readings use conservative kana
+anchors; ambiguous readings keep a whole-word ruby. Mobile/tablet verification uses representative browser
 viewports; an actual iPad/Safari pass remains useful before tablet distribution.
 
 The local JMdict adapter is implemented through `DictionaryService` in
@@ -801,15 +803,14 @@ See [Reinforcement Batch V2](docs/REINFORCEMENT_BATCH_V2_REPORT.md) and [vocabul
 ### Spanish and English
 
 Use **Idioma / Language** in the header to select Español or English. The choice
-persists in this browser. All 15 published stories have English sentence translations,
+persists in this browser. All 30 published stories have English sentence translations,
 titles, grammar explanations, target glosses and comprehension text in
 `reader/src/locales/content.en.json`. Interface strings live in `reader/src/locales/en.json`.
 One React reader, Japanese corpus, tokenizer, dictionary and learner database serve
 both languages. JMdict prefers the selected gloss language with an explicit fallback.
 The interface language is stored separately from learner level/native language and
 the existing portable backup format; changing it does not reclassify words or reset progress.
-Comprehension text is translated for the existing content assets; a quiz interface
-is still a separate future feature.
+The comprehension quiz uses the same language selection.
 
 For new stories, add English translations to the catalog alongside the Spanish
 editorial text. Coverage tests reject any published `_es` field without an English

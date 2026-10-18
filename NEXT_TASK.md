@@ -26,3 +26,9 @@ Alcance de la primera fase del análisis de Yomu Yomu descrito en
 No importar relatos, traducciones, portadas ni audio de Yomu Yomu sin una licencia
 o permiso verificable de redistribución. JmdictFurigana, series y repaso dentro
 de la app quedan para fases posteriores; no ampliarlos automáticamente.
+
+Piloto de audio Azure autorizado: reproductor por párrafos y herramienta de
+generación implementados, F0 y límite de gasto verificados, y cuatro secciones
+publicadas para cooking_001. Falta que el usuario valore la pronunciación antes
+de ampliar el audio al resto de historias nuevas.
+Ver [piloto de narración Azure](docs/AZURE_NARRATION_PILOT_V1.md).
