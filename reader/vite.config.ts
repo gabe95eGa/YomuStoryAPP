@@ -13,6 +13,9 @@ export default defineConfig({
   } },
   preview: { host: '127.0.0.1' },
   test: {
+    // Each isolated worker loads schema compilers and the multilingual corpus.
+    // Limit contention so interaction tests keep their normal five-second budget.
+    maxWorkers: 2,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     include: ['src/**/*.test.{ts,tsx}'],

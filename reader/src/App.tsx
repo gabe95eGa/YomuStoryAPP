@@ -1,18 +1,19 @@
 import { useI18n, LanguageProvider, LANGUAGE_KEY, loadLanguage, type Language } from './lib/i18n';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { contentService, type ContentService } from './lib/content';
 import { localProgressStore, type ProgressStore } from './lib/progress';
 import type { Manifest, Story, StoryProgress } from './lib/types';
 import { StoryLibrary } from './components/StoryLibrary';
-import { ReaderPage } from './components/ReaderPage';
 import type { DictionaryService } from './lib/dictionaryModel';
 import { localPreferencesStore, type PreferencesStore, type ReaderPreferences } from './lib/preferences';
 import { createBackupService } from './lib/backup';
 import type { VocabularyStateService } from './lib/vocabulary';
 import { vocabularyStateService } from './lib/vocabularyStorage';
 import { LearnerContext, useVocabularyItems } from './components/LearnerState';
-import { VocabularyPage } from './components/VocabularyPage';
-import { createLearnerContextService, type LearnerContextService } from './lib/learnerContext';
+import type { LearnerContextService } from './lib/learnerContext';
+
+const ReaderPage = lazy(() => import('./components/ReaderPage').then((module) => ({ default: module.ReaderPage })).catch(() => ({ default: ModuleUnavailable })));
+const VocabularyRoute = lazy(() => import('./components/VocabularyRoute').catch(() => ({ default: ModuleUnavailable })));
 
 type LoadState<T> = { status: 'loading' } | { status: 'ready'; data: T } | { status: 'error'; message: string };
 const getStoryId = () => window.location.hash.match(/^#\/story\/([a-z0-9_]+)$/)?.[1] ?? null;
@@ -28,6 +29,10 @@ function LoadMessage({ error, onRetry, onBack }: { error?: string; onRetry?: () 
     {onBack && <button type="button" className="text-button" onClick={onBack}>{t("Volver a la biblioteca")}</button>}
     {error && <p><a href="https://gabe95ega.github.io/YomuStoryAPP/">{language === 'en' ? 'Open the published website' : 'Abrir la web publicada'}</a></p>}
   </main>;
+}
+
+function ModuleUnavailable() {
+  return <LoadMessage error="No se pudo cargar esta parte de la aplicación. Recarga la página para intentarlo de nuevo." onRetry={() => window.location.reload()} />;
 }
 
 export default function App(props: Parameters<typeof AppContent>[0]) {
@@ -63,7 +68,6 @@ function AppContent({ content = contentService, store = localProgressStore, dict
   const [preferences, setPreferences] = useState(initialPreferences.preferences);
   const preferencesRef = useRef(preferences);
   const learner = useVocabularyItems(vocabulary);
-  const generationContext = useMemo(() => contextService ?? createLearnerContextService(vocabulary), [contextService, vocabulary]);
   const [library, setLibrary] = useState<LoadState<Manifest>>({ status: 'loading' });
   const [story, setStory] = useState<LoadState<Story>>({ status: 'loading' });
   const [retry, setRetry] = useState(0);
@@ -154,7 +158,7 @@ function AppContent({ content = contentService, store = localProgressStore, dict
           <option value="es">Español</option><option value="en">English</option>
         </select></label></div></header>
     {notice && <p className="storage-notice" role="status">{t(notice)}</p>}
-    {isVocabulary ? <VocabularyPage backup={backup} generationContext={generationContext} usesExampleProfile={!contextService} /> : library.status === 'loading' ? <LoadMessage />
+    <Suspense fallback={<LoadMessage />}>{isVocabulary ? <VocabularyRoute backup={backup} contextService={contextService} vocabulary={vocabulary} /> : library.status === 'loading' ? <LoadMessage />
       : library.status === 'error' ? <LoadMessage error={library.message} onRetry={retryLoad} />
       : !storyId ? <StoryLibrary stories={library.data.stories} progress={progress} onOpen={(id) => { window.location.hash = `/story/${id}`; }} />
       : story.status === 'error' ? <LoadMessage error={story.message} onRetry={retryLoad} onBack={goLibrary} />
@@ -162,6 +166,6 @@ function AppContent({ content = contentService, store = localProgressStore, dict
       : <ReaderPage key={story.data.id} story={story.data} progress={progress[storyId]} onBack={goLibrary} dictionary={dictionary}
           preferences={preferences} onPreferences={updatePreferences}
           onPosition={(id) => updateProgress(storyId, { last_sentence: id })}
-          onComplete={() => updateProgress(storyId, { completed: true, last_sentence: story.data.content.paragraphs.at(-1)!.sentences.at(-1)!.id })} />}
+          onComplete={() => updateProgress(storyId, { completed: true, last_sentence: story.data.content.paragraphs.at(-1)!.sentences.at(-1)!.id })} />}</Suspense>
   </div></LearnerContext.Provider>;
 }

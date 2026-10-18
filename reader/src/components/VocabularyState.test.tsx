@@ -8,7 +8,8 @@ import storyFixture from '../../../stories/work/work_001.json';
 import dictionaryFixture from '../test/dictionary-entries.json';
 import backupFixture from '../test/backups/valid.json';
 import invalidVersion from '../test/backups/invalid-version.json';
-import { parseManifest, parseStory } from '../lib/content';
+import { parseManifest } from '../lib/content';
+import { parseStory } from '../lib/storyValidation';
 import { normalizeJapanese, parseDictionaryChunk, rankResults, resolveEntry, type DictionaryService, type DictionaryResult } from '../lib/dictionaryModel';
 import { parseBackup, readBackupFile } from '../lib/backup';
 import { vocabularyId } from '../lib/vocabulary';
@@ -58,7 +59,7 @@ describe('learner state in the reader and vocabulary library', () => {
     await waitFor(() => expect(within(dialog).getByRole('button', { name: 'Conocida' })).toHaveAttribute('aria-pressed', 'true'));
     await waitFor(() => expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' }).every((word) => word.dataset.vocabularyStatus === 'known')).toBe(true));
     expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' }).every((word) => word.classList.contains('word-known') && !word.classList.contains('word-learning'))).toBe(true);
-    expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0].querySelector('rt')?.textContent).toBe('なれ');
+    expect(screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' })[0].querySelector('rt')?.textContent).toBe('な');
     await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
     await waitFor(() => expect(within(dialog).queryByRole('button', { name: 'Quitar estado' })).toBeNull());
     await user.click(within(dialog).getByRole('button', { name: 'Cerrar vocabulario' }));
@@ -72,7 +73,7 @@ describe('learner state in the reader and vocabulary library', () => {
     expect(screen.getByRole('combobox', { name: 'Furigana' })).toHaveValue('adaptive');
     const words = () => screen.getAllByRole('button', { name: 'Ver palabra: 慣れ' });
     await waitFor(() => expect(words().every((word) => word.dataset.vocabularyStatus === 'learning')).toBe(true));
-    expect(words().every((word) => word.querySelector('rt')?.textContent === 'なれ')).toBe(true);
+    expect(words().every((word) => word.querySelector('rt')?.textContent === 'な')).toBe(true);
     await user.click(words()[0]); await user.click(await screen.findByRole('button', { name: 'Ver todos los detalles' })); const dialog = await screen.findByRole('dialog');
     await within(dialog).findByRole('button', { name: 'Conocida' });
     const calls = vi.mocked(state.dictionary.lookup).mock.calls.length;
@@ -80,7 +81,7 @@ describe('learner state in the reader and vocabulary library', () => {
     await waitFor(() => expect(words().every((word) => word.dataset.vocabularyStatus === 'known' && !word.querySelector('rt'))).toBe(true));
     expect(dialog.querySelector('.dictionary-reading')?.textContent).toContain('なれる');
     await user.click(within(dialog).getByRole('button', { name: 'Aprendiendo' }));
-    await waitFor(() => expect(words().every((word) => word.classList.contains('word-learning') && word.querySelector('rt')?.textContent === 'なれ')).toBe(true));
+    await waitFor(() => expect(words().every((word) => word.classList.contains('word-learning') && word.querySelector('rt')?.textContent === 'な')).toBe(true));
     await user.click(within(dialog).getByRole('button', { name: 'Quitar estado' }));
     await waitFor(() => expect(words().every((word) => !word.dataset.vocabularyStatus && word.querySelector('rt'))).toBe(true));
     expect(state.dictionary.lookup).toHaveBeenCalledTimes(calls); expect(getStatus).not.toHaveBeenCalled();

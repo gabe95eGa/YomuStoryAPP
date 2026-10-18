@@ -280,8 +280,6 @@ progress::-webkit-progress-value { background: var(--green); }
 .library-results p { font-size: 11px; color: var(--muted); margin: 0; }
 .story-card { overflow: hidden; }
 .story-cover { position: relative; height: 112px; margin: -25px -25px 21px; padding: 19px 23px; background: #e6ecdf; overflow: hidden; color: #496d52; }
-.story-cover > span:first-child { font-size: 10px; text-transform: uppercase; letter-spacing: 1.7px; position: relative; z-index: 1; }
-.story-cover > span:nth-child(2) { font-size: 60px; position: absolute; right: 24px; top: 15px; opacity: .7; z-index: 1; font-weight: 300; }
 .story-cover i { position: absolute; width: 160px; height: 160px; border: 1px solid currentColor; opacity: .15; border-radius: 50%; left: 44%; top: 23px; }
 .story-cover b { position: absolute; width: 130px; height: 130px; border: 1px solid currentColor; opacity: .15; border-radius: 50%; left: 38%; top: 37px; }
 .cover-travel { background: #e1ebee; color: #426879; }.cover-cooking { background: #f0e4d1; color: #85643b; }.cover-work { background: #e6e3ed; color: #6e5c83; }.cover-japan { background: #ede1df; color: #8b655d; }
@@ -371,3 +369,42 @@ progress::-webkit-progress-value { background: var(--green); }
   .comprehension-quiz { padding: 16px; }.comprehension-quiz > summary { font-size: 17px; }
 }
 @media (max-width: 400px) { .furigana-control { flex-direction: column; gap: 3px; align-items: flex-start; } .reader-options { gap: 8px; } }
+
+/* Category photography is decorative; all reading text stays on plain paper. */
+.story-cover { height: 156px; color: white; background: #40584a; isolation: isolate; }
+.cover-photo { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+.cover-photo[hidden] { display: none; }
+.story-cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, #10271bc9, #10271b12 85%); z-index: -1; }
+.story-cover .cover-category { position: absolute; bottom: 20px; left: 24px; font-size: 10px; letter-spacing: 1.8px; text-transform: uppercase; }
+.story-cover .cover-kanji { position: absolute; top: 16px; right: 22px; font-size: 55px; font-weight: 300; opacity: .9; text-shadow: 0 2px 14px #10271b80; }
+.resume-reading { padding: 18px; border: 1px solid #b6cbb3; box-shadow: 0 8px 26px #283b3408; }
+.resume-thumbnail { position: relative; flex: 0 0 120px; height: 110px; border-radius: 8px; overflow: hidden; isolation: isolate; background: #40584a; }
+.resume-thumbnail > span { position: absolute; right: 8px; bottom: 5px; color: white; font-size: 28px; text-shadow: 0 2px 8px #10271b; }
+.photo-credit { text-align: center; font-size: 11px; margin: -20px 0 35px; }.photo-credit a { color: var(--muted); text-underline-offset: 4px; }
+.position-translation { min-height: 44px; border: 1px solid var(--line); border-radius: 6px; background: var(--reader-paper); color: var(--green); padding: 8px 12px; font-size: 12px; }
+.position-translation[aria-expanded='true'] { background: var(--reader-tint); box-shadow: inset 0 -2px var(--green); }
+.translation { overflow-wrap: anywhere; line-height: 1.8; }
+.anki-section { background: #eaf0e6; border-radius: 12px; padding: 26px; margin-bottom: 24px; }
+.anki-section label { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: 13px; }
+.anki-section select { padding: 10px; min-height: 44px; background: #fffefa; border: 1px solid var(--line); border-radius: 5px; }
+.anki-section > button, .anki-section [role='status'] button { min-height: 44px; border: 1px solid var(--line); border-radius: 5px; padding: 10px 16px; }
+.anki-section details { margin-top: 20px; font-size: 13px; line-height: 1.8; }.anki-section summary { cursor: pointer; min-height: 44px; padding: 10px 0; }
+.anki-section li { margin-bottom: 12px; }.anki-section ol { padding-left: 20px; }.anki-preview { border-top: 1px solid #c9d7c5; margin-top: 20px; padding-top: 18px; }
+@media (max-width: 1099px) {
+  .quick-lookup { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+}
+@media (max-width: 600px) {
+  .story-cover { height: 150px; }
+  .resume-thumbnail { flex-basis: 76px; height: 82px; }.resume-reading > div:nth-child(2) { flex: 1; min-width: 0; }
+  .resume-reading .primary-button { width: 100%; justify-content: center; }
+  .resume-reading p:last-child { line-height: 1.8; }.resume-reading p:last-child span { display: block; }
+  .position-bar { width: min(480px, calc(100% - 24px)); gap: 6px; padding: 8px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); }
+  .position-bar .icon-button { flex: 0 0 44px; min-height: 44px; padding: 6px; }
+  .position-info { flex: 1; min-width: 0; }.position-info > span { font-size: 9px; }
+  .position-translation { flex: 0 0 78px; padding: 6px; font-size: 10px; }
+  .sentence-tools button, .grammar-info > summary { min-height: 44px; }
+  .anki-section { padding: 20px; }.anki-section > button { width: 100%; }
+}
+@media (max-width: 600px) and (max-height: 650px) {
+  .quick-lookup { max-height: 34dvh; }
+}

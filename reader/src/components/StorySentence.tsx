@@ -5,14 +5,16 @@ import { JapaneseText } from './JapaneseText';
 import type { VocabularyStatus } from '../lib/vocabulary';
 import type { FuriganaMode } from '../lib/furigana';
 
-export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses, selectedToken }: {
+export function StorySentence({ sentence, number, active, furigana, onToken, onSelect, vocabularyStatuses, selectedToken, translated: controlledTranslation, onTranslation }: {
   sentence: Sentence; number: number; active: boolean; furigana: FuriganaMode;
   onToken: (token: Token) => void; onSelect: () => void;
   vocabularyStatuses?: Map<string, VocabularyStatus>;
   selectedToken?: Token;
+  translated?: boolean; onTranslation?: () => void;
 }) {
   const { t, language } = useI18n();
-  const [translated, setTranslated] = useState(false);
+  const [sessionTranslation, setTranslated] = useState(false);
+  const translated = controlledTranslation ?? sessionTranslation;
   const translationId = `translation-${sentence.id}`;
   return <section id={`sentence-${sentence.id}`} className={`sentence${active ? ' sentence-active' : ''}`}
     tabIndex={0} aria-label={t(`Frase ${number}`)} aria-describedby="reader-help"
@@ -30,7 +32,7 @@ export function StorySentence({ sentence, number, active, furigana, onToken, onS
     <div className="sentence-tools">
       <button type="button" className="text-button" aria-expanded={translated}
         aria-controls={translationId} aria-label={t(`${translated ? 'Ocultar' : 'Mostrar'} traducción de la frase ${number}`)}
-        onClick={() => { setTranslated(!translated); onSelect(); }}>
+        onClick={() => { if (onTranslation) onTranslation(); else setTranslated(!translated); onSelect(); }}>
         {translated ? t('Ocultar traducción') : t('Traducción')} <span aria-hidden="true">{translated ? '−' : '+'}</span>
       </button>
       {sentence.grammar_points?.length ? <details className="grammar-info">

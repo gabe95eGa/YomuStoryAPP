@@ -5,6 +5,7 @@ import { normalizeJapanese } from '../lib/dictionaryModel';
 import type { ImportMode } from '../lib/vocabulary';
 import { LearnerContext, VocabularyControls } from './LearnerState';
 import type { LearnerContextService } from '../lib/learnerContext';
+import { AnkiExport } from './AnkiExport';
 
 function Confirmation({ title, description, action, onConfirm, onCancel, busy }: {
   title: string; description: string; action: string; onConfirm: () => void; onCancel: () => void;
@@ -29,6 +30,7 @@ export function VocabularyPage({ backup, generationContext, usesExampleProfile }
 }) {
   const { t, language } = useI18n();
   const learner = useContext(LearnerContext)!;
+  useEffect(() => { window.scrollTo({ top: 0 }); }, []);
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
@@ -87,6 +89,7 @@ export function VocabularyPage({ backup, generationContext, usesExampleProfile }
       <button type="button" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{t("Anterior")}</button>
       <button type="button" disabled={currentPage + 1 === totalPages} onClick={() => setPage(currentPage + 1)}>{t("Siguiente")}</button>
     </nav>}
+    <AnkiExport items={learner.items} unavailable={Boolean(learner.error)} />
     <section className="backup-section" aria-labelledby="backup-title"><h2 id="backup-title">{t("Copias de seguridad")}</h2>
       <p>{t("Guarda tu vocabulario, progreso y preferencias en un archivo. Tus datos se quedan en este navegador hasta que tú exportes una copia.")}</p>
       <div className="backup-actions">

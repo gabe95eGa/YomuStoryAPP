@@ -4,7 +4,8 @@ import { describe, expect, it, vi } from 'vitest';
 import manifestData from '../../manifest.json';
 import storyData from '../../stories/work/work_001.json';
 import App from './App';
-import { parseManifest, parseStory, type ContentService } from './lib/content';
+import { parseManifest, type ContentService } from './lib/content';
+import { parseStory } from './lib/storyValidation';
 import { createProgressStore, PROGRESS_KEY } from './lib/progress';
 import { FuriganaText } from './components/JapaneseText';
 

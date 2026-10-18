@@ -26,6 +26,10 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
   const largeText = preferences ? preferences.textSize === 'large' : sessionLargeText;
   const vocabularyStatuses = useTokenStatuses(story, dictionary);
   const [selected, setSelected] = useState<Token | null>(null);
+  const [translations, setTranslations] = useState<Set<string>>(() => new Set());
+  function toggleTranslation(id: string) {
+    setTranslations((previous) => { const next = new Set(previous); if (next.has(id)) next.delete(id); else next.add(id); return next; });
+  }
   const [appearance, setAppearance] = useState(loadAppearance);
   const [appearanceNotice, setAppearanceNotice] = useState(false);
   function changeAppearance(patch: Partial<ReadingAppearance>) {
@@ -49,6 +53,8 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
     const panel = document.querySelector('.quick-lookup');
     const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : undefined;
     if (panel) observer?.observe(panel);
+    const activeSentence = document.getElementById(`sentence-${allSentences[current].id}`);
+    if (activeSentence) observer?.observe(activeSentence);
     return () => { cancelAnimationFrame(frame); window.removeEventListener('resize', schedule); observer?.disconnect(); };
   }, [selected, current]);
   const title = useRef<HTMLHeadingElement>(null);
@@ -106,6 +112,7 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
           {paragraph.sentences.map((sentence) => {
             const sentenceIndex = index++;
             return <StorySentence key={sentence.id} sentence={sentence} number={sentenceIndex + 1} active={sentenceIndex === current}
+              translated={translations.has(sentence.id)} onTranslation={() => toggleTranslation(sentence.id)}
               furigana={furigana} selectedToken={selected ?? undefined} vocabularyStatuses={vocabularyStatuses} onSelect={() => selectSentence(sentenceIndex)}
               onToken={(token) => { selectSentence(sentenceIndex); setSelected(token); }} />;
           })}
@@ -123,6 +130,9 @@ export function ReaderPage({ story, progress, onBack, onPosition, onComplete, di
       <button type="button" className="icon-button" aria-label={t("Frase anterior")} disabled={current === 0} onClick={() => selectSentence(current - 1, true)}>←</button>
       <div className="position-info"><span aria-live="polite">{t("Frase ")}{current + 1}{t(' de ')}{allSentences.length}{progress?.completed ? t(' · Completada') : ''}</span>
         <progress aria-label={t("Posición en la lectura")} max={allSentences.length} value={current + 1} /></div>
+      <button type="button" className="position-translation" aria-label={t('Traducción de la frase actual')}
+        aria-expanded={translations.has(allSentences[current].id)} aria-controls={`translation-${allSentences[current].id}`}
+        onClick={() => { toggleTranslation(allSentences[current].id); document.getElementById(`sentence-${allSentences[current].id}`)?.scrollIntoView({ block: 'center', behavior: 'smooth' }); }}>{t('Traducción')}</button>
       <button type="button" className="icon-button" aria-label={t("Frase siguiente")} disabled={current === allSentences.length - 1} onClick={() => selectSentence(current + 1, true)}>→</button>
     </nav>
     {selected && <VocabularySheet key={`${current}:${selected.start}:${selected.surface}`} quick token={selected} dictionary={dictionary} onClose={() => setSelected(null)} />}

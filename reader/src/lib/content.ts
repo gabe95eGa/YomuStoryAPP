@@ -1,11 +1,5 @@
-import Ajv2020 from 'ajv/dist/2020.js';
-import addFormats from 'ajv-formats';
-import storySchema from '../../../schema/yomustory-v1.schema.json';
 import type { Manifest, Sentence, Story, StoryListing, Token } from './types';
 
-const ajv = new Ajv2020({ strict: false, allErrors: true });
-addFormats(ajv);
-const checkStorySchema = ajv.compile<Story>(storySchema);
 const levels = new Set(['N5', 'N5-N4', 'N4', 'N4-N3', 'N3', 'N3-N2', 'N2', 'N2-N1', 'N1']);
 const text = (value: unknown): value is string => typeof value === 'string' && Boolean(value.trim());
 const record = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value);
@@ -58,28 +52,6 @@ export function sentenceSegments(sentence: Sentence): SentenceSegment[] {
   return segments;
 }
 
-export function parseStory(value: unknown, expectedId: string): Story {
-  if (!checkStorySchema(value) || value.id !== expectedId) {
-    throw new Error('Esta lectura tiene un formato incorrecto o no corresponde a la historia elegida.');
-  }
-  const paragraphIds = new Set<string>();
-  const sentenceIds = new Set<string>();
-  for (const paragraph of value.content.paragraphs) {
-    if (paragraphIds.has(paragraph.id)) throw new Error('La lectura tiene párrafos duplicados.');
-    paragraphIds.add(paragraph.id);
-    for (const sentence of paragraph.sentences) {
-      if (sentenceIds.has(sentence.id)) throw new Error('La lectura tiene frases duplicadas.');
-      sentenceIds.add(sentence.id);
-      if (!sentence.translation_es?.trim()) throw new Error('Falta una traducción en esta lectura.');
-      sentenceSegments(sentence);
-      if (sentence.tokens.some((token) => token.furigana_segments
-        && token.furigana_segments.map((part) => part.text).join('') !== token.surface)) {
-        throw new Error('Una anotación de furigana no coincide con el texto.');
-      }
-    }
-  }
-  return value; // Retain grammar, comprehension, and future fields in the original object.
-}
 
 async function fetchJson(path: string, signal?: AbortSignal): Promise<unknown> {
   let response: Response;
@@ -103,6 +75,10 @@ export const contentService: ContentService = {
   async loadManifest(signal) { return parseManifest(await fetchJson('manifest.json', signal)); },
   async loadStory(listing, signal) {
     if (!safeStoryPath(listing.path)) throw new Error('La ruta de esta lectura no es válida.');
-    return parseStory(await fetchJson(listing.path, signal), listing.id);
+    const [{ parseStory }, data] = await Promise.all([import('./storyValidation').catch(() => {
+      throw new Error('No se pudo cargar esta parte de la aplicación. Recarga la página para intentarlo de nuevo.');
+    }), fetchJson(listing.path, signal)]);
+    signal?.throwIfAborted();
+    return parseStory(data, listing.id);
   },
 };

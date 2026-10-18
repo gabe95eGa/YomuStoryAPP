@@ -3,21 +3,20 @@ import { sentenceSegments } from '../lib/content';
 import type { Sentence, Token } from '../lib/types';
 import { tokenQueryKey, type VocabularyStatus } from '../lib/vocabulary';
 import { shouldShowFurigana, type FuriganaMode } from '../lib/furigana';
+import { rubySegments, hiraganaReading } from '../lib/ruby';
+export { hiraganaReading } from '../lib/ruby';
 
 const hasKanji = (surface: string) => /\p{Script=Han}/u.test(surface);
 // Tokenizer readings stay intact; ruby uses hiragana, including voiced kana.
-export const hiraganaReading = (reading: string) => reading.normalize('NFKC')
-  .replace(/[ァ-ヶヽヾ]/gu, (kana) => String.fromCodePoint(kana.codePointAt(0)! - 0x60));
 export const isInteractive = (token: Token) => !token.ignore_lookup
   && token.type !== 'punctuation' && token.type !== 'particle' && token.type !== 'auxiliary'
   && /[\p{L}\p{N}]/u.test(token.surface);
 
 export function FuriganaText({ token, enabled }: { token: Token; enabled: boolean }) {
   if (!enabled || !hasKanji(token.surface)) return <>{token.surface}</>;
-  if (token.furigana_segments) return <>{token.furigana_segments.map((part, index) => part.reading
+  return <>{rubySegments(token).map((part, index) => part.reading
     && hasKanji(part.text) ? <ruby key={index}>{part.text}<rt>{hiraganaReading(part.reading)}</rt></ruby>
     : <span key={index}>{part.text}</span>)}</>;
-  return <ruby>{token.surface}<rt>{hiraganaReading(token.reading)}</rt></ruby>;
 }
 
 export function JapaneseText({ sentence, furigana, onToken, vocabularyStatuses, selectedToken }: {

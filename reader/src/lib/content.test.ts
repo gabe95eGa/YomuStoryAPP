@@ -11,7 +11,8 @@ import workPersonalized from '../../../stories/work/work_003.json';
 import travelPersonalized from '../../../stories/travel/travel_003.json';
 import japanPersonalized from '../../../stories/japan/japan_003.json';
 import cookingPersonalized from '../../../stories/cooking/cooking_003.json';
-import { contentService, parseManifest, parseStory, sentenceSegments } from './content';
+import { contentService, parseManifest, sentenceSegments } from './content';
+import { parseStory } from './storyValidation';
 import type { Sentence } from './types';
 
 describe('content loading and validation', () => {

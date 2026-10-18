@@ -6,7 +6,7 @@ import backupFixture from '../test/backups/valid.json';
 import profile from '../../../profiles/learner-profile.example.json';
 import { shouldShowFurigana, type FuriganaMode } from './furigana';
 import { createPreferencesStore, PREFERENCES_KEY } from './preferences';
-import { parseStory } from './content';
+import { parseStory } from './storyValidation';
 import { parseDictionaryChunk, resolveEntry } from './dictionaryModel';
 import { identityForEntry, identityForToken, tokenQueryKey, type VocabularyStatus } from './vocabulary';
 import { reliableTokenIdentity, StoryStatusIndex } from './tokenStatuses';

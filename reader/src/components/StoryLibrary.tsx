@@ -2,6 +2,7 @@ import { useI18n, translate } from '../lib/i18n';
 import { useEffect, useMemo, useState } from 'react';
 import type { ProgressMap, StoryListing } from '../lib/types';
 import { loadLibraryView, saveLibraryView } from '../lib/libraryView';
+import { StoryCover } from './StoryCover';
 
 const searchKey = (text: string) => text.normalize('NFKC').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 const categoryLabels: Record<string, [string, string]> = {
@@ -47,7 +48,7 @@ export function StoryLibrary({ stories, progress, onOpen }: {
       <div className="library-mark" aria-hidden="true"><span lang="ja">読む</span><span>YOMUSTORY</span></div>
     </header>
     {resume && <section className="resume-reading" aria-label={t('Tu lectura en curso')}>
-      <div className="resume-symbol" lang="ja" aria-hidden="true">栞</div>
+      <div className="resume-thumbnail" aria-hidden="true"><StoryCover id={resume.id} priority /><span lang="ja">栞</span></div>
       <div><p className="eyebrow">{t('Sigue donde lo dejaste')}</p><h2>{t(resume.title_es)}</h2>
         <p><span lang="ja">{resume.title}</span><span> · {resume.level} · {resume.estimated_minutes} min</span></p></div>
       <button className="primary-button" type="button" onClick={() => onOpen(resume.id)}>{t('Retomar lectura')} <span aria-hidden="true">→</span></button>
@@ -79,7 +80,7 @@ export function StoryLibrary({ stories, progress, onOpen }: {
         : <div className="story-grid">{visible.map((story) => {
           const entry = progress[story.id]; const category = story.id.split('_')[0]; const cover = categoryLabels[category] ?? ['読', 'Historias'];
           return <article key={story.id} className={`story-card${entry?.completed ? ' story-completed' : ''}`}>
-            <div className={`story-cover cover-${category}`} aria-hidden="true"><span>{t(cover[1])}</span><span lang="ja">{cover[0]}</span><i /><b /></div>
+            <div className={`story-cover cover-${category}`} aria-hidden="true"><StoryCover id={story.id} /><span className="cover-category">{t(cover[1])}</span><span className="cover-kanji" lang="ja">{cover[0]}</span></div>
             <div className="card-top"><span className="story-number">{String(stories.indexOf(story) + 1).padStart(2, '0')}</span>
               <span className="reading-status">{entry?.completed ? t('✓ Completada') : entry ? t('En lectura') : t('Por descubrir')}</span></div>
             <div className="card-titles"><h3 lang="ja">{story.title}</h3><p>{t(story.title_es)}</p></div>
@@ -92,5 +93,6 @@ export function StoryLibrary({ stories, progress, onOpen }: {
         })}</div>}
     </section>
     <p className="library-footer"><span lang="ja">少しずつ。</span>{t(' Poco a poco también se llega lejos.')}</p>
+    <p className="photo-credit"><a href={`${import.meta.env.BASE_URL}images/credits.html`} target="_blank" rel="noopener noreferrer">{t('Fotografías y créditos')}</a></p>
   </main>;
 }
