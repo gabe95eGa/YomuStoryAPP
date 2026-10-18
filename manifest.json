@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "generated_at": "2026-10-12",
+  "generated_at": "2026-10-18",
   "stories": [
     {
       "id": "cooking_001",
@@ -43,6 +43,48 @@
       "path": "stories/cooking/cooking_003.json"
     },
     {
+      "id": "cooking_004",
+      "title": "冷蔵庫の小さな紙",
+      "title_es": "El papel de la nevera",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "料理",
+        "日常生活",
+        "友達"
+      ],
+      "path": "stories/cooking/cooking_004.json"
+    },
+    {
+      "id": "cooking_005",
+      "title": "同じスープをもう一度",
+      "title_es": "La misma sopa, otra vez",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "料理",
+        "友達",
+        "日常生活"
+      ],
+      "path": "stories/cooking/cooking_005.json"
+    },
+    {
+      "id": "cooking_006",
+      "title": "公園へ運ぶ昼ご飯",
+      "title_es": "La comida que llevamos al parque",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "料理",
+        "友達",
+        "日常生活"
+      ],
+      "path": "stories/cooking/cooking_006.json"
+    },
+    {
       "id": "daily_001",
       "title": "雨の日の約束",
       "title_es": "Un encuentro en un día de lluvia",
@@ -81,6 +123,48 @@
         "友達"
       ],
       "path": "stories/daily/daily_003.json"
+    },
+    {
+      "id": "daily_004",
+      "title": "雨の日の本棚",
+      "title_es": "La estantería en un día de lluvia",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "日常生活",
+        "友達",
+        "日本生活"
+      ],
+      "path": "stories/daily/daily_004.json"
+    },
+    {
+      "id": "daily_005",
+      "title": "朝の十分を分ける",
+      "title_es": "Cómo repartir diez minutos por la mañana",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "日常生活",
+        "仕事",
+        "友達"
+      ],
+      "path": "stories/daily/daily_005.json"
+    },
+    {
+      "id": "daily_006",
+      "title": "届かなかった小さな箱",
+      "title_es": "La caja que no llegaba",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "日常生活",
+        "日本生活",
+        "友達"
+      ],
+      "path": "stories/daily/daily_006.json"
     },
     {
       "id": "japan_001",
@@ -124,6 +208,48 @@
       "path": "stories/japan/japan_003.json"
     },
     {
+      "id": "japan_004",
+      "title": "掲示板の地図を読む",
+      "title_es": "Leer el mapa del tablón",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "日本生活",
+        "日常生活",
+        "友達"
+      ],
+      "path": "stories/japan/japan_004.json"
+    },
+    {
+      "id": "japan_005",
+      "title": "洗濯が終わるまで",
+      "title_es": "Hasta que termine la colada",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "日本生活",
+        "日常生活",
+        "友達"
+      ],
+      "path": "stories/japan/japan_005.json"
+    },
+    {
+      "id": "japan_006",
+      "title": "自転車を止めた場所",
+      "title_es": "Dónde aparcamos las bicicletas",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "日本生活",
+        "友達",
+        "日常生活"
+      ],
+      "path": "stories/japan/japan_006.json"
+    },
+    {
       "id": "travel_001",
       "title": "海までの小さな旅",
       "title_es": "Una pequeña excursión al mar",
@@ -165,6 +291,48 @@
       "path": "stories/travel/travel_003.json"
     },
     {
+      "id": "travel_004",
+      "title": "海へ行かない地図",
+      "title_es": "Un mapa sin viaje al mar",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "旅行",
+        "バイク",
+        "自然"
+      ],
+      "path": "stories/travel/travel_004.json"
+    },
+    {
+      "id": "travel_005",
+      "title": "一つ先の駅で降りる",
+      "title_es": "Bajarse una estación después",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "旅行",
+        "日本生活",
+        "友達"
+      ],
+      "path": "stories/travel/travel_005.json"
+    },
+    {
+      "id": "travel_006",
+      "title": "写真を撮らない坂道",
+      "title_es": "La cuesta sin fotografías",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "旅行",
+        "バイク",
+        "自然"
+      ],
+      "path": "stories/travel/travel_006.json"
+    },
+    {
       "id": "work_001",
       "title": "注文をもう一度",
       "title_es": "Confirmar el pedido",
@@ -202,6 +370,48 @@
         "料理"
       ],
       "path": "stories/work/work_003.json"
+    },
+    {
+      "id": "work_004",
+      "title": "昼の前の五分間",
+      "title_es": "Cinco minutos antes del almuerzo",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "仕事",
+        "レストラン",
+        "料理"
+      ],
+      "path": "stories/work/work_004.json"
+    },
+    {
+      "id": "work_005",
+      "title": "返事を待つ注文",
+      "title_es": "Un pedido que necesitaba respuesta",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 12,
+      "topics": [
+        "仕事",
+        "レストラン",
+        "日常生活"
+      ],
+      "path": "stories/work/work_005.json"
+    },
+    {
+      "id": "work_006",
+      "title": "閉店後に見つけた音",
+      "title_es": "El ruido que encontramos al cerrar",
+      "level": "N4-N3",
+      "difficulty": 2,
+      "estimated_minutes": 11,
+      "topics": [
+        "仕事",
+        "レストラン",
+        "友達"
+      ],
+      "path": "stories/work/work_006.json"
     }
   ]
 }
