@@ -10,7 +10,7 @@ export function NarrationPanel({ narrator, current, onSentence }: { narrator: Lo
   const active = state.phase === 'playing' || state.phase === 'paused';
   return <details className="narration-panel"><summary><span>{t('Escuchar en japonés')}</span><span className="narration-label">{t('Voz del dispositivo')}</span></summary>
     <div className="narration-body">
-      <p>{t('Narración automática con una voz japonesa local. No utiliza servicios de voz externos. La disponibilidad y la pronunciación dependen de tu dispositivo.')}</p>
+      <p>{t('Elige una voz y escucha desde la frase que estás leyendo.')}</p>
       {!state.supported ? <p role="status">{t('Este navegador no ofrece narración local. Prueba con un navegador compatible.')}</p>
         : !state.voices.length ? <div><p role="status">{t('No hay una voz japonesa local disponible. Instala una voz japonesa en los ajustes de voz de tu dispositivo y vuelve a abrir el navegador.')}</p>
           <button type="button" onClick={narrator.refresh}>{t('Actualizar voces')}</button></div>
@@ -26,7 +26,7 @@ export function NarrationPanel({ narrator, current, onSentence }: { narrator: Lo
       {state.phase === 'error' && <p role="alert">{state.error === 'voice' ? t('La voz local ya no está disponible. Actualiza las voces e inténtalo de nuevo.') : t('No se pudo reproducir la voz local. Revisa los ajustes de voz o prueba otro navegador.')}</p>}
       <details className="narration-help"><summary>{t('Cómo funciona sin conexión')}</summary>
         <p>{t('La voz debe estar descargada e instalada en el dispositivo. Algunas voces japonesas del navegador necesitan internet y no aparecen aquí. Una vez abierta la historia, su narración local no necesita conexión; abrir otras páginas o historias puede requerirla.')}</p>
-        <p>{t('Esta es una voz automática, no una grabación revisada por un profesor. Puede leer algunos kanji de otra manera según el contexto. Escuchar no marca la historia como completada.')}</p>
+        <p>{t('Escuchar no marca la historia como completada.')}</p>
         <a href="https://support.microsoft.com/en-us/accessibility/windows/narrator/appendix-a-supported-languages-and-voices" target="_blank" rel="noopener noreferrer">{t('Ayuda para instalar voces en Windows')}</a>
       </details>
     </div>

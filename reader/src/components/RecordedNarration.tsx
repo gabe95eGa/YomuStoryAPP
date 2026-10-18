@@ -49,9 +49,8 @@ export function RecordedNarration({ recording, controller, onPlay, onSection, on
     callbacks.current.onSection(recording.paragraphs[next].id);
   }
   return <section className="recorded-narration narration-panel" aria-label={t('Audio por secciones')}>
-    <div className="recorded-heading"><strong>{t('Escuchar la historia')}</strong><span className="narration-label">{t('Audio japonés · Azure')}</span></div>
+    <div className="recorded-heading"><strong>{t('Escuchar la historia')}</strong><span className="narration-label">{t('Audio en japonés')}</span></div>
     <div className="narration-body">
-      <p>{t('Audio generado previamente. Reproducirlo no utiliza la API de Azure. La voz es automática y puede cometer errores de pronunciación.')}</p>
       <label>{t('Sección')} <select value={section} onChange={(event) => changeSection(Number(event.target.value))}>
         {recording.paragraphs.map((paragraph, i) => <option key={paragraph.id} value={i}>{i + 1} / {recording.paragraphs.length}</option>)}
       </select></label>
